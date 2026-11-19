@@ -1,5 +1,7 @@
 # 00 — MASTER PLAN POINTS — Aturseva User App (React Native)
 
+> **PLAN STATUS (2026-12-07, Round 27): DRAFT v1 plan docs written — `01` through `14` (see README index). Owner review pending; point statuses in §2 reflect the pre-draft state and will be updated to LOCKED as the owner reviews each part.**
+
 > **STATUS: PLANNING-ONLY.** No app development is authorized by this file.
 > This file is the **planning index / seed bank**: every point below will become its own
 > planning section (numbered doc) that we write and lock **point-by-point with the owner**,
