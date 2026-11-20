@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit:**\n\n1. **Single-result state:** Complete and calm. Count line \"1 hospital found\" matches the single card, and the closing note \"That is every hospital for this search\" gracefully signals the end of results — nothing looks broken or truncated.\n\n2. **Card consistency:** The CIIMS Hospital card follows a standard list-card layout: circular \"CH\" avatar, bold name, specialty, city/state, meta line (2 doctors · 2 departments), and right chevron — all aligned properly within the card.\n\n3. **Visual defects:** None significant. Typography hierarchy is clear (bold ink-black names, gray secondary text), consistent pill-shaped search/city filters, adequate spacing. No overflow, clipping, or misalignment.\n\nVERDICT: PASS",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795202764,
+  "id": "202611210326012959d5a8474c41d1",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210326012959d5a8474c41d1",
+  "usage": {
+    "completion_tokens": 157,
+    "completion_tokens_details": {
+      "reasoning_tokens": 156
+    },
+    "prompt_tokens": 4088,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4245
+  }
+}

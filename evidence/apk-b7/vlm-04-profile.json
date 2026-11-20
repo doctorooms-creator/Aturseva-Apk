@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit:**\n\n1. **Hero:** Good. Avatar, name, type, city, and \"2 doctors listed\" align well and are readable. Minor: city line is light gray and lower contrast than ideal.\n2. **Department rows:** Consistent structure, but captions are unlabeled run-ons (\"2 doctors · Floor Ground · Room OPD-1\"). \"Floor Ground\" reads awkwardly (should be \"Floor: Ground\" or \"Ground Floor\"), and \"Room\" vs values aren't clearly labeled pairs. Acceptable but could be clearer.\n3. **Contact card:** Tidy, black-bordered card with address and a large full-width \"Call 9106096746\" pill with phone icon — clearly tappable.\n4. **Defects:** None significant; spacing and hierarchy are clean.\n\nVERDICT: PASS",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795202911,
+  "id": "20261121032825cff745a1a24b4ff2",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121032825cff745a1a24b4ff2",
+  "usage": {
+    "completion_tokens": 175,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 4128,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4303
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit (1)** Yes — grab handle at top, bold title \"General Medicine\", caption \"2 doctors in this department\". ✓\n**Audit (2)** Rows are consistent: avatar circle, bold name, specialization · designation line, fee/status line, chevron. Readable hierarchy. Minor nitpick: avatar initials \"DV\" don't match \"Dr. Varun Malik\" (should be \"VM\"). Also the rating/row shows truncated \"· 1\" which reads ambiguously.\n**Audit (3)** Sheet sits cleanly over the dimmed hospital profile, rounded top corners, no text clipping; bottom row fully visible.\n**Audit (4)** No layout defects. Note: Dr. Varun Malik is listed as \"Pediatrics\" inside the \"General Medicine\" department — a content/data inconsistency, not visual.\n\nVERDICT: PASS",
+        "reasoning_content": "Handle present, title, caption present. Rows consistent. Data mismatch: avatar initials \"DV\" for Dr. Varun Malik — should be \"VM\"? Minor. Cardiology shows \"No doctors listed yet · 2 · 101\" — odd but background. Sheet fine. Verdict: PASS.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795202770,
+  "id": "2026112103260494ff44b0c26e4c23",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112103260494ff44b0c26e4c23",
+  "usage": {
+    "completion_tokens": 236,
+    "completion_tokens_details": {
+      "reasoning_tokens": 61
+    },
+    "prompt_tokens": 4108,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4344
+  }
+}

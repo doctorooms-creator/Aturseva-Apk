@@ -851,3 +851,209 @@ export async function postRating(body: {
     body: { ...body, wouldRecommend: body.wouldRecommend ?? true },
   })
 }
+
+// ---------------------------------------------------------------------------
+// Hospitals (public browse — /api/hospitals*; guest-safe, no auth needed)
+// APK-B7. Contract notes (verified on prod): the LIST envelope's data[].id
+// is the OWNER user id — the hospital id for detail/dept routes lives at
+// data[].hospital.id (mapped below). facilities/gallery arrive as
+// JSON-encoded strings ("[]") — parsed defensively. Departments can
+// honestly have 0 doctors (doctorCount) — never fabricated.
+// ---------------------------------------------------------------------------
+
+export interface HospitalCard {
+  id: string
+  name: string
+  city: string
+  state: string
+  type: string
+  bedCount: number
+  departmentCount: number
+  doctorCount: number
+}
+
+export interface HospitalsPage {
+  hospitals: HospitalCard[]
+  total: number
+}
+
+export async function getHospitals(params: {
+  search?: string
+  city?: string
+  page?: number
+  limit?: number
+}): Promise<HospitalsPage> {
+  const q = new URLSearchParams()
+  if (params.search) q.set('search', params.search)
+  if (params.city) q.set('city', params.city)
+  if (params.page) q.set('page', String(params.page))
+  if (params.limit) q.set('limit', String(params.limit))
+  const raw = await fetchJson<{
+    data: {
+      hospital: {
+        id: string
+        hospitalName: string | null
+        city: string | null
+        state: string | null
+        hospitalType: string | null
+        bedCount: number | null
+        _count: { departments: number | null; doctorLinks: number | null } | null
+      } | null
+    }[]
+    total: number
+  }>(`/api/hospitals?${q.toString()}`)
+  return {
+    hospitals: raw.data
+      .map((row) => {
+        const h = row.hospital
+        return {
+          id: h?.id ?? '',
+          name: h?.hospitalName ?? '',
+          city: h?.city ?? '',
+          state: h?.state ?? '',
+          type: h?.hospitalType ?? 'Multi-Specialty',
+          bedCount: h?.bedCount ?? 0,
+          departmentCount: h?._count?.departments ?? 0,
+          doctorCount: h?._count?.doctorLinks ?? 0,
+        }
+      })
+      .filter((h) => h.id !== '' && h.name !== ''),
+    total: raw.total,
+  }
+}
+
+/** JSON-encoded string arrays ("[]") from the monolith → string[] (defensive). */
+function parseJsonStringArray(value: unknown): string[] {
+  if (Array.isArray(value)) return value.filter((v): v is string => typeof v === 'string')
+  if (typeof value === 'string' && value.trim() !== '') {
+    try {
+      const parsed: unknown = JSON.parse(value)
+      return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === 'string') : []
+    } catch {
+      return []
+    }
+  }
+  return []
+}
+
+export interface HospitalDepartment {
+  id: string
+  name: string
+  description: string
+  floorNo: string
+  opdRoom: string
+  doctorCount: number
+}
+
+export interface HospitalProfile {
+  id: string
+  name: string
+  address: string
+  city: string
+  state: string
+  pincode: string
+  contactNo: string
+  website: string
+  type: string
+  establishedYear: number
+  bedCount: number
+  accreditation: string
+  facilities: string[]
+  about: string
+  departments: HospitalDepartment[]
+  totalDoctors: number
+}
+
+export async function getHospitalProfile(id: string): Promise<HospitalProfile> {
+  const raw = await fetchJson<{
+    id: string
+    hospitalName: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+    pincode: string | number | null
+    contactNo: string | null
+    website: string | null
+    hospitalType: string | null
+    establishedYear: number | null
+    bedCount: number | null
+    accreditation: string | null
+    facilities: unknown
+    about: string | null
+    departments: {
+      id: string
+      name: string | null
+      description: string | null
+      floorNo: string | number | null
+      opdRoom: string | number | null
+      doctorCount: number | null
+    }[]
+    totalDoctors: number | null
+  }>(`/api/hospitals/${encodeURIComponent(id)}`)
+  return {
+    id: raw.id,
+    name: raw.hospitalName ?? '',
+    address: raw.address ?? '',
+    city: raw.city ?? '',
+    state: raw.state ?? '',
+    pincode: raw.pincode === null || raw.pincode === undefined ? '' : String(raw.pincode),
+    contactNo: raw.contactNo ?? '',
+    website: raw.website ?? '',
+    type: raw.hospitalType ?? 'Multi-Specialty',
+    establishedYear: raw.establishedYear ?? 0,
+    bedCount: raw.bedCount ?? 0,
+    accreditation: raw.accreditation ?? '',
+    facilities: parseJsonStringArray(raw.facilities),
+    about: raw.about ?? '',
+    departments: (raw.departments ?? []).map((d) => ({
+      id: d.id,
+      name: d.name ?? '',
+      description: d.description ?? '',
+      floorNo: d.floorNo === null || d.floorNo === undefined ? '' : String(d.floorNo),
+      opdRoom: d.opdRoom === null || d.opdRoom === undefined ? '' : String(d.opdRoom),
+      doctorCount: d.doctorCount ?? 0,
+    })),
+    totalDoctors: raw.totalDoctors ?? 0,
+  }
+}
+
+export interface DepartmentDoctor {
+  id: string
+  name: string
+  specialization: string
+  designation: string
+  fees: number
+  isAvailable: boolean
+  rating: number
+  ratingCount: number
+}
+
+export async function getDepartmentDoctors(
+  hospitalId: string,
+  departmentId: string,
+): Promise<DepartmentDoctor[]> {
+  const raw = await fetchJson<{
+    doctors: {
+      id: string
+      name: string | null
+      specialization: string | null
+      designation: string | null
+      fees: number | null
+      isAvailable: boolean | null
+      avgRating: number | null
+      totalRatings: number | null
+    }[]
+  }>(
+    `/api/hospitals/${encodeURIComponent(hospitalId)}/departments/${encodeURIComponent(departmentId)}/doctors`,
+  )
+  return (raw.doctors ?? []).map((d) => ({
+    id: d.id,
+    name: d.name ?? '',
+    specialization: d.specialization ?? '',
+    designation: d.designation ?? '',
+    fees: d.fees ?? 0,
+    isAvailable: d.isAvailable ?? false,
+    rating: d.avgRating ?? 0,
+    ratingCount: d.totalRatings ?? 0,
+  }))
+}

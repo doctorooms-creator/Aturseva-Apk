@@ -19,7 +19,7 @@ import Constants from 'expo-constants'
 import { ChevronRight, MapPin } from 'lucide-react-native'
 import { space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
-import { getDoctors, getStats, getBookAgain, type BookAgainDoctor } from '@/lib/api'
+import { getDoctors, getStats, getBookAgain, getHospitals, type BookAgainDoctor } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { getCity, getRecentSearches, pushRecentSearch, setCity } from '@/lib/storage'
 import { getStoredToken } from '@/lib/auth'
@@ -29,6 +29,7 @@ import { Chip, QuietAction } from '@/components/press'
 import { PulseDot } from '@/components/pulse-dot'
 import { OfflineBanner } from '@/components/offline-banner'
 import { DoctorRailCard } from '@/components/doctor-card'
+import { HospitalRailCard } from '@/components/hospital-card'
 import { DoctorRailSkeleton, TrustStripSkeleton } from '@/components/skeleton'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { CityPickerSheet } from '@/components/city-picker'
@@ -66,6 +67,7 @@ export default function HomeScreen() {
   // Live data (doc 08 #1/#8): stats 5-min SWR · doctors rail SWR.
   const stats = useQuery('stats', () => getStats(), { staleTime: 300_000 })
   const rail = useQuery('doctors-rail', () => getDoctors({ limit: 12 }), { staleTime: 60_000 })
+  const hospitalsRail = useQuery('hospitals-rail', () => getHospitals({ limit: 6 }), { staleTime: 300_000 })
 
   const [query, setQuery] = useState('')
   const [suggestOpen, setSuggestOpen] = useState(false)
@@ -291,6 +293,26 @@ export default function HomeScreen() {
         )}
       </ScrollView>
 
+      {/* B7 · Hospitals rail — hide-if-empty ABSOLUTE (public data, guest ok) */}
+      {hospitalsRail.data && hospitalsRail.data.hospitals.length > 0 ? (
+        <>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: c.ink }]}>Hospitals</Text>
+            <View style={styles.hospitalsSpacer} />
+            <Chip label="See all" onPress={() => void router.push('/hospitals')} />
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
+            {hospitalsRail.data.hospitals.map((h) => (
+              <HospitalRailCard
+                key={h.id}
+                hospital={h}
+                onPress={() => void router.push({ pathname: '/hospital/[id]', params: { id: h.id } })}
+              />
+            ))}
+          </ScrollView>
+        </>
+      ) : null}
+
       {/* Quiet footer: city + version + legal (S3 law: ≤1 line each) */}
       <View style={styles.footer}>
         <Pressable style={styles.cityRow} onPress={() => setCitySheetOpen(true)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Change city">
@@ -426,6 +448,9 @@ const styles = StyleSheet.create({
   railRow: {
     paddingHorizontal: space.s16,
     gap: space.s12,
+  },
+  hospitalsSpacer: {
+    flex: 1,
   },
   railEmpty: {
     paddingHorizontal: space.s16,

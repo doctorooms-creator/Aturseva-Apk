@@ -85,6 +85,9 @@ function Root() {
         <Stack.Screen name="notifications" />
         <Stack.Screen name="reports" />
         <Stack.Screen name="rate" />
+        {/* APK-B7 · hospitals browse (public — guest ok) */}
+        <Stack.Screen name="hospitals" />
+        <Stack.Screen name="hospital/[id]" />
       </Stack>
     </SafeAreaProvider>
   )
