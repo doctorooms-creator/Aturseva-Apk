@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Audit of Notifications empty state:\n\n1. **Title** — \"Notifications\" is clear and bold, paired with a back arrow. ✔\n2. **Empty-state doorway** — Bell icon in a soft gray circle, \"No notifications yet\" heading, plus a reassuring subline explaining what will appear and when. Complete and patient-friendly. ✔\n3. **Layout** — No overlap, clipping, or misalignment; content vertically balanced with generous whitespace below. ✔\n4. **Design** — White canvas, restrained neutral palette, no decorative clutter. Professional and appropriate for healthcare. ✔\n\nVERDICT: PASS",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795198083,
+  "id": "202611210207591362f40b15244dd6",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210207591362f40b15244dd6",
+  "usage": {
+    "completion_tokens": 127,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 4066,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4193
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit of HOME screen (signed-in patient, no visit history):**\n\n1. **Search bar** — \"Doctor name or problem — fever, knee pain\" ✅ present at top.\n2. **Symptom chips** — fever, knee pain, skin, child, acidity ✅ present, directly under search.\n3. **Trust strip** — \"97 doctors · 13 hospitals · 59 visits booked — live\" with live dot ✅ present.\n4. **Doctors rail** — \"Doctors\" heading with \"live\" badge; cards for Rajesh (₹300, General Physician, Gandhinagar) and Dr. QA… (Oncology, Jaipur) ✅ present.\n5. **'Book again' section** — ✅ ABSENT between the trust strip and the Doctors rail, and nowhere on the screen. Correct per the hide-if-empty rule for a patient with no completed visits.\n6. Footer (Select city, version, Privacy/Terms) and bottom nav (Home / Bookings / Profile) all present and consistent with the zero-history state (no booking reminders).\n\nAll required elements are in the correct order: search → chips → trust strip → Doctors rail, with no 'Book again' rail interleaved.\n\nVERDICT: PASS",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795198105,
+  "id": "202611210208194ebeb58bdff446b9",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210208194ebeb58bdff446b9",
+  "usage": {
+    "completion_tokens": 263,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 4057,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4320
+  }
+}

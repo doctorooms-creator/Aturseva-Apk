@@ -81,6 +81,10 @@ function Root() {
         <Stack.Screen name="doctor/[id]/book" />
         <Stack.Screen name="booking/[id]" />
         <Stack.Screen name="booking/[id]/queue" options={{ animation: 'slide_from_bottom' }} />
+        {/* APK-B6 · P1 polish stack routes (auth-gated, guest = doorway) */}
+        <Stack.Screen name="notifications" />
+        <Stack.Screen name="reports" />
+        <Stack.Screen name="rate" />
       </Stack>
     </SafeAreaProvider>
   )

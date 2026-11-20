@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Audit of Profile tab:\n\n1) **Account card** — Avatar shows \"BT\" initials matching \"B6 Tester\"; email b6tester1795197927@aturseva.app; masked mobile \"98••••5670\". ✅ All present, no overlap.\n\n2) **Your account section** — Exactly three rows: Notifications (bell icon, \"All caught up\" subtitle), Reports (doc icon, \"Lab test orders and reports\"), Rate your visits (star icon, \"Help the next patient choose\"). ✅ Each with right chevron.\n\n3) **Settings section** — City (Select), Appearance (Follow system), Aturseva web (aturseva.com), Sign out (red icon, \"Session ends on this device\"). ✅ All four rows present.\n\n4) **Layout quality** — Consistent rounded cards, left icons aligned, chevrons on actionable rows (Sign out intentionally lacks chevron, appropriate for destructive action). Icons consistent in weight/style. Bottom nav (Home, Bookings, Profile active). No overlap, truncation, or clipping detected. Footer version text \"Aturseva v0.2.0 · APK-B6\" visible.\n\nVERDICT: PASS",
+        "reasoning_content": "All elements present. Minor note: chevron missing on Sign out? Sign out row has no chevron—acceptable. Pass.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795198099,
+  "id": "20261121020813e3c28ea49ebb482c",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121020813e3c28ea49ebb482c",
+  "usage": {
+    "completion_tokens": 279,
+    "completion_tokens_details": {
+      "reasoning_tokens": 26
+    },
+    "prompt_tokens": 4082,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4361
+  }
+}

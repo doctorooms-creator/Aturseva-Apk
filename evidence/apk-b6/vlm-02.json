@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit: Reports screen — Empty state**\n\n1) **Title**: ✅ Clear \"Reports\" header, bold, top-left with back arrow — obvious orientation.\n\n2) **Empty-state doorway**: ✅ \"No lab orders yet\" headline plus a reassurance line: \"When you book a lab test — on aturseva.com or here — its status and report land on this screen.\" It tells the user exactly where to expect orders and confirms the screen isn't broken. Beaker icon in a soft gray circle sets context (lab tests) without clutter.\n\n3) **Layout**: ✅ Clean — icon, headline, one supporting line, vertically centered in upper third; generous whitespace, no stray controls or dead buttons.\n\n4) **Design restraint**: ✅ Monochrome, one icon, two text blocks — no color noise, no banners, no fake CTAs. Appropriate for a healthcare context.\n\nMinor nit (non-blocking): could offer a \"Book a lab test\" action to close the loop, but the honest empty state itself is correct.\n\nVERDICT: PASS",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795198089,
+  "id": "2026112102080343a1c16e551b4dcc",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112102080343a1c16e551b4dcc",
+  "usage": {
+    "completion_tokens": 221,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 4051,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4272
+  }
+}

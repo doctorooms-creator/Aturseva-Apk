@@ -19,12 +19,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import * as Linking from 'expo-linking'
+import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
-import { ChevronRight, Globe, LogOut, MapPin, Moon, MonitorSmartphone, Sun, UserRound } from 'lucide-react-native'
+import { Bell, ChevronRight, FileCheck2, Globe, LogOut, MapPin, Moon, MonitorSmartphone, Star, Sun, UserRound } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors, useTheme } from '@/lib/theme'
 import type { AuthUser } from '@/lib/api'
-import { getMe, logoutRemote } from '@/lib/api'
+import { getMe, getNotifications, logoutRemote } from '@/lib/api'
 import { clearSession, getStoredToken, getStoredUser } from '@/lib/auth'
 import { getCity, setCity, type ThemeMode } from '@/lib/storage'
 import { Avatar } from '@/components/avatar'
@@ -41,6 +42,7 @@ function maskMobile(m: string | null): string {
 
 export default function ProfileScreen() {
   const c = useColors()
+  const router = useRouter()
   const { mode, setMode } = useTheme()
 
   const [user, setUser] = useState<AuthUser | null>(null)
@@ -48,6 +50,7 @@ export default function ProfileScreen() {
   const [city, setCityState] = useState<string | null>(null)
   const [citySheetOpen, setCitySheetOpen] = useState(false)
   const [appearanceOpen, setAppearanceOpen] = useState(false)
+  const [unread, setUnread] = useState<number | null>(null)
 
   const load = useCallback(async () => {
     setCityState(await getCity())
@@ -74,6 +77,26 @@ export default function ProfileScreen() {
       }
     })()
   }, [load])
+
+  // B6: unread badge stays fresh while the tab is around (cheap GET,
+  // guest = null = no badge; error = last value, offline law).
+  useFocusEffect(
+    useCallback(() => {
+      void (async () => {
+        await null
+        if (!(await getStoredToken())) {
+          setUnread(null)
+          return
+        }
+        try {
+          const page = await getNotifications()
+          setUnread(page.unreadCount)
+        } catch {
+          /* keep last badge (offline law) */
+        }
+      })()
+    }, []),
+  )
 
   const version = Constants.expoConfig?.version ?? '0.1.0'
 
@@ -131,6 +154,38 @@ export default function ProfileScreen() {
         </View>
       )}
 
+      {/* B6 · Account rows — logged-in only (progressive disclosure law:
+          these screens mean nothing to a guest; they appear with history). */}
+      {user ? (
+        <>
+          <Text style={[styles.sectionCaption, { color: c.mute }]}>Your account</Text>
+          <View style={styles.rows}>
+            <Row
+              icon={<Bell size={20} color={c.body} strokeWidth={2} />}
+              label="Notifications"
+              value={unread === null ? 'Booking and queue updates' : unread > 0 ? `${unread} unread` : 'All caught up'}
+              badge={unread !== null && unread > 0 ? unread : null}
+              chevron={<ChevronRight size={18} color={c.mute} strokeWidth={2} />}
+              onPress={() => void router.push('/notifications')}
+            />
+            <Row
+              icon={<FileCheck2 size={20} color={c.body} strokeWidth={2} />}
+              label="Reports"
+              value="Lab test orders and reports"
+              chevron={<ChevronRight size={18} color={c.mute} strokeWidth={2} />}
+              onPress={() => void router.push('/reports')}
+            />
+            <Row
+              icon={<Star size={20} color={c.body} strokeWidth={2} />}
+              label="Rate your visits"
+              value="Help the next patient choose"
+              chevron={<ChevronRight size={18} color={c.mute} strokeWidth={2} />}
+              onPress={() => void router.push('/rate')}
+            />
+          </View>
+        </>
+      ) : null}
+
       {/* Settings — city REAL (storage write) · appearance REAL (theme) */}
       <Text style={[styles.sectionCaption, { color: c.mute }]}>Settings</Text>
       <View style={styles.rows}>
@@ -178,7 +233,7 @@ export default function ProfileScreen() {
         ) : null}
       </View>
 
-      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B4</Text>
+      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B6</Text>
       <View style={styles.footerPad} />
 
       <CityPickerSheet
@@ -271,12 +326,15 @@ function Row({
   label,
   value,
   chevron,
+  badge,
   onPress,
 }: {
   icon: React.ReactNode
   label: string
   value: string
   chevron: React.ReactNode
+  /** Unread count chip (B6) — null hides it. */
+  badge?: number | null
   onPress: () => void
 }) {
   const c = useColors()
@@ -294,6 +352,11 @@ function Row({
           {value}
         </Text>
       </View>
+      {badge != null ? (
+        <View style={[styles.badge, { backgroundColor: c.tealLive }]}>
+          <Text style={styles.badgeText}>{badge > 9 ? '9+' : String(badge)}</Text>
+        </View>
+      ) : null}
       {chevron}
     </Pressable>
   )
@@ -390,6 +453,21 @@ const styles = StyleSheet.create({
   },
   rowValue: {
     ...typo.caption,
+  },
+  badge: {
+    minWidth: 20,
+    height: 20,
+    borderRadius: 999,
+    paddingHorizontal: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeText: {
+    ...typo.caption,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    fontVariant: ['tabular-nums'],
   },
   versionText: {
     ...typo.caption,

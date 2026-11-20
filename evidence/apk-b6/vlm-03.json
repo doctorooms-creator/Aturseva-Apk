@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "## Audit: \"Rate your visits\" — Empty State\n\n**1) Clear title** ✅\n\"Rate your visits\" in bold at top-left with a back arrow — unambiguous and correctly scoped to the screen's purpose.\n\n**2) Empty-state doorway (icon + title + one line)** ✅\nAll three components present:\n- Icon: soft gray circle with a star outline — thematically appropriate (ratings) and visually quiet\n- Title: \"No completed visits yet\" — honest, accurate, no blame\n- Support line: \"After a visit finishes, it appears here and you can rate the experience.\" — one concise sentence that sets expectations\n\n**3) Clean layout** ✅\nContent block is vertically positioned in the upper third, centered horizontally, with generous whitespace below. Nothing competes for attention; the back affordance is the only escape route, which is appropriate here.\n\n**4) Restrained design** ✅\nMonochrome palette (white background, black text, gray accents), single icon, no buttons, no upsells, no decorative clutter. Typography hierarchy (bold heading / muted body) is correct.\n\n**Minor note (non-blocking):** The empty block sits slightly high, leaving a large blank lower half — acceptable, though nudging it toward vertical center could feel more balanced.\n\n**VERDICT: PASS**",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795198093,
+  "id": "20261121020809d6789ca2ee9e4422",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121020809d6789ca2ee9e4422",
+  "usage": {
+    "completion_tokens": 277,
+    "completion_tokens_details": {
+      "reasoning_tokens": 276
+    },
+    "prompt_tokens": 4047,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4324
+  }
+}

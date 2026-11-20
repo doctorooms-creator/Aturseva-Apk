@@ -41,7 +41,7 @@ export class ApiError extends Error {
 async function fetchJson<T>(
   path: string,
   init: {
-    method?: 'GET' | 'POST' | 'DELETE'
+    method?: 'GET' | 'POST' | 'DELETE' | 'PATCH'
     body?: unknown
     /** true = read the stored session JWT; a string = an explicit JWT
      *  (sign-out's captured-before-clear token — the revoke must fire
@@ -631,5 +631,223 @@ export async function cancelPublicBooking(bookingId: string, mobile: string, rea
   await fetchJson<{ success: boolean }>(`/api/public/booking/${encodeURIComponent(bookingId)}/cancel`, {
     method: 'POST',
     body: { mobile, ...(reason ? { reason } : {}) },
+  })
+}
+
+// ————— APK-B6 · P1 polish: notifications · book-again · reports · rate —————
+// Contracts verified against the monolith (patient-side, Bearer-gated).
+
+/** In-app notification row (GET /api/patient/notifications). */
+export interface NotificationRow {
+  id: string
+  title: string
+  message: string
+  read: boolean
+  createdAt: string
+}
+
+export interface NotificationsPage {
+  rows: NotificationRow[]
+  unreadCount: number
+  page: number
+  totalPages: number
+}
+
+export async function getNotifications(page = 1): Promise<NotificationsPage> {
+  const raw = await fetchJson<{
+    notifications: { id: string; title: string; message: string; status: string; createdAt: string }[]
+    pagination: { page: number; totalPages: number }
+    unreadCount: number
+  }>(`/api/patient/notifications?page=${page}&limit=25`, { auth: true })
+  return {
+    rows: raw.notifications.map((n) => ({
+      id: n.id,
+      title: n.title,
+      message: n.message,
+      read: n.status === 'READ',
+      createdAt: n.createdAt,
+    })),
+    unreadCount: raw.unreadCount,
+    page: raw.pagination.page,
+    totalPages: raw.pagination.totalPages,
+  }
+}
+
+/** PATCH /api/patient/notifications/[id]/read — tap marks one read. */
+export async function markNotificationRead(id: string): Promise<void> {
+  await fetchJson(`/api/patient/notifications/${encodeURIComponent(id)}/read`, {
+    method: 'PATCH',
+    auth: true,
+  })
+}
+
+/** PATCH /api/patient/notifications/read-all — header pill. */
+export async function markAllNotificationsRead(): Promise<void> {
+  await fetchJson('/api/patient/notifications/read-all', { method: 'PATCH', auth: true })
+}
+
+/** Book-again rail doctor (GET /api/patient/book-again — DoctorListItem
+ *  grammar, id = User id so profile/book deep links resolve). */
+export interface BookAgainDoctor {
+  id: string
+  name: string
+  photo: string | null
+  specialization: string
+  city: string
+  state: string
+  fees: number
+  experience: string
+}
+
+export async function getBookAgain(): Promise<BookAgainDoctor[]> {
+  const raw = await fetchJson<{
+    doctors: {
+      id: string
+      name: string
+      profileImg: string | null
+      doctor: {
+        specialization: string | null
+        city: string | null
+        state: string | null
+        fees: number | null
+        experience: string | null
+      }
+    }[]
+  }>('/api/patient/book-again', { auth: true })
+  // Empty/401-safe: the rail hides when empty (hide-if-empty law).
+  return raw.doctors.map((d) => ({
+    id: d.id,
+    name: d.name,
+    photo: d.profileImg && /^https?:\/\//.test(d.profileImg) ? d.profileImg : null,
+    specialization: d.doctor?.specialization ?? '',
+    city: d.doctor?.city ?? '',
+    state: d.doctor?.state ?? '',
+    fees: d.doctor?.fees ?? 0,
+    experience: d.doctor?.experience ?? '',
+  }))
+}
+
+/** Lab order tracker row (GET /api/patient/lab-orders). */
+export interface LabOrderRow {
+  id: string
+  orderNo: string
+  testName: string
+  fee: number
+  policy: 'self' | 'rx'
+  prepNote: string
+  collectionDate: string
+  collectionSlot: string
+  city: string
+  status: string
+  statusNote: string
+  reportReady: boolean
+  labName: string
+  labCity: string
+}
+
+export async function getLabOrders(): Promise<LabOrderRow[]> {
+  const raw = await fetchJson<{
+    data: {
+      id: string
+      orderNo: string
+      testName: string
+      testFee: number
+      bookingPolicy: string
+      prepNote: string
+      collectionDate: string
+      collectionSlot: string
+      city: string
+      status: string
+      statusNote: string | null
+      reportUrl: string
+      labPartner: { labName: string; city: string } | null
+    }[]
+  }>('/api/patient/lab-orders', { auth: true })
+  return raw.data.map((o) => ({
+    id: o.id,
+    orderNo: o.orderNo,
+    testName: o.testName,
+    fee: o.testFee,
+    policy: o.bookingPolicy === 'rx' ? 'rx' : 'self',
+    prepNote: o.prepNote ?? '',
+    collectionDate: o.collectionDate,
+    collectionSlot: o.collectionSlot,
+    city: o.city,
+    status: o.status,
+    statusNote: o.statusNote ?? '',
+    reportReady: Boolean(o.reportUrl) && o.status === 'Completed',
+    labName: o.labPartner?.labName ?? '',
+    labCity: o.labPartner?.city ?? '',
+  }))
+}
+
+/** GET the completed order's report file (Bearer-auth'd proxy — the raw
+ *  storage URL never reaches the client; returns the response + content
+ *  type so the caller can open/share per platform). */
+export async function fetchLabReport(
+  orderId: string,
+): Promise<{ blob: Blob; contentType: string }> {
+  const token = await getStoredToken()
+  if (!token) throw new ApiError('server', 'Sign in required', 401)
+  const res = await fetch(`${API_BASE}/api/patient/lab-orders/${encodeURIComponent(orderId)}/report`, {
+    headers: { Accept: 'application/pdf, image/*, application/octet-stream', Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) {
+    throw new ApiError('server', 'Report not available', res.status)
+  }
+  return { blob: await res.blob(), contentType: res.headers.get('content-type') ?? 'application/octet-stream' }
+}
+
+/** Rateable completed visit (GET /api/patient/feedback). */
+export interface FeedbackRow {
+  id: string
+  appointmentNo: string
+  doctorName: string
+  doctorUserId: string
+  disease: string
+  date: string
+  alreadyRated: boolean
+}
+
+export async function getFeedbackList(): Promise<FeedbackRow[]> {
+  const raw = await fetchJson<{
+    feedback: {
+      id: string
+      appointmentNo: string
+      doctorName: string
+      doctorUserId: string
+      disease: string | null
+      date: string
+      alreadyRated: boolean
+    }[]
+  }>('/api/patient/feedback', { auth: true })
+  return raw.feedback.map((f) => ({
+    id: f.id,
+    appointmentNo: f.appointmentNo,
+    doctorName: f.doctorName,
+    doctorUserId: f.doctorUserId,
+    disease: f.disease ?? '',
+    date: f.date,
+    alreadyRated: f.alreadyRated,
+  }))
+}
+
+/** POST /api/patient/feedback — star required, sub-scores optional 0–5,
+ *  review + anonymous optional. Server 409 honest answers surface verbatim. */
+export async function postRating(body: {
+  bookingId: string
+  doctorUserId: string
+  star: number
+  consultationRating?: number
+  waitTimeRating?: number
+  staffRating?: number
+  review?: string
+  wouldRecommend?: boolean
+  isAnonymous?: boolean
+}): Promise<void> {
+  await fetchJson('/api/patient/feedback', {
+    method: 'POST',
+    auth: true,
+    body: { ...body, wouldRecommend: body.wouldRecommend ?? true },
   })
 }

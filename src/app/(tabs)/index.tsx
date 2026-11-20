@@ -19,9 +19,10 @@ import Constants from 'expo-constants'
 import { ChevronRight, MapPin } from 'lucide-react-native'
 import { space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
-import { getDoctors, getStats } from '@/lib/api'
+import { getDoctors, getStats, getBookAgain, type BookAgainDoctor } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { getCity, getRecentSearches, pushRecentSearch, setCity } from '@/lib/storage'
+import { getStoredToken } from '@/lib/auth'
 import { matchSymptom } from '@/lib/website/symptom-search'
 import { SearchField } from '@/components/search-field'
 import { Chip, QuietAction } from '@/components/press'
@@ -99,6 +100,25 @@ export default function HomeScreen() {
   const [city, setCityState] = useState<string | null>(null)
   const [citySheetOpen, setCitySheetOpen] = useState(false)
 
+  // APK-B6 · Book-again rail (doc 06 S3 / doc 18): the logged-in
+  // patient's last doctors, one tap away. Hide-if-empty law is absolute —
+  // guest, error, or empty list renders NOTHING (zero chrome change for
+  // the guest). A Pending booking earns nothing (server honesty gate).
+  const [bookAgain, setBookAgain] = useState<BookAgainDoctor[] | null>(null)
+  const loadBookAgain = useCallback(async () => {
+    const token = await getStoredToken()
+    if (!token) {
+      setBookAgain(null)
+      return
+    }
+    try {
+      const doctors = await getBookAgain()
+      setBookAgain(doctors.length > 0 ? doctors : null)
+    } catch {
+      setBookAgain(null) // hide-if-empty on error too (rail is a gift, not a duty)
+    }
+  }, [])
+
   const loadLocal = useCallback(async () => {
     const [r, c] = await Promise.all([getRecentSearches(), getCity()])
     setRecents(r)
@@ -115,11 +135,14 @@ export default function HomeScreen() {
   }, [loadLocal])
 
   // Tab re-focus re-reads city + recents (city changed in Profile makes
-  // Home's footer instantly true — doc 04 live-state law).
+  // Home's footer instantly true — doc 04 live-state law). B6: the rail
+  // re-checks on focus too (a fresh login in Profile paints it without a
+  // cold start).
   useFocusEffect(
     useCallback(() => {
       void loadLocal()
-    }, [loadLocal]),
+      void loadBookAgain()
+    }, [loadLocal, loadBookAgain]),
   )
 
   const applyQuery = useCallback(
@@ -207,6 +230,36 @@ export default function HomeScreen() {
           <TrustStripSkeleton />
         )}
       </View>
+
+      {/* B6 · Book-again rail — logged-in only, hide-if-empty. The last
+          doctors you actually visited, one tap to the booking sheet. */}
+      {bookAgain ? (
+        <>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: c.ink }]}>Book again</Text>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
+            {bookAgain.map((d) => (
+              <DoctorRailCard
+                key={d.id}
+                doctor={{
+                  id: d.id,
+                  name: d.name,
+                  specialization: d.specialization,
+                  city: d.city,
+                  state: d.state,
+                  fees: d.fees,
+                  experience: d.experience,
+                  isEmergency: false,
+                  rating: 0,
+                  ratingCount: 0,
+                }}
+                onPress={() => void router.push({ pathname: '/doctor/[id]', params: { id: d.id } })}
+              />
+            ))}
+          </ScrollView>
+        </>
+      ) : null}
 
       {/* Doctor rail — LIVE cards */}
       <View style={styles.sectionHeader}>
