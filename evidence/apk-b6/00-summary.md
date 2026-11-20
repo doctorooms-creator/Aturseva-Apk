@@ -77,3 +77,17 @@ routes) · app.json v0.3.0.
 - Rate/notifications REAL-data flows need completed visits / reception
   events — E2E verified the honest empty states + guest doorways +
   real API wiring (200s) instead of fabricating data.
+
+## APK link (v0.3.0 — build ae1cfbcb, FINISHED 2026-11-20 18:33 UTC)
+
+**https://expo.dev/artifacts/eas/ky5ngpvVlDRv1wM3mjAqyLuS61qchwOu31xbuwzGCnI.apk**
+
+- Verified: curl chain → signed CDN 200, `content-length 98,941,171` (~95 MB),
+  first 4 bytes `PK\x03\x04` (valid APK/zip).
+- Permanent expo.dev artifact URL; every click redirects to a freshly
+  signed CDN copy — normal and expected.
+- Built from commit `824521d` ("APK-B6 P1 POLISH: notifications center …"),
+  channel `preview`, appIdentifier `app.aturseva.patient`, version 0.3.0.
+- **Fresh-install required:** the old v0.2.0 APK can NOT run this update
+  (new native modules in 0.3.0 — expo-file-system File/Paths, expo-sharing).
+  Install this APK directly, do not attempt an OTA update on 0.2.0.
