@@ -70,8 +70,25 @@ doctor-photo honesty law).
   canceled: `cli.appVersionSource: remote` IGNORES local app.json
   versionCode → vc 1 would have blocked upgrade installs. Fix:
   `autoIncrement: true` added to the preview profile (eas.json) →
-  this and all future preview builds auto-increment. IN_PROGRESS at
-  write time; artifact link lands here when the followup fires.
+  this and all future preview builds auto-increment.
+- **ARTIFACT LINK PENDING (honest status, followup fired 2026-11-20
+  21:20 UTC)**: the sandbox was reset for a FOURTH time right before
+  the followup — `/home/z/.deploy-tokens` (EXPO_TOKEN + VERCEL) was
+  wiped, and `eas-cli build:view febe3a99` requires an authenticated
+  token, so the build status and the permanent
+  `https://expo.dev/artifacts/eas/….apk` link could NOT be verified
+  or fetched this round. GITHUB token survived (embedded in the
+  my-project git remote) → repo re-cloned at `9e7f556`, zero lost
+  commits. Owner action (one time): create a fresh access token at
+  expo.dev → Settings → Access Tokens; the next followup then fetches
+  + verifies (PK magic bytes + size) + commits the link here and in
+  the walkthrough. NOTHING about the build itself was changed by the
+  reset — febe3a99 kept building on EAS infra.
+- **Meanwhile the owner CAN already test B7**: the OTA update (group
+  `4d6aa392…`) is LIVE on the preview branch — the already-installed
+  B6 v0.3.0 APK (link in evidence/apk-b6/01-owner-install-walkthrough.md)
+  pulls hospitals browse + doctor depth on its next load. The
+  walkthrough doc below is written around that path.
 
 ## Gates
 
