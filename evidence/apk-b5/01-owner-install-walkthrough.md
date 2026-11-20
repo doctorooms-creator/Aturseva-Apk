@@ -7,9 +7,13 @@
 EAS Build `10fddb22-491a-4e6d-923f-15c97740245b` — dashboard:
 `https://expo.dev/accounts/aturseva-team/projects/aturseva-app/builds/10fddb22-491a-4e6d-923f-15c97740245b`
 
-Build finish hone pe wahan **Download** button + direct install link milta hai
-(`https://expo.dev/artifacts/eas/...apk`). Ye link expire nahi hota jab tak build
-retained hai — phone pe kholo ya QR scan karo.
+**DIRECT APK DOWNLOAD LINK (build FINISHED — 2026-11-20, 94 MB, versionCode 1 / v0.2.0):**
+
+`https://expo.dev/artifacts/eas/ZKuhbBezvYXQXX_cJLyYrlw4Z4epa6l8rRM_Kwu4jwg.apk`
+
+Ye link permanent hai (jab tak build retained hai) — phone pe kholo ya QR scan
+karo. Link ek signed CDN URL pe redirect hota hai — ye normal hai, download
+apne aap start ho jata hai. Dashboard pe bhi **Download** button available hai.
 
 ## Install (Android phone pe)
 
