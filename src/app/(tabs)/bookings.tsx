@@ -1,7 +1,8 @@
 /**
- * S10 · BOOKINGS (tab 2) — APK-B1 honest guest state.
- * The phone-lookup sheet + booking list arrive with APK-B3 (the booking
- * flow itself). B1 ships the doorway: never a dead tab, never a fake list.
+ * S10 · BOOKINGS (tab 2) — honest guest state.
+ * The phone-lookup sheet + booking list arrive with the booking batch
+ * (APK-B3). Until then this ships the doorway: never a dead tab, never
+ * a fake list. Pure English copy (owner directive).
  */
 
 import { StyleSheet, Text, View } from 'react-native'
@@ -16,13 +17,13 @@ export default function BookingsScreen() {
     <View style={styles.screen}>
       <View style={styles.safeTop} />
       <Text style={styles.title}>Bookings</Text>
-      <Text style={styles.caption}>Aapke appointment — upcoming aur past.</Text>
+      <Text style={styles.caption}>Your appointments — upcoming and past.</Text>
       <View style={styles.emptyWrap}>
         <EmptyState
           icon={CalendarCheck2}
-          title="Abhi koi booking nahi"
-          caption="Booking flow agle build (APK-B3) me live hoga — tab tak Home se doctors dekhein."
-          actions={[{ label: 'Home pe doctor dhoondein', onPress: () => void router.push('/') }]}
+          title="No bookings yet"
+          caption="The booking flow goes live in the next update (APK-B3) — until then, browse doctors from Home."
+          actions={[{ label: 'Find a doctor on Home', onPress: () => void router.push('/') }]}
         />
       </View>
     </View>

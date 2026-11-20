@@ -1,7 +1,7 @@
 /**
  * Offline / degraded banner (doc 09): amber strip, tap = retry. Shows the
  * CACHED last-good underneath (fail-safe defaults law) and the retry one-tap.
- * Copy tone: warm Hinglish, never technical (doc 03 §6).
+ * Copy tone: plain English, never technical (owner directive).
  */
 
 import { Pressable, StyleSheet, Text, View } from 'react-native'
@@ -13,10 +13,10 @@ export function OfflineBanner({ onRetry }: { onRetry: () => void }) {
     <View style={styles.wrap}>
       <WifiOff size={16} color={colors.warn} />
       <Text style={styles.text} numberOfLines={1}>
-        Line me dikkt — cached dikhaya ja raha hai
+        Connection problem — showing saved info
       </Text>
-      <Pressable onPress={onRetry} hitSlop={8} style={styles.retry} accessibilityRole="button" accessibilityLabel="Dobara try karein">
-        <Text style={styles.retryText}>Dobara try</Text>
+      <Pressable onPress={onRetry} hitSlop={8} style={styles.retry} accessibilityRole="button" accessibilityLabel="Try again">
+        <Text style={styles.retryText}>Try again</Text>
       </Pressable>
     </View>
   )

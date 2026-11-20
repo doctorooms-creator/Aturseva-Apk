@@ -3,7 +3,7 @@
  * City ask lives on slide-3's bottom (quiet field → picker sheet, NO
  * location permission — that's P2 near-me). Finish/Skip both write
  * onboarding-done (never repeats). Next button = black pill; last slide
- * reads "Shuru karein".
+ * reads "Get started". Pure English copy (owner directive, APK-B2).
  */
 
 import { useState } from 'react'
@@ -18,18 +18,18 @@ import { ArtBook, ArtSearch, ArtToken } from '@/components/onboarding-art'
 const SLIDES = [
   {
     art: <ArtSearch />,
-    title: 'Doctor dhoondo',
-    caption: 'Bimari ke shabd se — fever, knee pain, sar dard. Seedha sahi specialist.',
+    title: 'Find a doctor',
+    caption: 'Search in your own words — fever, knee pain, headache. Straight to the right specialist.',
   },
   {
     art: <ArtBook />,
-    title: 'Book karo',
-    caption: '3 tap me appointment. Fee pehle dikhti hai — chhupi cost nahi.',
+    title: 'Book in 3 taps',
+    caption: 'See the fee before you book. No hidden costs, ever.',
   },
   {
     art: <ArtToken />,
     title: 'Turn confirmed',
-    caption: 'Token number turant. Live queue ka pata — kab nikalna hai, wahi time.',
+    caption: 'Your token number arrives instantly. Live queue tracking tells you exactly when to leave.',
   },
 ] as const
 
@@ -50,7 +50,7 @@ export default function OnboardingScreen() {
   return (
     <View style={styles.screen}>
       {/* Skip — always visible, always 44px (never unskippable law) */}
-      <Pressable onPress={() => finish(city)} hitSlop={8} style={styles.skip} accessibilityRole="button" accessibilityLabel="Skip karein">
+      <Pressable onPress={() => finish(city)} hitSlop={8} style={styles.skip} accessibilityRole="button" accessibilityLabel="Skip">
         <Text style={styles.skipText}>Skip</Text>
       </Pressable>
 
@@ -71,14 +71,14 @@ export default function OnboardingScreen() {
       {/* City ask — slide 3 bottom, quiet (S2) */}
       <View style={styles.cityBlock}>
         {isLast ? (
-          <Pressable onPress={() => setCitySheetOpen(true)} style={({ pressed }) => [styles.cityField, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Shehar select karein">
-            <Text style={styles.cityFieldText}>{city ?? 'Aapka shehar — select karein'}</Text>
+          <Pressable onPress={() => setCitySheetOpen(true)} style={({ pressed }) => [styles.cityField, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Select your city">
+            <Text style={styles.cityFieldText}>{city ?? 'Your city — select one'}</Text>
           </Pressable>
         ) : null}
       </View>
 
       <PillButton
-        label={isLast ? 'Shuru karein' : 'Next'}
+        label={isLast ? 'Get started' : 'Next'}
         height={56}
         onPress={() => {
           if (isLast) finish(city)

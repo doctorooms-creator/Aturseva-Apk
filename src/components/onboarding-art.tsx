@@ -13,7 +13,7 @@ const TEAL = colors.tealLive
 const W = 220
 const H = 150
 
-/** Slide 1 — "Doctor dhoondo": magnifier over problem words. */
+/** Slide 1 — "Find a doctor": magnifier over problem words. */
 export function ArtSearch() {
   return (
     <Svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
@@ -28,7 +28,7 @@ export function ArtSearch() {
   )
 }
 
-/** Slide 2 — "Book karo": calendar pill + fee coin (fee-upfront law). */
+/** Slide 2 — "Book in 3 taps": calendar pill + fee coin (fee-upfront law). */
 export function ArtBook() {
   return (
     <Svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>

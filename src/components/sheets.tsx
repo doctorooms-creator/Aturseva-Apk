@@ -22,7 +22,7 @@ export function BottomSheet({
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} accessibilityLabel={accessibilityLabel}>
       <View style={styles.scrim}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Sheet band karein" />
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Close sheet" />
         <View style={styles.sheet}>{children}</View>
       </View>
     </Modal>

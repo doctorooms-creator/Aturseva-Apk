@@ -1,7 +1,8 @@
 /**
  * City picker sheet (S2 city ask · Profile change): top-20 cities list,
- * 44px rows, "baad me" honest exit. NO location-permission prompt (P2
- * near-me is a separate decision — doc 06 S2 law).
+ * 44px rows, "choose later" honest exit. NO location-permission prompt
+ * (P2 near-me is a separate decision — doc 06 S2 law). Pure English
+ * copy (owner directive).
  */
 
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native'
@@ -44,10 +45,10 @@ export function CityPickerSheet({
   onPick: (city: string | null) => void
 }) {
   return (
-    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="Shehar chunkne ki sheet">
+    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="City picker">
       <GrabHandle />
-      <Text style={styles.title}>Aapka shehar</Text>
-      <Text style={styles.caption}>Doctor list aur suggestions isi hisaab se honge.</Text>
+      <Text style={styles.title}>Your city</Text>
+      <Text style={styles.caption}>Doctor lists and suggestions adapt to your city.</Text>
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
         {TOP_CITIES.map((city) => (
           <Pressable
@@ -64,7 +65,7 @@ export function CityPickerSheet({
         ))}
       </ScrollView>
       <Pressable style={({ pressed }) => [styles.laterRow, pressed && { opacity: 0.7 }]} onPress={() => onPick(null)} accessibilityRole="button">
-        <Text style={styles.laterText}>Baad me choose karunga</Text>
+        <Text style={styles.laterText}>I will choose later</Text>
       </Pressable>
     </BottomSheet>
   )

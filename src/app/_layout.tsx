@@ -62,6 +62,8 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
+        <Stack.Screen name="search" />
+        <Stack.Screen name="doctor/[id]" />
       </Stack>
     </SafeAreaProvider>
   )

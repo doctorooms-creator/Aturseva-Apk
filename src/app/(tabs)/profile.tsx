@@ -2,6 +2,7 @@
  * PROFILE (tab 3) — P0 guest shell (doc 06 S12-lite).
  * Login/register arrive with APK-B4 (guest-first law). Real now: city
  * (storage-backed, live changes), version, honest guest status.
+ * Pure English copy (owner directive).
  */
 
 import { useCallback, useEffect, useState } from 'react'
@@ -39,13 +40,13 @@ export default function ProfileScreen() {
       <View style={styles.safeTop} />
       <Text style={styles.title}>Profile</Text>
 
-      {/* Guest card — honest: booking bina login chalti hai (guest-first) */}
+      {/* Guest card — honest: booking works without login (guest-first) */}
       <View style={styles.guestCard}>
         <UserRound size={24} color={colors.body} strokeWidth={1.75} />
         <View style={styles.guestCol}>
           <Text style={styles.guestTitle}>Guest</Text>
           <Text style={styles.guestCaption}>
-            Bina account bhi chalega — booking ke liye login nahi chahiye (APK-B3 me flow). Login APK-B4 me aayega.
+            Booking works without an account — no login needed (booking flow lands in APK-B3, sign-in in APK-B4).
           </Text>
         </View>
       </View>
@@ -55,8 +56,8 @@ export default function ProfileScreen() {
       <View style={styles.rows}>
         <Row
           icon={<MapPin size={20} color={colors.body} strokeWidth={2} />}
-          label="Shehar"
-          value={city ?? 'Select karein'}
+          label="City"
+          value={city ?? 'Select'}
           onPress={() => setCitySheetOpen(true)}
         />
         <Row
@@ -69,7 +70,7 @@ export default function ProfileScreen() {
         />
       </View>
 
-      <Text style={styles.versionText}>Aturseva v{version} · APK-B1</Text>
+      <Text style={styles.versionText}>Aturseva v{version} · APK-B2</Text>
       <View style={styles.footerPad} />
 
       <CityPickerSheet
