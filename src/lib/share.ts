@@ -40,3 +40,26 @@ export async function openWhatsApp(text: string): Promise<void> {
     }
   }
 }
+
+/** B3 (S8) — the token share card. Plain text, zero login, deep link to
+ *  the booking (the token page IS the door — same law as the web's /b
+ *  short link). Every line optional-safe; the token number leads. */
+export function buildTokenShareCard(t: {
+  tokenNumber: string
+  patientName: string
+  doctorName: string
+  hospitalName: string
+  dateLabel: string
+  timeSlot: string
+  bookingId: string
+  webBase?: string
+}): string {
+  const base = t.webBase ?? 'https://doctorooms-hms.vercel.app'
+  const lines: string[] = []
+  if (t.tokenNumber) lines.push(`Token ${t.tokenNumber}`)
+  if (t.doctorName) lines.push(`${t.doctorName}${t.hospitalName ? ` · ${t.hospitalName}` : ''}`)
+  lines.push(`${t.dateLabel}${t.timeSlot ? ` · ${t.timeSlot}` : ''}`)
+  if (t.patientName) lines.push(t.patientName)
+  lines.push(`View on Aturseva: ${base}/b/${t.bookingId}`)
+  return lines.join('\n')
+}

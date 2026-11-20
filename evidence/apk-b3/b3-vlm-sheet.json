@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit — Slot Picker Bottom Sheet (390px)**\n\n| # | Check | Result | Notes |\n|---|-------|--------|-------|\n| 1 | Pure English only | **PASS** | \"Doctor\", \"Today/Tomorrow\", \"MORNING/AFTERNOON/EVENING\", \"Confirm slot\" — all English; ₹ symbol is currency, acceptable |\n| 2 | Slot chips grouped & readable | **PASS** | Morning (08:00–11:45), Afternoon (12:00–15:45), Evening (16:00–16:45); booked slots dimmed w/ strikethrough, open slots (15:00–15:45, 16:xx) full contrast — clear distinction |\n| 3 | Fee + Confirm footer intact | **PASS** | \"₹300 · pay at the clinic\" above full-width grey \"Confirm slot\" button; both visible and not clipped |\n| 4 | Layout defects | **PASS (minor)** | Date chip row overflows right edge (4th/5th chip clipped) — acceptable if horizontally scrollable; otherwise flag. No overlap, spacing consistent, 4-col grid aligned |\n\n**Overall: PASS** — only note: ensure the date chip row scrolls horizontally so 11/24+ is reachable.",
+        "reasoning_content": "Audit screenshot: date chips partially cut (11/24?), fee footer present. Mostly PASS. Note: slots appear grayed (disabled) — readable? They're visible but low contrast; likely booked/disabled state. Check defects: date chips overflow cut off right — could be scrollable, acceptable. Fee footer intact with ₹300 and Confirm slot. Terse checklist.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795167011,
+  "id": "202611201730030bc96528633841e5",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611201730030bc96528633841e5",
+  "usage": {
+    "completion_tokens": 350,
+    "completion_tokens_details": {
+      "reasoning_tokens": 75
+    },
+    "prompt_tokens": 516,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 866
+  }
+}

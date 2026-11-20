@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```html\n<html><head><meta charset=\"utf-8\"><title>Audit</title><style>body{font-family:-apple-system,sans-serif;max-width:420px;margin:0 auto;padding:16px;background:#fff;color:#111}</style></head><body>\n<h2>Audit — 390px queue tracker</h2>\n<ol>\n<li>Pure English only — PASS</li>\n<li>Status block is visual protagonist — PASS (tinted card, bold headline, status dot dominate)</li>\n<li>Layout defects — PASS (no overlaps/clipping; hierarchy clean)</li>\n</ol>\n<p><b>Verdict: 3/3 PASS</b> — usable as-is. Minor: empty lower whitespace could host a step-progress skeleton once live.</p>\n</body></html>\n```",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795167003,
+  "id": "202611201729599abb6ddd9ca54929",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611201729599abb6ddd9ca54929",
+  "usage": {
+    "completion_tokens": 174,
+    "completion_tokens_details": {
+      "reasoning_tokens": 173
+    },
+    "prompt_tokens": 501,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 675
+  }
+}

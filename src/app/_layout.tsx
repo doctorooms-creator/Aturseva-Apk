@@ -64,6 +64,9 @@ export default function RootLayout() {
         <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
         <Stack.Screen name="search" />
         <Stack.Screen name="doctor/[id]" />
+        <Stack.Screen name="doctor/[id]/book" />
+        <Stack.Screen name="booking/[id]" />
+        <Stack.Screen name="booking/[id]/queue" options={{ animation: 'slide_from_bottom' }} />
       </Stack>
     </SafeAreaProvider>
   )

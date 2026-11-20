@@ -23,27 +23,48 @@ export type ApiErrorKind = 'timeout' | 'network' | 'server' | 'parse'
 export class ApiError extends Error {
   kind: ApiErrorKind
   status?: number
-  constructor(kind: ApiErrorKind, message: string, status?: number) {
+  /** Parsed body of honest server answers (400/409 detail), when JSON. */
+  data?: Record<string, unknown>
+  constructor(kind: ApiErrorKind, message: string, status?: number, data?: Record<string, unknown>) {
     super(message)
     this.name = 'ApiError'
     this.kind = kind
     this.status = status
+    this.data = data
   }
 }
 
-async function fetchJson<T>(path: string): Promise<T> {
+async function fetchJson<T>(
+  path: string,
+  init: { method?: 'GET' | 'POST' | 'DELETE'; body?: unknown } = {},
+): Promise<T> {
   const url = `${API_BASE}${path}`
   const attempt = async (): Promise<T> => {
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
     try {
       const res = await fetch(url, {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
+        method: init.method,
+        headers: {
+          Accept: 'application/json',
+          ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+        },
+        ...(init.body ? { body: JSON.stringify(init.body) } : {}),
         signal: controller.signal,
       })
       if (!res.ok) {
-        throw new ApiError('server', `Server declined the request (HTTP ${res.status})`, res.status)
+        // Honest server answers carry their own message when present.
+        let message = `Server declined the request (HTTP ${res.status})`
+        let data: Record<string, unknown> | undefined
+        try {
+          const parsed = (await res.json()) as Record<string, unknown>
+          if (typeof parsed?.error === 'string' && parsed.error) message = parsed.error
+          else if (typeof parsed?.message === 'string' && parsed.message) message = parsed.message
+          if (parsed && typeof parsed === 'object') data = parsed
+        } catch {
+          /* non-JSON error body — keep the generic message */
+        }
+        throw new ApiError('server', message, res.status, data)
       }
       try {
         return (await res.json()) as T
@@ -249,4 +270,250 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
     totalPatients: d.totalPatients ?? 0,
     totalAppointments: d.totalAppointments ?? 0,
   }
+}
+
+// ————— B3 · THE GOLDEN JOURNEY (doc 08 #3–#7, #13 guest path) —————
+
+/** Schedule + identity for the slot sheet (the real Doctor-table id
+ *  lives here — /api/doctors/[userId] serves the User id). */
+export interface DoctorScheduleInfo {
+  /** Doctor-table id — the value slots/book endpoints expect. */
+  doctorId: string
+  dailyLimit: number
+  fees: number
+  days: { day: string; start: string; end: string }[]
+  holidays: string[]
+}
+
+export async function getDoctorSchedule(userId: string): Promise<DoctorScheduleInfo> {
+  const raw = await fetchJson<{
+    doctorId: string
+    fees?: number | null
+    dailyLimit?: number | null
+    schedules?: { day: string; startTime: string; endTime: string }[] | null
+    holidays?: { date: string }[] | null
+  }>(`/api/doctors/${encodeURIComponent(userId)}/schedule`)
+  return {
+    doctorId: raw.doctorId,
+    dailyLimit: raw.dailyLimit ?? 0,
+    fees: raw.fees ?? 0,
+    days: (raw.schedules ?? []).map((s) => ({ day: s.day, start: s.startTime, end: s.endTime })),
+    holidays: (raw.holidays ?? []).map((h) => h.date.slice(0, 10)),
+  }
+}
+
+export interface SlotInventory {
+  doctorId: string
+  date: string
+  dayName: string
+  available: boolean
+  /** Present when available === false (holiday / no schedule / limit). */
+  reason?: string
+  isHoliday: boolean
+  hasSchedule: boolean
+  startTime: string
+  endTime: string
+  slotDuration: number
+  opdCount: number
+  opdLimit: number
+  nextFreeSlot: string | null
+  slots: { time: string; status: 'free' | 'taken' | 'past' }[]
+}
+
+export async function getSlots(doctorId: string, date: string): Promise<SlotInventory> {
+  const raw = await fetchJson<{
+    doctorId: string
+    date: string
+    dayName: string
+    available: boolean
+    reason?: string
+    isHoliday: boolean
+    hasSchedule: boolean
+    startTime: string
+    endTime: string
+    slotDuration: number
+    opdCount: number
+    opdLimit: number
+    nextFreeSlot?: string | null
+    slots: { time: string; status: 'free' | 'taken' | 'past' }[]
+  }>(`/api/public/slots?doctorId=${encodeURIComponent(doctorId)}&date=${encodeURIComponent(date)}`)
+  return {
+    doctorId: raw.doctorId,
+    date: raw.date,
+    dayName: raw.dayName,
+    available: raw.available,
+    reason: raw.reason,
+    isHoliday: raw.isHoliday,
+    hasSchedule: raw.hasSchedule,
+    startTime: raw.startTime,
+    endTime: raw.endTime,
+    slotDuration: raw.slotDuration,
+    opdCount: raw.opdCount,
+    opdLimit: raw.opdLimit,
+    nextFreeSlot: raw.nextFreeSlot ?? null,
+    slots: raw.slots.map((s) => ({ time: s.time, status: s.status })),
+  }
+}
+
+export interface PlacedBooking {
+  id: string
+  appointmentNo: string
+  status: string
+  patientName: string
+  timeSlot: string
+  bookingDate: string
+  bookingMode: string
+  doctorName: string
+  fees: number
+}
+
+/** POST /api/public/book — throws ApiError(kind:'server') with honest
+ *  .message + .data (409 duplicate carries existingBookingId). */
+export async function postPublicBooking(body: {
+  doctorId: string
+  bookingDate: string
+  timeSlot: string
+  bookingMode: 'InPerson'
+  disease: string
+  patientName: string
+  mobileNo: string
+  city?: string
+  src?: 'app'
+}): Promise<PlacedBooking> {
+  const raw = await fetchJson<{
+    success: boolean
+    booking: {
+      id: string
+      appointmentNo: string
+      status: string
+      patientName: string
+      timeSlot: string
+      bookingDate: string
+      bookingMode: string
+    }
+    doctor: { name: string; specialization: string }
+    message: string
+  }>('/api/public/book', { method: 'POST', body: { ...body, src: 'app' } })
+  return {
+    id: raw.booking.id,
+    appointmentNo: raw.booking.appointmentNo,
+    status: raw.booking.status,
+    patientName: raw.booking.patientName,
+    timeSlot: raw.booking.timeSlot,
+    bookingDate: raw.booking.bookingDate,
+    bookingMode: raw.booking.bookingMode,
+    doctorName: raw.doctor?.name ?? '',
+    fees: 0,
+  }
+}
+
+/** Live token + queue state (S8/S9 — fresh, never cached). */
+export interface TokenState {
+  bookingId: string
+  tokenNumber: string
+  tokenOrder: number
+  patientName: string
+  status: string
+  date: string
+  queuePosition: number
+  eta: { state: 'live' | 'paused' | 'not-started' | 'next' | 'none'; low: number | null; high: number | null } | null
+  leavePing: { offered: boolean; optedIn: boolean; sent: boolean; sentAt?: string | null }
+  doctorName: string
+  /** Doctor's user id (the /doctor/[id] route) — Book again deep link. */
+  doctorUserId: string
+  specialization: string
+  hospitalName: string
+  hospitalAddress: string
+  hospitalCity: string
+  fees: number
+  timeSlot: string
+  disease: string
+}
+
+export async function getBookingToken(bookingId: string): Promise<TokenState> {
+  const raw = await fetchJson<{
+    token: {
+      bookingId: string
+      tokenNumber: string
+      tokenOrder: number
+      patientName: string
+      disease: string
+      date: string
+      status: string
+      timeSlot?: string
+      fees?: number
+      queuePosition: number
+      eta: { state: 'live' | 'paused' | 'not-started' | 'next' | 'none'; low: number | null; high: number | null } | null
+      leavePing: { offered: boolean; optedIn: boolean; sent: boolean; sentAt?: string | null }
+      department: { name: string } | null
+      doctor: { name: string; specialization: string; userId?: string; lat?: number; longi?: number } | null
+      hospital: { name: string; address: string; city: string; contactNo: string } | null
+    }
+  }>(`/api/public/booking/${encodeURIComponent(bookingId)}/token`)
+  const t = raw.token
+  return {
+    bookingId: t.bookingId,
+    tokenNumber: t.tokenNumber,
+    tokenOrder: t.tokenOrder,
+    patientName: t.patientName,
+    status: t.status,
+    date: t.date,
+    queuePosition: t.queuePosition,
+    eta: t.eta,
+    leavePing: t.leavePing,
+    doctorName: t.doctor?.name ?? '',
+    doctorUserId: t.doctor?.userId ?? '',
+    specialization: t.doctor?.specialization ?? '',
+    hospitalName: t.hospital?.name ?? '',
+    hospitalAddress: t.hospital?.address ?? '',
+    hospitalCity: t.hospital?.city ?? '',
+    fees: typeof t.fees === 'number' ? t.fees : 0,
+    timeSlot: typeof t.timeSlot === 'string' ? t.timeSlot : '',
+    disease: t.disease,
+  }
+}
+
+/** Guest bookings-by-phone (S10 — facts only). */
+export interface GuestBookingRow {
+  id: string
+  appointmentNo: string
+  status: string
+  tokenNumber: string
+  date: string
+  timeSlot: string
+  bookingMode: string
+  fees: number
+  city: string
+  doctorName: string
+  specialization: string
+}
+
+export async function lookupBookings(mobile: string): Promise<GuestBookingRow[]> {
+  const raw = await fetchJson<{
+    bookings: {
+      id: string
+      appointmentNo: string
+      status: string
+      tokenNumber: string
+      tokenOrder: number
+      patientName: string
+      date: string
+      timeSlot: string
+      bookingMode: string
+      fees: number
+      city: string
+      doctorName: string
+      specialization: string
+    }[]
+    message?: string
+  }>(`/api/public/booking/lookup?mobile=${encodeURIComponent(mobile)}`)
+  return raw.bookings
+}
+
+/** Guest cancel — mobile is the ownership check (S11). */
+export async function cancelPublicBooking(bookingId: string, mobile: string, reason?: string): Promise<void> {
+  await fetchJson<{ success: boolean }>(`/api/public/booking/${encodeURIComponent(bookingId)}/cancel`, {
+    method: 'POST',
+    body: { mobile, ...(reason ? { reason } : {}) },
+  })
 }

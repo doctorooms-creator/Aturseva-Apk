@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "FAIL — \"Cancel booking\" button is missing entirely; screen ends with \"Updated 9:29 am\" and nothing is clipped at the bottom edge.",
+        "reasoning_content": "No Cancel booking button visible at all — it's missing. FAIL.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795166959,
+  "id": "20261120172917e7407a5313024bb2",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261120172917e7407a5313024bb2",
+  "usage": {
+    "completion_tokens": 47,
+    "completion_tokens_details": {
+      "reasoning_tokens": 14
+    },
+    "prompt_tokens": 501,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 548
+  }
+}

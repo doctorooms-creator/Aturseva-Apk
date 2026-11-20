@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit Checklist — Aturseva Booking Token Screen (390px)**\n\n1) **Pure English text** — **PASS**\n   - All visible copy is English: \"Booked\", \"Request sent\", \"Token being assigned\", \"Reception confirms your request…\", \"Track queue\", \"Share token\", \"Book again with this doctor\". No Hinglish/Hindi found.\n\n2) **Token/booking status as visual protagonist** — **PASS**\n   - Hero card with status dot (\"Request sent\"), large bold \"Token being assigned\", explanatory subtext. Clearly the dominant element. Step tracker (Booked → Confirmed → Completed) reinforces it.\n\n3) **Facts readable & aligned** — **PASS**\n   - Doctor (Dr. Rajesh), Clinic, Date (Tomorrow), Time (09:15), Fee (₹300 · pay at clinic), City (Gandhinagar), Patient (E2E Tester), Reason — clean two-column label/value rows, right-aligned values, high contrast.\n\n4) **Layout defects** — **FAIL**\n   - \"Cancel Booking\" button at the bottom is **cut off / clipped** by the viewport — its top half is visible but the button is truncated, suggesting content overflows without adequate scroll space or bottom padding.\n\n**Summary:** 3 PASS / 1 FAIL. Fix: reserve safe bottom padding or ensure the Cancel Booking CTA is fully scrollable into view.",
+        "reasoning_content": "Cancel Booking cut off at bottom.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795166942,
+  "id": "202611201728558c4d1ed2f69346a9",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611201728558c4d1ed2f69346a9",
+  "usage": {
+    "completion_tokens": 303,
+    "completion_tokens_details": {
+      "reasoning_tokens": 7
+    },
+    "prompt_tokens": 572,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 875
+  }
+}

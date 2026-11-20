@@ -1,13 +1,13 @@
 /**
- * S5 · DOCTOR PROFILE (doc 06 S5) — APK-B2.
+ * S5 · DOCTOR PROFILE (doc 06 S5) — APK-B2 (+B3 wiring).
  *
  * Layout: back bar → identity block (avatar/photo, name, spec, Reg
  * chip, experience, education) → FEE block (big, tabular, first-visit
  * caption — honesty through scale) → 7-day timing table → ratings
  * summary (only when real) → quiet stats → practices-at →
  * description → share row → sticky bottom CTA "Book appointment — ₹300".
- * The CTA is an honest doorway in B2: the booking flow itself is
- * APK-B3 — the sheet says exactly that (never a fake button).
+ * B3: the CTA opens the S6 slot sheet (live inventory); Confirm slot
+ * pushes S7 (the confirm step) — the golden journey starts here.
  * Data: /api/doctors/[id] (doc 08 #2, SWR 10min via useQuery cache).
  */
 
@@ -22,8 +22,8 @@ import { Chip, PillButton } from '@/components/press'
 import { Avatar } from '@/components/avatar'
 import { SkeletonBlock } from '@/components/skeleton'
 import { OfflineBanner } from '@/components/offline-banner'
-import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { buildShareCard, openWhatsApp } from '@/lib/share'
+import { SlotSheet } from '@/components/booking/slot-sheet'
 
 const WEEK_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -222,7 +222,8 @@ export default function DoctorProfileScreen() {
         ) : null}
       </ScrollView>
 
-      {/* Sticky bottom CTA — fee in the button, safe-area padded (S5 law) */}
+      {/* Sticky bottom CTA — fee in the button, safe-area padded (S5 law).
+          B3: opens the S6 slot sheet (the golden journey's first step). */}
       {d ? (
         <View style={styles.ctaBar}>
           <PillButton
@@ -233,18 +234,21 @@ export default function DoctorProfileScreen() {
         </View>
       ) : null}
 
-      {/* Honest B3 doorway sheet — the booking flow is next batch */}
-      <BottomSheet visible={bookSheetOpen} onClose={() => setBookSheetOpen(false)} accessibilityLabel="Booking availability">
-        <GrabHandle />
-        <Text style={styles.sheetTitle}>Booking goes live in the next update</Text>
-        <Text style={styles.sheetBody}>
-          Slot booking, confirmation and your live token arrive in APK-B3 — the next build. Today:
-          full profiles, clinic hours and fees are live. WhatsApp share works right now.
-        </Text>
-        <View style={styles.sheetAction}>
-          <Chip label="Got it" onPress={() => setBookSheetOpen(false)} />
-        </View>
-      </BottomSheet>
+      {/* S6 slot sheet — live inventory over the profile */}
+      {d ? (
+        <SlotSheet
+          visible={bookSheetOpen}
+          onClose={() => setBookSheetOpen(false)}
+          doctor={{ userId: doctorId, name: d.name, specialization: d.specialization, fees: d.fees }}
+          onConfirm={(date, time) => {
+            setBookSheetOpen(false)
+            void router.push({
+              pathname: `/doctor/${doctorId}/book`,
+              params: { date, time, name: d.name, spec: d.specialization, fee: String(d.fees) },
+            })
+          }}
+        />
+      ) : null}
     </View>
   )
 }
@@ -481,21 +485,6 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.hairline,
     backgroundColor: colors.canvas,
-  },
-  sheetTitle: {
-    ...typo.title,
-    color: colors.ink,
-    paddingHorizontal: space.s4,
-  },
-  sheetBody: {
-    ...typo.body,
-    color: colors.body,
-    marginTop: space.s8,
-    marginBottom: space.s12,
-    paddingHorizontal: space.s4,
-  },
-  sheetAction: {
-    alignItems: 'center',
   },
   errorWrap: {
     padding: space.s24,

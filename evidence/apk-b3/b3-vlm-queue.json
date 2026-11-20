@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Mobile App Audit — 390px**\n\n1. **Pure English only?** PASS — all copy is English.\n\n2. **Position/status block as visual protagonist?** FAIL — no queue position exists; the large \"This booking was cancelled\" card is dominant, but there is no position/status tracker at all (mismatch with \"live queue tracker\" purpose).\n\n3. **Layout defects (clipped/overlap)?**\n   - PASS — no clipping or overlap; header, cards, and footer timestamp/Refresh button are cleanly separated.\n\n**Extra defects:**\n- FAIL — header title \"Your turn\" contradicts the cancelled state (wrong status copy).\n- FAIL — large empty dead space below Refresh button (~450px).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795166989,
+  "id": "202611201729449b8222a484e24915",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611201729449b8222a484e24915",
+  "usage": {
+    "completion_tokens": 150,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 504,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 654
+  }
+}

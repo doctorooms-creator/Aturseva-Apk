@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "FAIL — No \"Cancel booking\" button exists on this screen; only \"Share token\" and \"Book again with this doctor\" appear, both fully visible.",
+        "reasoning_content": "There is no \"Cancel booking\" button visible; screen shows Share token and Book again. So FAIL.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795166970,
+  "id": "20261120172927a2fbca0b44164a2a",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261120172927a2fbca0b44164a2a",
+  "usage": {
+    "completion_tokens": 55,
+    "completion_tokens_details": {
+      "reasoning_tokens": 21
+    },
+    "prompt_tokens": 482,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 537
+  }
+}
