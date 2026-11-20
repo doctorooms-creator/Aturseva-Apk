@@ -1,14 +1,21 @@
 /**
- * S5 · DOCTOR PROFILE (doc 06 S5) — APK-B2 (+B3 wiring).
+ * S5 · DOCTOR PROFILE (doc 06 S5) — APK-B2 (+B3 wiring, +B7-P2 depth).
  *
  * Layout: back bar → identity block (avatar/photo, name, spec, Reg
  * chip, experience, education) → FEE block (big, tabular, first-visit
  * caption — honesty through scale) → 7-day timing table → ratings
- * summary (only when real) → quiet stats → practices-at →
- * description → share row → sticky bottom CTA "Book appointment — ₹300".
- * B3: the CTA opens the S6 slot sheet (live inventory); Confirm slot
- * pushes S7 (the confirm step) — the golden journey starts here.
- * Data: /api/doctors/[id] (doc 08 #2, SWR 10min via useQuery cache).
+ * summary + sub-rating texture (only when real) → quiet stats →
+ * practices-at → description → health tips (published posts —
+ * hide-if-empty ABSOLUTE) → share row → sticky bottom CTA "Book
+ * appointment — ₹300". B3: the CTA opens the S6 slot sheet (live
+ * inventory); Confirm slot pushes S7 (the confirm step) — the golden
+ * journey starts here.
+ * Data: /api/doctors/[id] (doc 08 #2, SWR 10min via useQuery cache)
+ * + B7-P2 secondary zones: /api/public/doctor/[id]/ratings (consultation/
+ * wait/staff texture — the OUTPUT side of the B6 rate flow) and
+ * /api/public/doctor/[id]/posts (published posts → PostSheet reader
+ * via /api/blog/[permalink]). Secondary-zone failures NEVER break the
+ * profile — the zones simply hide (hide-if-empty ABSOLUTE).
  */
 
 import { useState } from 'react'
@@ -17,7 +24,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChevronLeft, BadgeCheck, Star } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
-import { getDoctor, type ScheduleRow } from '@/lib/api'
+import { getDoctor, getDoctorPosts, getDoctorRatings, type DoctorPost, type ScheduleRow } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { Chip, PillButton } from '@/components/press'
 import { Avatar } from '@/components/avatar'
@@ -25,6 +32,7 @@ import { SkeletonBlock } from '@/components/skeleton'
 import { OfflineBanner } from '@/components/offline-banner'
 import { buildShareCard, openWhatsApp } from '@/lib/share'
 import { SlotSheet } from '@/components/booking/slot-sheet'
+import { DoctorPostsZone, PostSheet, RatingTextureRows } from '@/components/doctor-depth'
 
 const WEEK_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -35,6 +43,7 @@ export default function DoctorProfileScreen() {
   const doctorId = typeof id === 'string' ? id : ''
 
   const [bookSheetOpen, setBookSheetOpen] = useState(false)
+  const [openPost, setOpenPost] = useState<DoctorPost | null>(null)
 
   // SWR 10-min (spec S5). Cache survives back-and-forth navigation.
   const q = useQuery(
@@ -43,6 +52,19 @@ export default function DoctorProfileScreen() {
     { staleTime: 600_000 },
   )
   const d = q.data
+
+  // B7-P2 secondary zones (parallel, cached 10 min, CDN-cached 60s
+  // server-side). Errors never surface a banner — zones hide.
+  const rq = useQuery(
+    doctorId ? `doctor-ratings:${doctorId}` : 'doctor-ratings:none',
+    () => getDoctorRatings(doctorId),
+    { staleTime: 600_000 },
+  )
+  const pq = useQuery(
+    doctorId ? `doctor-posts:${doctorId}` : 'doctor-posts:none',
+    () => getDoctorPosts(doctorId),
+    { staleTime: 600_000 },
+  )
 
   if (!doctorId) {
     return (
@@ -158,15 +180,19 @@ export default function DoctorProfileScreen() {
               })}
             </View>
 
-            {/* Ratings summary — only when real (honesty law) */}
+            {/* Ratings summary + sub-rating texture — only when real
+                (honesty law; unrated dimensions never render) */}
             {d.ratingCount > 0 ? (
               <>
                 <Text style={[styles.sectionTitle, { color: c.ink }]}>Ratings</Text>
                 <View style={[styles.ratingCard, { borderColor: c.hairline }]}>
-                  <Star size={16} color={c.ink} strokeWidth={2.2} fill={c.ink} />
-                  <Text style={[styles.ratingText, { color: c.ink }]}>
-                    {d.rating.toFixed(1)} · {d.ratingCount} {d.ratingCount === 1 ? 'review' : 'reviews'}
-                  </Text>
+                  <View style={styles.ratingHeadRow}>
+                    <Star size={16} color={c.ink} strokeWidth={2.2} fill={c.ink} />
+                    <Text style={[styles.ratingText, { color: c.ink }]}>
+                      {d.rating.toFixed(1)} · {d.ratingCount} {d.ratingCount === 1 ? 'review' : 'reviews'}
+                    </Text>
+                  </View>
+                  {rq.data ? <RatingTextureRows texture={rq.data} /> : null}
                 </View>
               </>
             ) : null}
@@ -205,6 +231,10 @@ export default function DoctorProfileScreen() {
               </>
             ) : null}
 
+            {/* Health tips — the doctor's published posts (hide-if-empty
+                ABSOLUTE: guest/error/empty renders NOTHING) */}
+            <DoctorPostsZone posts={pq.data ?? []} onOpen={(p) => setOpenPost(p)} />
+
             {/* Share row — WhatsApp text card, zero login */}
             <View style={styles.shareRow}>
               <PillButton
@@ -239,6 +269,9 @@ export default function DoctorProfileScreen() {
           />
         </View>
       ) : null}
+
+      {/* B7-P2 · Post reader sheet — the task never leaves the screen */}
+      <PostSheet post={openPost} onClose={() => setOpenPost(null)} />
 
       {/* S6 slot sheet — live inventory over the profile */}
       {d ? (
@@ -410,12 +443,14 @@ const styles = StyleSheet.create({
   },
   ratingCard: {
     marginHorizontal: space.s16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.s8,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
     padding: space.s16,
+  },
+  ratingHeadRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.s8,
   },
   ratingText: {
     ...typo.bodyStrong,

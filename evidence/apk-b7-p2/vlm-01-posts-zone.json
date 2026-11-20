@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit — Doctor profile: Health tips section**\n\n1) **Card language consistency** — Yes. The Health tips section uses the same ~16px horizontal margins, rounded-corner bordered card (same radius and hairline border), and bold left-aligned section heading (\"Health tips\") matching \"Clinic hours\" and \"Practices at.\" Internal typography is consistent: bold ink title, muted gray meta line — same hierarchy as other cards.\n\n2) **Post rows clarity** — Good. Each row has: rounded cover thumbnail (left), bold title, and a fully labeled meta line \"Blog · 1 min read · 15 Nov\" with dot separators, plus a right-aligned chevron (›) affordance. No unlabeled bare numbers. Minor note: the \"0 visits · 0 patients on Aturseva\" line above is contextual, not part of this section, and it is labeled — acceptable, though \"0 visits / 0 patients\" reads as low-social-proof for a new profile (content concern, not a UI defect).\n\n3) **Truncation / overlap / alignment** — No truncation or overlap. Titles wrap cleanly to two lines; thumbnails are consistently sized and vertically aligned with the title block; chevrons are vertically centered and right-aligned consistently across both rows.\n\n4) **Tone** — Calm and professional: white canvas, ink-black headings/titles, muted gray secondary text, no alarming colors; the black \"Book appointment — ₹300\" CTA anchors the page without disrupting the tone.\n\n**VERDICT: PASS** — Health tips section is visually consistent with the profile's card system, rows are fully labeled and well-aligned, with no truncation or overlap.",
+        "reasoning_content": "Check card consistency, rows fine, note \"0 visits · 0 patients\" is outside Health tips but bare numbers labeled—fine. Health tips card matches margins and rounded border. No issues. Pass.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795203742,
+  "id": "2026112103421455ca533580444722",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112103421455ca533580444722",
+  "usage": {
+    "completion_tokens": 390,
+    "completion_tokens_details": {
+      "reasoning_tokens": 41
+    },
+    "prompt_tokens": 4116,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4506
+  }
+}

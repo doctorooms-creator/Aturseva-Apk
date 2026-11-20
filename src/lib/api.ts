@@ -1057,3 +1057,121 @@ export async function getDepartmentDoctors(
     ratingCount: d.totalRatings ?? 0,
   }))
 }
+
+// ————— B7-P2 · Doctor trust depth — public read-only wrappers —————
+
+/** Sub-rating texture (the OUTPUT side of the B6 rate flow): averages
+ *  the server computes ONLY over visits where that dimension was
+ *  actually rated. All zeros = "not rated yet" — rows hide (honesty
+ *  law). ratedCount = total rating rows for this doctor. */
+export interface DoctorRatingTexture {
+  consultation: number
+  waitTime: number
+  staff: number
+  ratedCount: number
+}
+
+export async function getDoctorRatings(id: string): Promise<DoctorRatingTexture> {
+  const raw = await fetchJson<{
+    consultation: number | null
+    waitTime: number | null
+    staff: number | null
+    ratedCount: number | null
+  }>(`/api/public/doctor/${encodeURIComponent(id)}/ratings`)
+  return {
+    consultation: raw.consultation ?? 0,
+    waitTime: raw.waitTime ?? 0,
+    staff: raw.staff ?? 0,
+    ratedCount: raw.ratedCount ?? 0,
+  }
+}
+
+/** Published posts by the doctor (the server fail-safes to
+ *  { posts: [] } → the zone hides entirely — hide-if-empty ABSOLUTE).
+ *  Meta only; the reader fetches the body by permalink (getBlogPost). */
+export interface DoctorPost {
+  id: string
+  title: string
+  permalink: string
+  type: string
+  createdAt: string
+  readMinutes: number
+  /** Real http(s) cover image or null (honesty gate: no broken-image
+   *  chrome — same law as the doctor photo). */
+  image: string | null
+}
+
+export async function getDoctorPosts(id: string): Promise<DoctorPost[]> {
+  const raw = await fetchJson<{
+    posts: {
+      id: string
+      title: string | null
+      permalink: string | null
+      type: string | null
+      createdAt: string | null
+      readMinutes: number | null
+      blogImg: string | null
+    }[]
+  }>(`/api/public/doctor/${encodeURIComponent(id)}/posts`)
+  return (raw.posts ?? [])
+    .filter((p) => Boolean(p.permalink))
+    .map((p) => ({
+      id: p.id,
+      title: p.title ?? '',
+      permalink: p.permalink ?? '',
+      type: p.type ?? '',
+      createdAt: p.createdAt ?? '',
+      readMinutes: p.readMinutes ?? 1,
+      image: p.blogImg && /^https?:\/\//.test(p.blogImg) ? p.blogImg : null,
+    }))
+}
+
+/** Full published post by permalink (the reader's body). content
+ *  arrives sanitized HTML — this adapter strips it to paragraphs of
+ *  PLAIN TEXT (the app renders text, never web markup). */
+export interface BlogPostDetail {
+  title: string
+  authorName: string
+  type: string
+  createdAt: string
+  text: string
+}
+
+export async function getBlogPost(permalink: string): Promise<BlogPostDetail> {
+  const raw = await fetchJson<{
+    post: {
+      title: string | null
+      content: string | null
+      type: string | null
+      createdAt: string | null
+      author: { name: string | null } | null
+    }
+  }>(`/api/blog/${encodeURIComponent(permalink)}`)
+  const p = raw.post
+  return {
+    title: p.title ?? '',
+    authorName: p.author?.name ?? '',
+    type: p.type ?? '',
+    createdAt: p.createdAt ?? '',
+    text: htmlToText(p.content ?? ''),
+  }
+}
+
+/** Tag-strip → entity-decode → paragraph collapse. Deterministic and
+ *  cheap (mirrors the server's readMinutes math). */
+function htmlToText(html: string): string {
+  return html
+    .replace(/<\s*br\s*\/?\s*>/gi, '\n')
+    .replace(/<\/\s*(p|div|h[1-6]|li|blockquote)\s*>/gi, '\n\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;|&apos;/gi, "'")
+    .replace(/&[a-z#0-9]+;/gi, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}

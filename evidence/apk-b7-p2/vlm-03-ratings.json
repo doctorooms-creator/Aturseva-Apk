@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit — Ratings card (Dr. Varun Malik, 390px viewport)**\n\n1) **Visual consistency** — Yes. The Ratings card uses the same left/right margins (~16px), light border, and rounded corners as the Clinic hours card. Typography (bold section header \"Ratings\", card body text) matches the page's system. One minor nit: Clinic hours uses a filled light-gray surface while Ratings uses white with border — slightly different treatment, but not jarring.\n\n2) **Rating summary clarity** — Good. The ★ icon + \"4.0 · 1 review\" reads unambiguously as a summary line. Icon and text are vertically aligned; bold weight gives appropriate emphasis. Note the screenshot uses a middot (\"4.0 · 1 review\") rather than the hyphen described in the spec — acceptable, arguably cleaner, but verify which separator is intended.\n\n3) **Absence of sub-scores** — Clean. The card contains only the summary row with no dangling divider or awkward empty space; padding looks symmetric. The \"1 visits · 0 patients on Aturseva\" line below is a separate context line, not an orphaned sub-score, so it doesn't read as a missing-row artifact. Honest rendering, and it doesn't look broken.\n\n4) **Overlap/misalignment** — None found. Star icon baseline aligns with text; card doesn't collide with the footer caption or the \"Practices at\" section. The partially visible \"Practices at\" card at the bottom edge is normal scroll truncation, not a defect. CTA bar doesn't overlap the ratings content.\n\n5) **Tone** — Calm. Neutral grays, no alarm styling on the single-review state, no urgency cues or clutter.\n\n**VERDICT: PASS** — Ratings card is consistent, honest (no fabricated sub-scores), well-aligned, and calm.",
+        "reasoning_content": "Audit the screenshot.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795203777,
+  "id": "20261121034250f72201377d224714",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121034250f72201377d224714",
+  "usage": {
+    "completion_tokens": 398,
+    "completion_tokens_details": {
+      "reasoning_tokens": 4
+    },
+    "prompt_tokens": 4162,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4560
+  }
+}
