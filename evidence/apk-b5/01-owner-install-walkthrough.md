@@ -1,6 +1,8 @@
 # APK-B5 — Owner Android install walkthrough (Hinglish, owner-only doc)
 
 > Ye doc sirf owner ke liye hai — app ke andar ki copy pure English hai (B2+ law).
+> HISTORY NOTE (2026-11-20): ye B5/v0.2.0 walkthrough ab history hai —
+> B6/v0.3.0 ke liye `../apk-b6/01-owner-install-walkthrough.md` use karo.
 
 ## Link
 
