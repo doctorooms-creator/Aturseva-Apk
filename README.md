@@ -3,6 +3,22 @@
 Private planning + build repo for the Aturseva patient app.
 The web product lives in a SEPARATE repo (doctorooms-hms); this repo never mixes with it.
 
+## RUN IT
+
+```bash
+bun install            # or npm install
+bunx expo start        # scan the terminal QR with the Expo Go app
+```
+
+Web (browser preview): `bunx expo start --web`
+Static web export: `EXPO_PUBLIC_API_BASE= bunx expo export --platform web`
+Check/lint: `bunx tsc --noEmit && bunx eslint .`
+
+Data comes from the production monolith (`doctorooms-hms.vercel.app`) —
+zero backend here (ground rule G2). `EXPO_PUBLIC_API_BASE=""` (empty) at
+build time switches the app to same-origin relative API paths (sandbox
+web-E2E builds only).
+
 ## THE PLAN (14 docs — DRAFT v1, Round 27, 2026-12-07 — owner review pending)
 
 | Doc | What it decides |
@@ -32,4 +48,32 @@ The web product lives in a SEPARATE repo (doctorooms-hms); this repo never mixes
 5. Accounts last (Expo → Firebase → Play → Apple). Evidence files: `apk-b{n}-*`.
 6. Owner reports: Hinglish only.
 
-Status: **PLANNING — plan docs written (Round 27); zero app code exists (by design).**
+Status: **APK-B1 (FOUNDATION SHELL) BUILT — 2026-11-20.** Expo SDK 58 + TS strict
++ expo-router + design-token module + 3-tab nav + Splash/Onboarding/HOME live on
+the prod API. Evidence: `evidence/apk-b1-*` (E2E summary, VLM audits, owner QR
+checklist). Next: APK-B2 (listing + doctor profile).
+
+## App layout (code)
+
+```
+src/
+  app/                    expo-router routes (file-based)
+    _layout.tsx           root stack + splash bootstrap (S1 auto-route)
+    onboarding.tsx        S2 — 3 slides + city ask (skippable, never repeats)
+    (tabs)/
+      _layout.tsx         3-tab bottom nav (doc 05)
+      index.tsx           S3 HOME — search crown + chips + live trust strip + live rail
+      bookings.tsx        S10 shell — honest guest doorway (B3 = lookup flow)
+      profile.tsx         S12 shell — guest card + city (real) + web links
+  lib/
+    tokens.ts             design tokens (doc 03 — single source in code)
+    api.ts                API base + fetch wrapper (8s timeout, 1 retry) + adapters (doc 08)
+    use-query.ts          useQuery-lite (SWR cache, foreground revalidate)
+    storage.ts            AsyncStorage whitelist (doc 09)
+    website/
+      symptom-search.ts   web repo's dictionary VERBATIM (batch-19 gift)
+      specialties.ts      web repo's registry VERBATIM
+  components/             pill buttons/chips, search field, sheets, skeletons,
+                          pulse dot, offline banner, empty-state doorway,
+                          doctor cards, city picker, onboarding line-art
+```
