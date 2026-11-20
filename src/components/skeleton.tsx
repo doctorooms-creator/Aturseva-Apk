@@ -5,7 +5,8 @@
 
 import { useEffect, useState } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { colors, radius, space } from '@/lib/tokens'
+import { radius, space } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 function usePulse() {
   // Animated.Value lives in lazy state (NOT useRef-during-render, NOT
@@ -35,19 +36,21 @@ export function SkeletonBlock({
   radiusValue?: number
 }) {
   const opacity = usePulse()
+  const c = useColors()
   return (
     <Animated.View
-      style={{ width: width as never, height, borderRadius: radiusValue, backgroundColor: colors.canvasSoft, opacity }}
+      style={{ width: width as never, height, borderRadius: radiusValue, backgroundColor: c.canvasSoft, opacity }}
     />
   )
 }
 
 /** One rail-card-shaped skeleton (avatar circle + text rails). */
 export function DoctorRailSkeleton() {
+  const c = useColors()
   return (
-    <View style={styles.railCard}>
+    <View style={[styles.railCard, { backgroundColor: c.canvas, borderColor: c.hairline }]}>
       <View style={styles.avatarCol}>
-        <View style={[styles.avatar, { backgroundColor: colors.canvasSoft }]} />
+        <View style={[styles.avatar, { backgroundColor: c.canvasSoft }]} />
       </View>
       <View style={styles.rails}>
         <SkeletonBlock width="80%" height={14} />
@@ -69,9 +72,7 @@ const styles = StyleSheet.create({
   railCard: {
     width: CARD_W,
     borderRadius: radius.card,
-    backgroundColor: colors.canvas,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     flexDirection: 'row',
     gap: space.s12,

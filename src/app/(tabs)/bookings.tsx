@@ -16,7 +16,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { CalendarCheck2, Search } from 'lucide-react-native'
-import { colors, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { lookupBookings, type GuestBookingRow } from '@/lib/api'
 import { getBookingPhone, setBookingPhone } from '@/lib/storage'
 import { Chip, PillButton } from '@/components/press'
@@ -51,6 +52,7 @@ const STATUS_LABELS: Record<string, { label: string; tone: 'live' | 'done' | 'wa
 }
 
 export default function BookingsScreen() {
+  const c = useColors()
   const router = useRouter()
 
   const [phone, setPhone] = useState('')
@@ -107,14 +109,14 @@ export default function BookingsScreen() {
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       <View style={styles.safeTop} />
-      <Text style={styles.title}>Bookings</Text>
-      <Text style={styles.caption}>Your appointments — upcoming and past.</Text>
+      <Text style={[styles.title, { color: c.ink }]}>Bookings</Text>
+      <Text style={[styles.caption, { color: c.body }]}>Your appointments — upcoming and past.</Text>
 
       {/* Lookup identity line — whose bookings, one-tap change */}
       <View style={styles.whoRow}>
-        <Text style={styles.whoText} numberOfLines={1}>
+        <Text style={[styles.whoText, { color: c.body }]} numberOfLines={1}>
           {phone ? `Showing bookings for ${phone.slice(0, 2)}••••${phone.slice(-4)}` : 'Find your bookings with your mobile number'}
         </Text>
         <Chip label={phone ? 'Change' : 'Find my bookings'} onPress={openSheet} />
@@ -169,7 +171,7 @@ export default function BookingsScreen() {
         </View>
       ) : loading && rows.length === 0 ? (
         <View style={styles.centerCol}>
-          <Text style={styles.loadingText}>Loading…</Text>
+          <Text style={[styles.loadingText, { color: c.mute }]}>Loading…</Text>
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
@@ -183,24 +185,24 @@ export default function BookingsScreen() {
       {/* Lookup sheet — the guest door (identity-lite, never a login wall) */}
       <BottomSheet visible={sheetOpen} onClose={() => setSheetOpen(false)} accessibilityLabel="Find my bookings">
         <GrabHandle />
-        <Text style={styles.sheetTitle}>Find my bookings</Text>
-        <Text style={styles.sheetBody}>
+        <Text style={[styles.sheetTitle, { color: c.ink }]}>Find my bookings</Text>
+        <Text style={[styles.sheetBody, { color: c.body }]}>
           Enter the 10-digit mobile number you booked with. Your appointments and tokens appear instantly — no login,
           no password.
         </Text>
-        <View style={styles.sheetFieldWrap}>
-          <Search size={18} color={colors.mute} strokeWidth={2} />
+        <View style={[styles.sheetFieldWrap, { backgroundColor: c.canvas, borderColor: c.hairline }]}>
+          <Search size={18} color={c.mute} strokeWidth={2} />
           <TextInput
             value={sheetPhone}
             onChangeText={(v) => setSheetPhone(v.replace(/\D/g, '').slice(0, 10))}
             placeholder="10-digit mobile number"
-            placeholderTextColor={colors.mute}
+            placeholderTextColor={c.mute}
             keyboardType="phone-pad"
             maxLength={10}
             autoCorrect={false}
             underlineColorAndroid="transparent"
             accessibilityLabel="Mobile number"
-            style={styles.sheetInput}
+            style={[styles.sheetInput, { color: c.ink }]}
           />
         </View>
         <PillButton
@@ -215,34 +217,35 @@ export default function BookingsScreen() {
 }
 
 function BookingCard({ row, onPress }: { row: GuestBookingRow; onPress: () => void }) {
+  const c = useColors()
   const status = STATUS_LABELS[row.status] ?? { label: row.status, tone: 'mute' as const }
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`Booking with ${row.doctorName || 'doctor'} on ${dateLabel(row.date)} ${row.timeSlot}`}
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+      style={({ pressed }) => [styles.card, { borderColor: c.hairline }, pressed && [styles.cardPressed, { backgroundColor: c.canvasSoft }]]}
     >
       <View style={styles.cardHeadRow}>
         <View style={styles.cardDoctorCol}>
-          <Text style={styles.cardDoctor} numberOfLines={1}>
+          <Text style={[styles.cardDoctor, { color: c.ink }]} numberOfLines={1}>
             {row.doctorName ? `Dr. ${row.doctorName.replace(/^Dr\.?\s*/, '')}` : 'Doctor'}
           </Text>
-          <Text style={styles.cardSpec} numberOfLines={1}>
+          <Text style={[styles.cardSpec, { color: c.body }]} numberOfLines={1}>
             {row.specialization || 'Appointment'}
           </Text>
         </View>
         {row.tokenNumber ? (
-          <View style={styles.cardToken}>
-            <Text style={styles.cardTokenNum} adjustsFontSizeToFit minimumFontScale={0.6}>
+          <View style={[styles.cardToken, { backgroundColor: c.canvasSoft }]}>
+            <Text style={[styles.cardTokenNum, { color: c.ink }]} adjustsFontSizeToFit minimumFontScale={0.6}>
               {row.tokenNumber}
             </Text>
-            <Text style={styles.cardTokenLabel}>token</Text>
+            <Text style={[styles.cardTokenLabel, { color: c.mute }]}>token</Text>
           </View>
         ) : null}
       </View>
       <View style={styles.cardMetaRow}>
-        <Text style={styles.cardWhen} numberOfLines={1}>
+        <Text style={[styles.cardWhen, { color: c.body }]} numberOfLines={1}>
           {dateLabel(row.date)}
           {row.timeSlot ? ` · ${row.timeSlot}` : ''}
           {row.bookingMode === 'VideoCall' ? ' · video call' : ''}
@@ -254,16 +257,17 @@ function BookingCard({ row, onPress }: { row: GuestBookingRow; onPress: () => vo
 }
 
 function StatusBadge({ label, tone }: { label: string; tone: 'live' | 'done' | 'warn' | 'mute' | 'error' }) {
+  const c = useColors()
   const toneStyle =
     tone === 'live'
-      ? { bg: colors.tealLiveSoft, fg: colors.tealLive }
+      ? { bg: c.tealLiveSoft, fg: c.tealLive }
       : tone === 'done'
-        ? { bg: colors.successSoft, fg: colors.success }
+        ? { bg: c.successSoft, fg: c.success }
         : tone === 'warn'
-          ? { bg: colors.warnSoft, fg: colors.warn }
+          ? { bg: c.warnSoft, fg: c.warn }
           : tone === 'error'
-            ? { bg: colors.errorSoft, fg: colors.error }
-            : { bg: colors.canvasSoft, fg: colors.body }
+            ? { bg: c.errorSoft, fg: c.error }
+            : { bg: c.canvasSoft, fg: c.body }
   return (
     <View style={[styles.badge, { backgroundColor: toneStyle.bg }]}>
       <Text style={[styles.badgeText, { color: toneStyle.fg }]} numberOfLines={1}>
@@ -276,19 +280,16 @@ function StatusBadge({ label, tone }: { label: string; tone: 'live' | 'done' | '
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
   },
   safeTop: {
     height: 24,
   },
   title: {
     ...typo.title,
-    color: colors.ink,
     marginHorizontal: space.s16,
   },
   caption: {
     ...typo.caption,
-    color: colors.body,
     marginHorizontal: space.s16,
     marginTop: 2,
   },
@@ -303,7 +304,6 @@ const styles = StyleSheet.create({
   },
   whoText: {
     ...typo.caption,
-    color: colors.body,
     flex: 1,
     fontVariant: ['tabular-nums'],
   },
@@ -330,7 +330,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typo.body,
-    color: colors.mute,
   },
   scrollBottomPad: {
     height: space.s24,
@@ -338,7 +337,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     gap: space.s12,
     minHeight: TOUCH + 12,
@@ -347,7 +345,6 @@ const styles = StyleSheet.create({
   cardPressed: {
     transform: [{ scale: 0.99 }],
     opacity: 0.9,
-    backgroundColor: colors.canvasSoft,
   },
   cardHeadRow: {
     flexDirection: 'row',
@@ -361,16 +358,13 @@ const styles = StyleSheet.create({
   },
   cardDoctor: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontSize: 16,
   },
   cardSpec: {
     ...typo.caption,
-    color: colors.body,
   },
   cardToken: {
     alignItems: 'center',
-    backgroundColor: colors.canvasSoft,
     borderRadius: radius.pill,
     paddingHorizontal: space.s12,
     paddingVertical: space.s4,
@@ -380,12 +374,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 22,
     fontWeight: '700',
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
   },
   cardTokenLabel: {
     ...typo.caption,
-    color: colors.mute,
   },
   cardMetaRow: {
     flexDirection: 'row',
@@ -395,7 +387,6 @@ const styles = StyleSheet.create({
   },
   cardWhen: {
     ...typo.caption,
-    color: colors.body,
     flex: 1,
     fontVariant: ['tabular-nums'],
   },
@@ -410,12 +401,10 @@ const styles = StyleSheet.create({
   },
   sheetTitle: {
     ...typo.title,
-    color: colors.ink,
     paddingHorizontal: space.s4,
   },
   sheetBody: {
     ...typo.body,
-    color: colors.body,
     marginTop: space.s8,
     marginBottom: space.s12,
     paddingHorizontal: space.s4,
@@ -424,8 +413,6 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: radius.input,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
-    backgroundColor: colors.canvas,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.s12,
@@ -435,7 +422,6 @@ const styles = StyleSheet.create({
   sheetInput: {
     ...typo.body,
     flex: 1,
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
     paddingVertical: 0,
   },

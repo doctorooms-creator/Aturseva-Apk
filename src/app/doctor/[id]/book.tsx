@@ -17,7 +17,8 @@ import { useEffect, useState } from 'react'
 import { Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChevronLeft } from 'lucide-react-native'
-import { colors, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { ApiError, getDoctorSchedule, postPublicBooking } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { getCity, pushBookingId, setBookingPhone } from '@/lib/storage'
@@ -42,6 +43,7 @@ function visitDateLabel(dateStr: string): string {
 }
 
 export default function ConfirmBookingScreen() {
+  const c = useColors()
   const router = useRouter()
   const params = useLocalSearchParams<{
     id?: string
@@ -79,9 +81,9 @@ export default function ConfirmBookingScreen() {
 
   if (!userId || !date || !time) {
     return (
-      <View style={styles.screen}>
+      <View style={[styles.screen, { backgroundColor: c.canvas }]}>
         <View style={styles.errorWrap}>
-          <Text style={styles.errorTitle}>This booking link is incomplete.</Text>
+          <Text style={[styles.errorTitle, { color: c.ink }]}>This booking link is incomplete.</Text>
           <Chip label="Back to Home" onPress={() => void router.replace('/')} />
         </View>
       </View>
@@ -146,32 +148,32 @@ export default function ConfirmBookingScreen() {
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Back bar */}
         <View style={styles.topBar}>
           <View style={styles.backBtn}>
             <Chip
               label="Back"
-              leading={<ChevronLeft size={16} color={colors.ink} strokeWidth={2} />}
+              leading={<ChevronLeft size={16} color={c.ink} strokeWidth={2} />}
               onPress={() => void router.back()}
             />
           </View>
-          <Text style={styles.topTitle} numberOfLines={1}>
+          <Text style={[styles.topTitle, { color: c.ink }]} numberOfLines={1}>
             Confirm appointment
           </Text>
           <View style={styles.topSpacer} />
         </View>
 
         {/* Summary card — everything together, for the first time */}
-        <View style={styles.summaryCard}>
+        <View style={[styles.summaryCard, { borderColor: c.hairline }]}>
           <View style={styles.summaryHead}>
             <Avatar name={doctorName || 'Doctor'} size={48} />
             <View style={styles.summaryHeadCol}>
-              <Text style={styles.summaryName} numberOfLines={1}>
+              <Text style={[styles.summaryName, { color: c.ink }]} numberOfLines={1}>
                 {doctorName}
               </Text>
-              <Text style={styles.summarySpec} numberOfLines={1}>
+              <Text style={[styles.summarySpec, { color: c.body }]} numberOfLines={1}>
                 {spec || 'Doctor'}
               </Text>
             </View>
@@ -184,7 +186,7 @@ export default function ConfirmBookingScreen() {
         </View>
 
         {/* Guest fields — minimality law: nothing more is asked */}
-        <Text style={styles.fieldTitle}>Your name</Text>
+        <Text style={[styles.fieldTitle, { color: c.ink }]}>Your name</Text>
         <TextInput
           value={patientName}
           onChangeText={(v) => {
@@ -192,15 +194,15 @@ export default function ConfirmBookingScreen() {
             setFieldError('')
           }}
           placeholder="Full name"
-          placeholderTextColor={colors.mute}
+          placeholderTextColor={c.mute}
           autoCorrect={false}
           autoCapitalize="words"
           underlineColorAndroid="transparent"
           accessibilityLabel="Your name"
-          style={styles.input}
+          style={[styles.input, { borderColor: c.hairline, backgroundColor: c.canvas, color: c.ink }]}
         />
 
-        <Text style={styles.fieldTitle}>Mobile number</Text>
+        <Text style={[styles.fieldTitle, { color: c.ink }]}>Mobile number</Text>
         <TextInput
           value={mobile}
           onChangeText={(v) => {
@@ -208,17 +210,17 @@ export default function ConfirmBookingScreen() {
             setFieldError('')
           }}
           placeholder="10-digit Indian mobile"
-          placeholderTextColor={colors.mute}
+          placeholderTextColor={c.mute}
           keyboardType="phone-pad"
           maxLength={10}
           autoCorrect={false}
           underlineColorAndroid="transparent"
           accessibilityLabel="Mobile number"
-          style={[styles.input, styles.numeric]}
+          style={[styles.input, styles.numeric, { borderColor: c.hairline, backgroundColor: c.canvas, color: c.ink }]}
         />
-        <Text style={styles.fieldCaption}>Your token and booking updates travel to this number.</Text>
+        <Text style={[styles.fieldCaption, { color: c.mute }]}>Your token and booking updates travel to this number.</Text>
 
-        <Text style={styles.fieldTitle}>Reason for the visit</Text>
+        <Text style={[styles.fieldTitle, { color: c.ink }]}>Reason for the visit</Text>
         <TextInput
           value={reason}
           onChangeText={(v) => {
@@ -226,29 +228,29 @@ export default function ConfirmBookingScreen() {
             setFieldError('')
           }}
           placeholder="One line — e.g. fever since 2 days"
-          placeholderTextColor={colors.mute}
+          placeholderTextColor={c.mute}
           autoCorrect={false}
           multiline
           underlineColorAndroid="transparent"
           accessibilityLabel="Reason for the visit"
-          style={[styles.input, styles.reasonInput]}
+          style={[styles.input, styles.reasonInput, { borderColor: c.hairline, backgroundColor: c.canvas, color: c.ink }]}
         />
 
         {/* Inline validation — field-level, human copy */}
-        {fieldError ? <Text style={styles.fieldError}>{fieldError}</Text> : null}
+        {fieldError ? <Text style={[styles.fieldError, { color: c.error }]}>{fieldError}</Text> : null}
 
         {/* Fee line — cash-at-clinic law, visible at the moment of confirm */}
-        <View style={styles.feeLine}>
-          <Text style={styles.feeBig}>
-            ₹{fee.toLocaleString('en-IN')} <Text style={styles.feeSuffix}>· pay at the clinic</Text>
+        <View style={[styles.feeLine, { backgroundColor: c.canvasSoft }]}>
+          <Text style={[styles.feeBig, { color: c.ink }]}>
+            ₹{fee.toLocaleString('en-IN')} <Text style={[styles.feeSuffix, { color: c.body }]}>· pay at the clinic</Text>
           </Text>
-          <Text style={styles.feeNote}>No advance payment. Free cancellation from this app.</Text>
+          <Text style={[styles.feeNote, { color: c.mute }]}>No advance payment. Free cancellation from this app.</Text>
         </View>
 
         {/* Honest server answers — never a silent fail */}
         {serverError ? (
-          <View style={styles.serverErrorCard}>
-            <Text style={styles.serverErrorText}>{serverError}</Text>
+          <View style={[styles.serverErrorCard, { backgroundColor: c.errorSoft }]}>
+            <Text style={[styles.serverErrorText, { color: c.error }]}>{serverError}</Text>
             {existingId ? (
               <Chip label="View your existing booking" onPress={() => void router.replace(`/booking/${existingId}`)} />
             ) : null}
@@ -259,7 +261,7 @@ export default function ConfirmBookingScreen() {
       </ScrollView>
 
       {/* Sticky confirm — 56px, loading state keeps the label */}
-      <View style={styles.ctaBar}>
+      <View style={[styles.ctaBar, { borderTopColor: c.hairline, backgroundColor: c.canvas }]}>
         <PillButton label="Confirm booking" height={56} loading={submitting} onPress={() => void submit()} />
       </View>
     </View>
@@ -267,10 +269,14 @@ export default function ConfirmBookingScreen() {
 }
 
 function SummaryRow({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
+  const c = useColors()
   return (
     <View style={styles.summaryRow}>
-      <Text style={styles.summaryRowLabel}>{label}</Text>
-      <Text style={[styles.summaryRowValue, strong && styles.summaryRowStrong]} numberOfLines={1}>
+      <Text style={[styles.summaryRowLabel, { color: c.body }]}>{label}</Text>
+      <Text
+        style={[styles.summaryRowValue, strong && styles.summaryRowStrong, { color: c.ink }]}
+        numberOfLines={1}
+      >
         {value}
       </Text>
     </View>
@@ -280,7 +286,6 @@ function SummaryRow({ label, value, strong = false }: { label: string; value: st
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
   },
   content: {
     paddingBottom: space.s24,
@@ -299,7 +304,6 @@ const styles = StyleSheet.create({
   },
   topTitle: {
     ...typo.title,
-    color: colors.ink,
     flex: 1,
   },
   topSpacer: {
@@ -310,7 +314,6 @@ const styles = StyleSheet.create({
     marginTop: space.s8,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     gap: space.s12,
   },
@@ -325,12 +328,10 @@ const styles = StyleSheet.create({
   },
   summaryName: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontSize: 16,
   },
   summarySpec: {
     ...typo.caption,
-    color: colors.body,
   },
   summaryRows: {
     gap: space.s8,
@@ -344,11 +345,9 @@ const styles = StyleSheet.create({
   },
   summaryRowLabel: {
     ...typo.body,
-    color: colors.body,
   },
   summaryRowValue: {
     ...typo.bodyStrong,
-    color: colors.ink,
     flex: 1,
     textAlign: 'right',
     fontVariant: ['tabular-nums'],
@@ -358,7 +357,6 @@ const styles = StyleSheet.create({
   },
   fieldTitle: {
     ...typo.bodyStrong,
-    color: colors.ink,
     marginHorizontal: space.s16,
     marginTop: space.s20,
     marginBottom: space.s8,
@@ -367,12 +365,9 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: radius.input,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
-    backgroundColor: colors.canvas,
     paddingHorizontal: space.s16,
     marginHorizontal: space.s16,
     ...typo.body,
-    color: colors.ink,
   },
   numeric: {
     fontVariant: ['tabular-nums'],
@@ -385,13 +380,11 @@ const styles = StyleSheet.create({
   },
   fieldCaption: {
     ...typo.caption,
-    color: colors.mute,
     marginHorizontal: space.s16,
     marginTop: space.s4,
   },
   fieldError: {
     ...typo.caption,
-    color: colors.error,
     marginHorizontal: space.s16,
     marginTop: space.s12,
     fontWeight: '600',
@@ -399,30 +392,25 @@ const styles = StyleSheet.create({
   feeLine: {
     marginHorizontal: space.s16,
     marginTop: space.s24,
-    backgroundColor: colors.canvasSoft,
     borderRadius: radius.card,
     padding: space.s16,
     gap: 4,
   },
   feeBig: {
     ...typo.title,
-    color: colors.ink,
     fontSize: 20,
     fontVariant: ['tabular-nums'],
   },
   feeSuffix: {
     ...typo.caption,
-    color: colors.body,
     fontWeight: '400',
   },
   feeNote: {
     ...typo.caption,
-    color: colors.mute,
   },
   serverErrorCard: {
     marginHorizontal: space.s16,
     marginTop: space.s16,
-    backgroundColor: colors.errorSoft,
     borderRadius: radius.card,
     padding: space.s16,
     gap: space.s8,
@@ -430,7 +418,6 @@ const styles = StyleSheet.create({
   },
   serverErrorText: {
     ...typo.body,
-    color: colors.error,
     fontWeight: '600',
   },
   scrollBottomPad: {
@@ -441,8 +428,6 @@ const styles = StyleSheet.create({
     paddingTop: space.s8,
     paddingBottom: space.s12,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.hairline,
-    backgroundColor: colors.canvas,
     ...(Platform.OS === 'ios' ? { paddingBottom: space.s16 } : null),
   },
   errorWrap: {
@@ -454,7 +439,6 @@ const styles = StyleSheet.create({
   },
   errorTitle: {
     ...typo.title,
-    color: colors.ink,
     textAlign: 'center',
   },
 })

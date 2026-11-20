@@ -11,6 +11,10 @@
  *   the same origin as the API proxy). Native/Expo Go/EAS always hit prod.
  */
 
+// Session JWT home (secure-store). auth.ts imports api.ts TYPES only —
+// no runtime cycle (this direction is the runtime one, and it is one-way).
+import { getStoredToken } from '@/lib/auth'
+
 const rawBase = process.env.EXPO_PUBLIC_API_BASE
 export const API_BASE =
   rawBase === '' ? '' : (rawBase ?? 'https://aturseva.com').replace(/\/+$/, '')
@@ -36,10 +40,26 @@ export class ApiError extends Error {
 
 async function fetchJson<T>(
   path: string,
-  init: { method?: 'GET' | 'POST' | 'DELETE'; body?: unknown } = {},
+  init: {
+    method?: 'GET' | 'POST' | 'DELETE'
+    body?: unknown
+    /** true = read the stored session JWT; a string = an explicit JWT
+     *  (sign-out's captured-before-clear token — the revoke must fire
+     *  even after the local session is gone). */
+    auth?: boolean | string
+  } = {},
 ): Promise<T> {
   const url = `${API_BASE}${path}`
   const attempt = async (): Promise<T> => {
+    // APK-B4: authenticated calls carry the session JWT as a Bearer header
+    // (the web's P5-MOBILE contract — cookie for browsers, header for the
+    // app). No token = honest 401, same as the server's.
+    let authHeaders: Record<string, string> = {}
+    if (init.auth) {
+      const token = typeof init.auth === 'string' ? init.auth : await getStoredToken()
+      if (!token) throw new ApiError('server', 'Sign in required', 401)
+      authHeaders = { Authorization: `Bearer ${token}` }
+    }
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
     try {
@@ -47,6 +67,7 @@ async function fetchJson<T>(
         method: init.method,
         headers: {
           Accept: 'application/json',
+          ...authHeaders,
           ...(init.body ? { 'Content-Type': 'application/json' } : {}),
         },
         ...(init.body ? { body: JSON.stringify(init.body) } : {}),
@@ -88,6 +109,101 @@ async function fetchJson<T>(
     if (err instanceof ApiError && err.kind === 'server') throw err // no retry on honest server answers
     await new Promise((r) => setTimeout(r, RETRY_DELAY_MS))
     return attempt()
+  }
+}
+
+// ————— APK-B4 · Auth (doc 08 contract extension: /api/auth/*) —————
+
+export interface AuthUser {
+  id: string
+  name: string
+  email: string
+  role: string
+  gender: string | null
+  mobile: string | null
+}
+
+interface RawAuthUser {
+  id: string
+  name: string
+  email: string
+  role: string
+  gender: string | null
+  profileImg: string | null
+  mobileNo: string | null
+}
+
+function adaptUser(u: RawAuthUser): AuthUser {
+  return {
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    role: u.role,
+    gender: u.gender,
+    mobile: u.mobileNo,
+  }
+}
+
+/** POST /api/auth/login — honest server messages surface verbatim
+ *  (Invalid email or password / account locked / not verified). */
+export async function login(email: string, password: string): Promise<{ user: AuthUser; token: string }> {
+  const raw = await fetchJson<{
+    success: boolean
+    user: RawAuthUser
+    token: string
+    message?: string
+  }>('/api/auth/login', { method: 'POST', body: { email, password } })
+  if (!raw.token || !raw.user) {
+    throw new ApiError('server', typeof raw.message === 'string' ? raw.message : 'Sign in failed')
+  }
+  return { user: adaptUser(raw.user), token: raw.token }
+}
+
+/** POST /api/auth/register — returns the server's honest message
+ *  ("check your email to verify" vs "you can log in now"). */
+export async function registerPatient(body: {
+  name: string
+  email: string
+  mobileNo?: string
+  gender?: string
+  password: string
+  referralCode?: string
+}): Promise<string> {
+  const raw = await fetchJson<{ success: boolean; message?: string }>('/api/auth/register', {
+    method: 'POST',
+    body: { ...body, role: 'patient' },
+  })
+  return typeof raw.message === 'string' && raw.message
+    ? raw.message
+    : 'Registration successful. You can log in now.'
+}
+
+/** GET /api/auth/me with the stored bearer — null when signed out,
+ *  token expired, or session revoked server-side (honest guest fallback —
+ *  the caller clears the local session and stays useful). */
+export async function getMe(): Promise<AuthUser | null> {
+  const token = await getStoredToken()
+  if (!token) return null
+  try {
+    const raw = await fetchJson<{ success: boolean; user: RawAuthUser }>('/api/auth/me', {
+      auth: true,
+    })
+    if (!raw.user) return null
+    return adaptUser(raw.user)
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 401) return null
+    throw err // network/timeout — propagate (caller shows offline state, not logout)
+  }
+}
+
+/** POST /api/auth/logout — best-effort server revoke with the token the
+ *  caller CAPTURED before clearing the local session (order law: the
+ *  revoke must still fire after the keystore is empty). Never throws. */
+export async function logoutRemote(token: string): Promise<void> {
+  try {
+    await fetchJson('/api/auth/logout', { method: 'POST', auth: token })
+  } catch {
+    /* best-effort — the local clear in lib/auth is the real sign-out */
   }
 }
 

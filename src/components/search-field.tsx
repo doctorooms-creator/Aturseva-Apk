@@ -8,21 +8,23 @@
 import { type ComponentRef, type Ref } from 'react'
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native'
 import { Search } from 'lucide-react-native'
-import { colors, radius, space, type as typo } from '@/lib/tokens'
+import { radius, space, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 export function SearchField({ ref, ...props }: TextInputProps & { ref?: Ref<ComponentRef<typeof TextInput>> }) {
+  const c = useColors()
   return (
-    <View style={styles.wrap}>
-      <Search size={20} color={colors.mute} strokeWidth={2} />
+    <View style={[styles.wrap, { backgroundColor: c.canvasSoft }]}>
+      <Search size={20} color={c.mute} strokeWidth={2} />
       <TextInput
         placeholder="Doctor name or problem — fever, knee pain"
-        placeholderTextColor={colors.mute}
+        placeholderTextColor={c.mute}
         underlineColorAndroid="transparent"
         autoCorrect={false}
         returnKeyType="search"
         ref={ref}
         {...props}
-        style={[styles.input, props.style]}
+        style={[styles.input, { color: c.ink }, props.style]}
       />
     </View>
   )
@@ -32,7 +34,6 @@ const styles = StyleSheet.create({
   wrap: {
     height: 56,
     borderRadius: radius.pill,
-    backgroundColor: colors.canvasSoft,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.s12,
@@ -41,7 +42,6 @@ const styles = StyleSheet.create({
   input: {
     ...typo.body,
     flex: 1,
-    color: colors.ink,
     paddingVertical: 0,
   },
 })

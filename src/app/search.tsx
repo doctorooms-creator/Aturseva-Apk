@@ -14,7 +14,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Platform, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import { useRouter, useLocalSearchParams } from 'expo-router'
 import { ChevronLeft, MapPin, SearchX } from 'lucide-react-native'
-import { colors, space, TOUCH, type as typo } from '@/lib/tokens'
+import { space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { getDoctors, type DoctorCard } from '@/lib/api'
 import { getCity } from '@/lib/storage'
 import { matchSymptom } from '@/lib/website/symptom-search'
@@ -33,6 +34,7 @@ const DOORWAY_WORDS = ['fever', 'knee pain', 'skin', 'child', 'acidity', 'headac
 type CityState = string | null | undefined
 
 export default function SearchScreen() {
+  const c = useColors()
   const router = useRouter()
   const { q, all } = useLocalSearchParams<{ q?: string; all?: string }>()
   const query = typeof q === 'string' && q.trim().length > 0 ? q.trim() : ''
@@ -170,11 +172,11 @@ export default function SearchScreen() {
         <View style={styles.backBtn}>
           <Chip
             label="Back"
-            leading={<ChevronLeft size={16} color={colors.ink} strokeWidth={2} />}
+            leading={<ChevronLeft size={16} color={c.ink} strokeWidth={2} />}
             onPress={() => void router.back()}
           />
         </View>
-        <Text style={styles.queryEcho} numberOfLines={1}>
+        <Text style={[styles.queryEcho, { color: c.ink }]} numberOfLines={1}>
           {query || 'All doctors'}
         </Text>
         <View style={styles.topSpacer} />
@@ -182,7 +184,7 @@ export default function SearchScreen() {
 
       {/* Honesty line — the mapping is NAMED, never silent (doc 21 law) */}
       {mapping ? (
-        <Text style={styles.honestyLine} numberOfLines={2}>
+        <Text style={[styles.honestyLine, { color: c.body }]} numberOfLines={2}>
           {query} → {mapping}
         </Text>
       ) : null}
@@ -191,7 +193,7 @@ export default function SearchScreen() {
       <View style={styles.filterRow}>
         <Chip
           label={cityFilter ?? 'All cities'}
-          leading={<MapPin size={14} color={cityFilter ? colors.ink : colors.body} strokeWidth={2} />}
+          leading={<MapPin size={14} color={cityFilter ? c.ink : c.body} strokeWidth={2} />}
           onPress={() => setCitySheetOpen(true)}
           selected={cityFilter !== null && cityFilter !== undefined}
         />
@@ -202,7 +204,7 @@ export default function SearchScreen() {
 
       {/* Count line — real totals only */}
       {total !== null ? (
-        <Text style={styles.countLine}>
+        <Text style={[styles.countLine, { color: c.mute }]}>
           {total} {total === 1 ? 'doctor' : 'doctors'} found
         </Text>
       ) : null}
@@ -216,7 +218,7 @@ export default function SearchScreen() {
   )
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       <FlatList
         data={loadingFirst ? [] : list}
         keyExtractor={(d) => d.id}
@@ -264,10 +266,10 @@ export default function SearchScreen() {
               <ListingCardSkeleton />
             </View>
           ) : total !== null && list.length > 0 && list.length >= total ? (
-            <Text style={styles.footerEnd}>That is every doctor for this search</Text>
+            <Text style={[styles.footerEnd, { color: c.mute }]}>That is every doctor for this search</Text>
           ) : total !== null && list.length > 0 && list.length < total ? (
             <View style={styles.footerRow}>
-              <Text style={styles.footerEnd}>
+              <Text style={[styles.footerEnd, { color: c.mute }]}>
                 Showing {list.length} of {total}
               </Text>
               <Chip label="Show more" onPress={() => void loadMore()} />
@@ -280,7 +282,7 @@ export default function SearchScreen() {
         showsVerticalScrollIndicator={false}
         refreshControl={
           Platform.OS === 'web' ? undefined : (
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0A0A0A" />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.ink} />
           )
         }
       />
@@ -301,7 +303,6 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
   },
   listContent: {
     paddingBottom: space.s32,
@@ -320,7 +321,6 @@ const styles = StyleSheet.create({
   },
   queryEcho: {
     ...typo.title,
-    color: colors.ink,
     flex: 1,
   },
   topSpacer: {
@@ -328,7 +328,6 @@ const styles = StyleSheet.create({
   },
   honestyLine: {
     ...typo.caption,
-    color: colors.body,
     marginHorizontal: space.s16,
     marginTop: 2,
   },
@@ -340,7 +339,6 @@ const styles = StyleSheet.create({
   },
   countLine: {
     ...typo.caption,
-    color: colors.mute,
     marginHorizontal: space.s16,
     marginTop: space.s12,
     fontVariant: ['tabular-nums'],
@@ -359,7 +357,6 @@ const styles = StyleSheet.create({
   },
   footerEnd: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
     marginTop: space.s16,
   },

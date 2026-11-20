@@ -5,16 +5,16 @@
  */
 
 import Svg, { Circle, Line, Path, Rect } from 'react-native-svg'
-import { colors } from '@/lib/tokens'
-
-const INK = colors.ink
-const TEAL = colors.tealLive
+import { useColors } from '@/lib/theme'
 
 const W = 220
 const H = 150
 
 /** Slide 1 — "Find a doctor": magnifier over problem words. */
 export function ArtSearch() {
+  const c = useColors()
+  const INK = c.ink
+  const TEAL = c.tealLive
   return (
     <Svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
       <Circle cx={95} cy={62} r={38} fill="none" stroke={INK} strokeWidth={3} />
@@ -30,6 +30,9 @@ export function ArtSearch() {
 
 /** Slide 2 — "Book in 3 taps": calendar pill + fee coin (fee-upfront law). */
 export function ArtBook() {
+  const c = useColors()
+  const INK = c.ink
+  const TEAL = c.tealLive
   return (
     <Svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
       <Rect x={60} y={34} width={88} height={84} rx={14} fill="none" stroke={INK} strokeWidth={3} />
@@ -47,6 +50,9 @@ export function ArtBook() {
 
 /** Slide 3 — "Turn confirmed": token card + the teal pulse. */
 export function ArtToken() {
+  const c = useColors()
+  const INK = c.ink
+  const TEAL = c.tealLive
   return (
     <Svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
       <Rect x={62} y={30} width={96} height={92} rx={14} fill="none" stroke={INK} strokeWidth={3} />

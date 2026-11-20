@@ -18,7 +18,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { CalendarDays } from 'lucide-react-native'
-import { colors, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { getDoctorSchedule, getSlots, type SlotInventory } from '@/lib/api'
 import { Avatar } from '@/components/avatar'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
@@ -88,6 +89,7 @@ function SlotChip({
   selected: boolean
   onPress: () => void
 }) {
+  const c = useColors()
   const free = status === 'free'
   return (
     <Pressable
@@ -98,12 +100,24 @@ function SlotChip({
       accessibilityState={{ disabled: !free, selected }}
       style={({ pressed }) => [
         styles.slotChip,
+        { backgroundColor: c.canvasSoft },
         !free && styles.slotChipClosed,
-        selected && styles.slotChipSelected,
+        selected && {
+          borderColor: c.tealLive,
+          borderWidth: 1.5,
+          backgroundColor: c.tealLiveSoft,
+        },
         pressed && free && styles.slotChipPressed,
       ]}
     >
-      <Text style={[styles.slotChipText, !free && styles.slotChipTextClosed, selected && styles.slotChipTextSelected]}>
+      <Text
+        style={[
+          styles.slotChipText,
+          { color: c.ink },
+          !free && { textDecorationLine: 'line-through', color: c.mute },
+          selected && { color: c.tealLive, fontWeight: '600' },
+        ]}
+      >
         {time}
       </Text>
     </Pressable>
@@ -121,6 +135,7 @@ export function SlotSheet({
   doctor: SlotSheetDoctor
   onConfirm: (date: string, time: string) => void
 }) {
+  const c = useColors()
   const [scheduleTick, setScheduleTick] = useState(0)
   const [scheduleLoading, setScheduleLoading] = useState(false)
   const [scheduleError, setScheduleError] = useState(false)
@@ -265,10 +280,10 @@ export function SlotSheet({
       <View style={styles.header}>
         <Avatar name={doctor.name} size={44} />
         <View style={styles.headerCol}>
-          <Text style={styles.headerName} numberOfLines={1}>
+          <Text style={[styles.headerName, { color: c.ink }]} numberOfLines={1}>
             {doctor.name}
           </Text>
-          <Text style={styles.headerSpec} numberOfLines={1}>
+          <Text style={[styles.headerSpec, { color: c.body }]} numberOfLines={1}>
             {doctor.specialization || 'Doctor'} · ₹{doctor.fees.toLocaleString('en-IN')} consult
           </Text>
         </View>
@@ -295,8 +310,8 @@ export function SlotSheet({
       {/* Slot grid — grouped, live, honest */}
       {scheduleError ? (
         <View style={styles.centerCol}>
-          <Text style={styles.emptyTitle}>Could not load the schedule.</Text>
-          <Text style={styles.emptyCaption}>Check your connection and try again.</Text>
+          <Text style={[styles.emptyTitle, { color: c.ink }]}>Could not load the schedule.</Text>
+          <Text style={[styles.emptyCaption, { color: c.mute }]}>Check your connection and try again.</Text>
           <View style={styles.centerRow}>
             <Chip label="Try again" onPress={() => setScheduleTick((t) => t + 1)} />
           </View>
@@ -307,8 +322,8 @@ export function SlotSheet({
         gridSkeleton
       ) : invError ? (
         <View style={styles.centerCol}>
-          <Text style={styles.emptyTitle}>Could not load slots for this day.</Text>
-          <Text style={styles.emptyCaption}>Check your connection and try again.</Text>
+          <Text style={[styles.emptyTitle, { color: c.ink }]}>Could not load slots for this day.</Text>
+          <Text style={[styles.emptyCaption, { color: c.mute }]}>Check your connection and try again.</Text>
           <View style={styles.centerRow}>
             <Chip
               label="Try again"
@@ -324,7 +339,7 @@ export function SlotSheet({
           <View style={styles.gridWrap}>
             {groups.map((g) => (
               <View key={g.label} style={styles.group}>
-                <Text style={styles.groupLabel}>{g.label}</Text>
+                <Text style={[styles.groupLabel, { color: c.mute }]}>{g.label}</Text>
                 <View style={styles.grid}>
                   {g.slots.map((s) => (
                     <SlotChip
@@ -339,31 +354,31 @@ export function SlotSheet({
               </View>
             ))}
             {/* Honest day counts — real API numbers only */}
-            <Text style={styles.countsLine}>
+            <Text style={[styles.countsLine, { color: c.mute }]}>
               {freeCount} slot{freeCount === 1 ? '' : 's'} open · {inv.opdCount} booked today
               {inv.opdLimit > 0 ? ` · limit ${inv.opdLimit}` : ''}
             </Text>
           </View>
         ) : inv.available && inv.slots.length === 0 ? (
           <View style={styles.centerCol}>
-            <Text style={styles.emptyTitle}>No slots this day.</Text>
-            <Text style={styles.emptyCaption}>The doctor consults but has no open times listed.</Text>
+            <Text style={[styles.emptyTitle, { color: c.ink }]}>No slots this day.</Text>
+            <Text style={[styles.emptyCaption, { color: c.mute }]}>The doctor consults but has no open times listed.</Text>
           </View>
         ) : (
           <View style={styles.centerCol}>
-            <CalendarDays size={28} color={colors.mute} strokeWidth={1.5} />
-            <Text style={styles.emptyTitle}>{inv.reason || 'No slots this day.'}</Text>
+            <CalendarDays size={28} color={c.mute} strokeWidth={1.5} />
+            <Text style={[styles.emptyTitle, { color: c.ink }]}>{inv.reason || 'No slots this day.'}</Text>
             <NextDayChip dates={dates} selectedDate={selectedDate} onPick={pickDate} />
           </View>
         )
       ) : null}
 
       {/* Fee line + confirm — sticky sheet-bottom (52px pill) */}
-      <View style={styles.footer}>
+      <View style={[styles.footer, { borderTopColor: c.hairline }]}>
         <View style={styles.feeLine}>
-          <Text style={styles.feeText}>₹{doctor.fees.toLocaleString('en-IN')} · pay at the clinic</Text>
+          <Text style={[styles.feeText, { color: c.ink }]}>₹{doctor.fees.toLocaleString('en-IN')} · pay at the clinic</Text>
           {selectedTime ? (
-            <Text style={styles.feeTime}>
+            <Text style={[styles.feeTime, { color: c.tealLive }]}>
               {selectedDate === ymd(today) ? 'Today' : shortDate(selectedDate)} · {selectedTime}
             </Text>
           ) : null}
@@ -406,12 +421,10 @@ const styles = StyleSheet.create({
   },
   headerName: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontSize: 16,
   },
   headerSpec: {
     ...typo.caption,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
   },
   dateStrip: {
@@ -433,7 +446,6 @@ const styles = StyleSheet.create({
   },
   groupLabel: {
     ...typo.caption,
-    color: colors.mute,
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 0.4,
@@ -450,14 +462,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.pill,
-    backgroundColor: colors.canvasSoft,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'transparent',
-  },
-  slotChipSelected: {
-    borderColor: colors.tealLive,
-    borderWidth: 1.5,
-    backgroundColor: colors.tealLiveSoft,
   },
   slotChipPressed: {
     transform: [{ scale: 0.97 }],
@@ -468,20 +474,10 @@ const styles = StyleSheet.create({
   },
   slotChipText: {
     ...typo.body,
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
-  },
-  slotChipTextClosed: {
-    textDecorationLine: 'line-through',
-    color: colors.mute,
-  },
-  slotChipTextSelected: {
-    color: colors.tealLive,
-    fontWeight: '600',
   },
   countsLine: {
     ...typo.caption,
-    color: colors.mute,
     fontVariant: ['tabular-nums'],
   },
   centerCol: {
@@ -494,18 +490,15 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     ...typo.bodyStrong,
-    color: colors.ink,
     textAlign: 'center',
   },
   emptyCaption: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
   },
   footer: {
     marginTop: space.s12,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.hairline,
     paddingTop: space.s12,
   },
   feeLine: {
@@ -516,12 +509,10 @@ const styles = StyleSheet.create({
   },
   feeText: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
   },
   feeTime: {
     ...typo.caption,
-    color: colors.tealLive,
     fontWeight: '600',
     fontVariant: ['tabular-nums'],
   },

@@ -17,7 +17,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { AppState, Platform, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChevronLeft, Clock3 } from 'lucide-react-native'
-import { colors, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { getBookingToken, type TokenState } from '@/lib/api'
 import { Chip } from '@/components/press'
 import { PulseDot } from '@/components/pulse-dot'
@@ -30,6 +31,7 @@ function fmtTime(ts: number): string {
 }
 
 export default function QueueScreen() {
+  const c = useColors()
   const router = useRouter()
   const params = useLocalSearchParams<{ id?: string }>()
   const bookingId = typeof params.id === 'string' ? params.id : ''
@@ -92,9 +94,9 @@ export default function QueueScreen() {
 
   if (!bookingId) {
     return (
-      <View style={styles.screen}>
+      <View style={[styles.screen, { backgroundColor: c.canvas }]}>
         <View style={styles.errorWrap}>
-          <Text style={styles.errorTitle}>Queue not found.</Text>
+          <Text style={[styles.errorTitle, { color: c.ink }]}>Queue not found.</Text>
           <Chip label="Back to Home" onPress={() => void router.replace('/')} />
         </View>
       </View>
@@ -111,13 +113,13 @@ export default function QueueScreen() {
       : null
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
         refreshControl={
           Platform.OS === 'web' ? undefined : (
-            <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void fetchQ() }} tintColor="#0A0A0A" />
+            <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void fetchQ() }} tintColor={c.ink} />
           )
         }
       >
@@ -126,11 +128,11 @@ export default function QueueScreen() {
           <View style={styles.backBtn}>
             <Chip
               label="Back"
-              leading={<ChevronLeft size={16} color={colors.ink} strokeWidth={2} />}
+              leading={<ChevronLeft size={16} color={c.ink} strokeWidth={2} />}
               onPress={() => void router.back()}
             />
           </View>
-          <Text style={styles.topTitle} numberOfLines={1}>
+          <Text style={[styles.topTitle, { color: c.ink }]} numberOfLines={1}>
             Your turn
           </Text>
           <View style={styles.topSpacer} />
@@ -144,55 +146,55 @@ export default function QueueScreen() {
 
         {loading ? (
           <View style={styles.centerCol}>
-            <Text style={styles.loadingText}>Loading the live queue…</Text>
+            <Text style={[styles.loadingText, { color: c.mute }]}>Loading the live queue…</Text>
           </View>
         ) : !t ? (
           <View style={styles.errorWrap}>
-            <Text style={styles.errorTitle}>Could not load the queue.</Text>
-            <Text style={styles.errorCaption}>Check your connection and try again.</Text>
+            <Text style={[styles.errorTitle, { color: c.ink }]}>Could not load the queue.</Text>
+            <Text style={[styles.errorCaption, { color: c.mute }]}>Check your connection and try again.</Text>
             <Chip label="Try again" onPress={() => { setLoading(true); void fetchQ() }} />
           </View>
         ) : (
           <>
             {/* THE position block — the live hero */}
-            <View style={styles.positionCard}>
+            <View style={[styles.positionCard, { backgroundColor: c.canvasSoft }]}>
               {t.status === 'Pending' ? (
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={styles.liveLabel}>Waiting for confirmation</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Waiting for confirmation</Text>
                   </View>
-                  <Text style={styles.positionBigTitle}>Not in the line yet</Text>
-                  <Text style={styles.positionCaption}>
+                  <Text style={[styles.positionBigTitle, { color: c.ink }]}>Not in the line yet</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>
                     Reception confirms your request, then your position appears here automatically.
                   </Text>
                 </>
               ) : t.status === 'Visited' || t.status === 'Finish' ? (
                 <>
                   <View style={styles.liveRow}>
-                    <Text style={styles.liveLabel}>Visit complete</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Visit complete</Text>
                   </View>
-                  <Text style={styles.positionBigTitle}>Your visit is done</Text>
-                  <Text style={styles.positionCaption}>
+                  <Text style={[styles.positionBigTitle, { color: c.ink }]}>Your visit is done</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>
                     Hope it went well — the doctor’s notes reach you after the visit.
                   </Text>
                 </>
               ) : t.status === 'Canceled' ? (
                 <>
                   <View style={styles.liveRow}>
-                    <Text style={styles.liveLabel}>Cancelled</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Cancelled</Text>
                   </View>
-                  <Text style={styles.positionBigTitle}>This booking was cancelled</Text>
-                  <Text style={styles.positionCaption}>Book again any time — the doctor page is one tap away.</Text>
+                  <Text style={[styles.positionBigTitle, { color: c.ink }]}>This booking was cancelled</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>Book again any time — the doctor page is one tap away.</Text>
                 </>
               ) : eta === null ? (
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={styles.liveLabel}>Confirmed</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Confirmed</Text>
                   </View>
-                  <Text style={styles.positionBig}>—</Text>
-                  <Text style={styles.positionCaption}>
+                  <Text style={[styles.positionBig, { color: c.ink }]}>—</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>
                     Token {t.tokenNumber || '—'}. The live line for this doctor has not started yet.
                   </Text>
                 </>
@@ -200,10 +202,10 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={styles.liveLabel}>Confirmed · token {t.tokenNumber || '—'}</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Confirmed · token {t.tokenNumber || '—'}</Text>
                   </View>
-                  <Text style={styles.positionBigTitle}>The queue hasn’t started</Text>
-                  <Text style={styles.positionCaption}>
+                  <Text style={[styles.positionBigTitle, { color: c.ink }]}>The queue hasn’t started</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>
                     Arrive before your slot time — this screen shows the live line the moment it starts.
                   </Text>
                 </>
@@ -211,10 +213,10 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={styles.liveLabel}>Live · doctor on a short break</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Live · doctor on a short break</Text>
                   </View>
-                  <Text style={styles.positionBig}>#{t.queuePosition || '—'}</Text>
-                  <Text style={styles.positionCaption}>
+                  <Text style={[styles.positionBig, { color: c.ink }]}>#{t.queuePosition || '—'}</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>
                     {peopleAhead > 0 ? `${peopleAhead} ${peopleAhead === 1 ? 'person' : 'people'} ahead of you` : 'You are at the front'} · the
                     queue resumes shortly.
                   </Text>
@@ -223,19 +225,19 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={styles.liveLabel}>Live · you are next</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Live · you are next</Text>
                   </View>
-                  <Text style={styles.positionBig}>NEXT</Text>
-                  <Text style={styles.positionCaption}>Please be at the clinic now — your turn is next.</Text>
+                  <Text style={[styles.positionBig, { color: c.ink }]}>NEXT</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>Please be at the clinic now — your turn is next.</Text>
                 </>
               ) : (
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={styles.liveLabel}>Live · token {t.tokenNumber || '—'}</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Live · token {t.tokenNumber || '—'}</Text>
                   </View>
-                  <Text style={styles.positionBig}>#{t.queuePosition || '—'}</Text>
-                  <Text style={styles.positionCaption}>
+                  <Text style={[styles.positionBig, { color: c.ink }]}>#{t.queuePosition || '—'}</Text>
+                  <Text style={[styles.positionCaption, { color: c.body }]}>
                     {peopleAhead > 0
                       ? `${peopleAhead} ${peopleAhead === 1 ? 'person' : 'people'} ahead of you`
                       : 'You are at the front'}
@@ -246,8 +248,8 @@ export default function QueueScreen() {
               {/* Wait estimate — labeled as an estimate (honesty law 9) */}
               {eta && (eta.state === 'live' || eta.state === 'paused') && typeof eta.low === 'number' ? (
                 <View style={styles.etaRow}>
-                  <Clock3 size={15} color={colors.body} strokeWidth={2} />
-                  <Text style={styles.etaText}>
+                  <Clock3 size={15} color={c.body} strokeWidth={2} />
+                  <Text style={[styles.etaText, { color: c.body }]}>
                     {eta.state === 'paused'
                       ? 'Estimate paused — the doctor is on a break'
                       : eta.high && eta.high > eta.low
@@ -260,30 +262,30 @@ export default function QueueScreen() {
 
             {/* Leave-by advisory — honest, computed, labeled */}
             {leaveBy ? (
-              <View style={styles.leaveByCard}>
-                <Text style={styles.leaveByText}>
+              <View style={[styles.leaveByCard, { backgroundColor: c.warnSoft }]}>
+                <Text style={[styles.leaveByText, { color: c.warn }]}>
                   Reach the clinic by ~{fmtTime(leaveBy)} to be comfortable — estimate, not a promise.
                 </Text>
               </View>
             ) : null}
 
             {/* Doctor + clinic context */}
-            <View style={styles.doctorCard}>
-              <Text style={styles.doctorName} numberOfLines={1}>
+            <View style={[styles.doctorCard, { borderColor: c.hairline }]}>
+              <Text style={[styles.doctorName, { color: c.ink }]} numberOfLines={1}>
                 {t.doctorName ? `Dr. ${t.doctorName.replace(/^Dr\.?\s*/, '')}` : 'Your doctor'}
                 {t.specialization ? ` · ${t.specialization}` : ''}
               </Text>
               {t.hospitalName ? (
-                <Text style={styles.doctorSub} numberOfLines={2}>
+                <Text style={[styles.doctorSub, { color: c.body }]} numberOfLines={2}>
                   {t.hospitalName}
                   {t.hospitalCity ? ` · ${t.hospitalCity}` : ''}
                 </Text>
               ) : null}
-              <Text style={styles.bookingRef}>Booking #{t.bookingId.slice(-6).toUpperCase()}</Text>
+              <Text style={[styles.bookingRef, { color: c.mute }]}>Booking #{t.bookingId.slice(-6).toUpperCase()}</Text>
             </View>
 
             {/* Refresh honesty — timestamp always visible */}
-            <Text style={styles.updatedAt}>
+            <Text style={[styles.updatedAt, { color: c.mute }]}>
               {updatedAt ? `Updated ${fmtTime(updatedAt)}` : ''} · refreshes automatically
             </Text>
             <View style={styles.webRefreshRow}>
@@ -300,7 +302,6 @@ export default function QueueScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
   },
   content: {
     paddingBottom: space.s24,
@@ -319,7 +320,6 @@ const styles = StyleSheet.create({
   },
   topTitle: {
     ...typo.title,
-    color: colors.ink,
     flex: 1,
   },
   topSpacer: {
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
   positionCard: {
     marginHorizontal: space.s16,
     marginTop: space.s12,
-    backgroundColor: colors.canvasSoft,
     borderRadius: radius.card,
     padding: space.s20,
     gap: space.s8,
@@ -344,7 +343,6 @@ const styles = StyleSheet.create({
   },
   liveLabel: {
     ...typo.caption,
-    color: colors.tealLive,
     fontWeight: '600',
     fontVariant: ['tabular-nums'],
   },
@@ -352,16 +350,13 @@ const styles = StyleSheet.create({
     fontSize: 56,
     lineHeight: 60,
     fontWeight: '700',
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
   },
   positionBigTitle: {
     ...typo.display,
-    color: colors.ink,
   },
   positionCaption: {
     ...typo.body,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
   },
   etaRow: {
@@ -372,19 +367,16 @@ const styles = StyleSheet.create({
   },
   etaText: {
     ...typo.body,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
   },
   leaveByCard: {
     marginHorizontal: space.s16,
     marginTop: space.s12,
-    backgroundColor: colors.warnSoft,
     borderRadius: radius.card,
     padding: space.s16,
   },
   leaveByText: {
     ...typo.body,
-    color: colors.warn,
     fontWeight: '600',
     fontVariant: ['tabular-nums'],
   },
@@ -393,27 +385,22 @@ const styles = StyleSheet.create({
     marginTop: space.s12,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     gap: space.s4,
   },
   doctorName: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontSize: 16,
   },
   doctorSub: {
     ...typo.caption,
-    color: colors.body,
   },
   bookingRef: {
     ...typo.caption,
-    color: colors.mute,
     fontVariant: ['tabular-nums'],
   },
   updatedAt: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
     marginTop: space.s20,
     fontVariant: ['tabular-nums'],
@@ -432,7 +419,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typo.body,
-    color: colors.mute,
   },
   errorWrap: {
     flex: 1,
@@ -443,12 +429,10 @@ const styles = StyleSheet.create({
   },
   errorTitle: {
     ...typo.title,
-    color: colors.ink,
     textAlign: 'center',
   },
   errorCaption: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
   },
 })

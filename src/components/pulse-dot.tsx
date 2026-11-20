@@ -5,11 +5,13 @@
 
 import { useEffect, useState } from 'react'
 import { Animated } from 'react-native'
-import { colors, motion } from '@/lib/tokens'
+import { motion } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 export function PulseDot({ size = 8 }: { size?: number }) {
   // Lazy-state Animated.Value — web+native+lint-clean constant identity.
   const [opacity] = useState(() => new Animated.Value(1))
+  const c = useColors()
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
@@ -20,5 +22,5 @@ export function PulseDot({ size = 8 }: { size?: number }) {
     loop.start()
     return () => loop.stop()
   }, [opacity])
-  return <Animated.View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: colors.tealLive, opacity }} />
+  return <Animated.View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: c.tealLive, opacity }} />
 }

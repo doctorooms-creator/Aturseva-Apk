@@ -2,22 +2,26 @@
  * BOTTOM TABS (doc 05 §1): exactly 3 in P0 — Home · Bookings · Profile.
  * Active = ink icon+label; inactive = mute. No color explosion. Labels
  * always (icons-without-labels is a doc 03 don't).
+ *
+ * APK-B4: bar chrome (background · hairline · tints) consumes the live
+ * theme — dark flips with the rest of the app, no light-only surface.
  */
 
 import { Tabs } from 'expo-router'
 import { CalendarCheck2, Home, UserRound } from 'lucide-react-native'
-import { colors } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 export default function TabsLayout() {
+  const c = useColors()
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.ink,
-        tabBarInactiveTintColor: colors.mute,
+        tabBarActiveTintColor: c.ink,
+        tabBarInactiveTintColor: c.mute,
         tabBarStyle: {
-          backgroundColor: colors.canvas,
-          borderTopColor: colors.hairline,
+          backgroundColor: c.canvas,
+          borderTopColor: c.hairline,
         },
         tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
       }}

@@ -7,6 +7,10 @@
  * The first-run redirect fires EXACTLY ONCE (ref-guarded) and the Stack
  * always mounts — a Redirect left in the render tree would loop the
  * router and never let the onboarding screen load.
+ *
+ * APK-B4: the tree is wrapped in ThemeProvider (dark set consumed from
+ * here down — doc 03 §2 note). StatusBar + stack chrome resolve with
+ * the theme so the system chrome never flashes wrong on theme flips.
  */
 
 import { useEffect, useRef, useState } from 'react'
@@ -15,11 +19,21 @@ import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { getOnboardingDone } from '@/lib/storage'
+import { ThemeProvider, useTheme } from '@/lib/theme'
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <Root />
+    </ThemeProvider>
+  )
+}
+
+function Root() {
   const router = useRouter()
+  const { resolved, c } = useTheme()
   // null = still booting (native splash covers); then the flag value.
   const [booted, setBooted] = useState<boolean | null>(null)
   const redirected = useRef(false)
@@ -52,12 +66,12 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="dark" />
+      <StatusBar style={resolved === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
-          contentStyle: { backgroundColor: '#FFFFFF' },
+          contentStyle: { backgroundColor: c.canvas },
         }}
       >
         <Stack.Screen name="(tabs)" />

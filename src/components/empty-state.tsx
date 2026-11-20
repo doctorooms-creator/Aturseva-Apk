@@ -5,7 +5,8 @@
 
 import { StyleSheet, Text, View } from 'react-native'
 import type { LucideIcon } from 'lucide-react-native'
-import { colors, space, type as typo } from '@/lib/tokens'
+import { space, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { Chip } from '@/components/press'
 
 export function EmptyState({
@@ -19,13 +20,14 @@ export function EmptyState({
   caption?: string
   actions?: { label: string; onPress: () => void }[]
 }) {
+  const c = useColors()
   return (
     <View style={styles.wrap}>
-    <View style={styles.iconWrap}>
-        <Icon size={32} color={colors.mute} strokeWidth={1.5} />
+    <View style={[styles.iconWrap, { backgroundColor: c.canvasSoft }]}>
+        <Icon size={32} color={c.mute} strokeWidth={1.5} />
       </View>
-      <Text style={styles.title}>{title}</Text>
-      {caption ? <Text style={styles.caption}>{caption}</Text> : null}
+      <Text style={[styles.title, { color: c.ink }]}>{title}</Text>
+      {caption ? <Text style={[styles.caption, { color: c.body }]}>{caption}</Text> : null}
       {actions && actions.length > 0 ? (
         <View style={styles.actions}>
           {actions.map((a) => (
@@ -47,18 +49,15 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 999,
-    backgroundColor: colors.canvasSoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
     ...typo.title,
-    color: colors.ink,
     textAlign: 'center',
   },
   caption: {
     ...typo.caption,
-    color: colors.body,
     textAlign: 'center',
     maxWidth: 280,
   },

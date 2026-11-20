@@ -9,7 +9,8 @@
 import { useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
-import { colors, space, TOUCH, type as typo } from '@/lib/tokens'
+import { space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { setOnboardingDone, setCity } from '@/lib/storage'
 import { PillButton } from '@/components/press'
 import { CityPickerSheet } from '@/components/city-picker'
@@ -34,6 +35,7 @@ const SLIDES = [
 ] as const
 
 export default function OnboardingScreen() {
+  const c = useColors()
   const router = useRouter()
   const [slide, setSlide] = useState(0)
   const [city, setCityLocal] = useState<string | null>(null)
@@ -48,31 +50,31 @@ export default function OnboardingScreen() {
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       {/* Skip — always visible, always 44px (never unskippable law) */}
       <Pressable onPress={() => finish(city)} hitSlop={8} style={styles.skip} accessibilityRole="button" accessibilityLabel="Skip">
-        <Text style={styles.skipText}>Skip</Text>
+        <Text style={[styles.skipText, { color: c.mute }]}>Skip</Text>
       </Pressable>
 
       <View style={styles.artWrap}>{SLIDES[slide].art}</View>
 
       <View style={styles.textCol}>
-        <Text style={styles.title}>{SLIDES[slide].title}</Text>
-        <Text style={styles.caption}>{SLIDES[slide].caption}</Text>
+        <Text style={[styles.title, { color: c.ink }]}>{SLIDES[slide].title}</Text>
+        <Text style={[styles.caption, { color: c.body }]}>{SLIDES[slide].caption}</Text>
       </View>
 
       {/* Progress dots */}
       <View style={styles.dots}>
         {SLIDES.map((s, i) => (
-          <View key={s.title} style={[styles.dot, i === slide && styles.dotActive]} />
+          <View key={s.title} style={[styles.dot, i === slide && styles.dotActive, { backgroundColor: i === slide ? c.ink : c.hairline }]} />
         ))}
       </View>
 
       {/* City ask — slide 3 bottom, quiet (S2) */}
       <View style={styles.cityBlock}>
         {isLast ? (
-          <Pressable onPress={() => setCitySheetOpen(true)} style={({ pressed }) => [styles.cityField, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Select your city">
-            <Text style={styles.cityFieldText}>{city ?? 'Your city — select one'}</Text>
+          <Pressable onPress={() => setCitySheetOpen(true)} style={({ pressed }) => [styles.cityField, { backgroundColor: c.canvasSoft }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Select your city">
+            <Text style={[styles.cityFieldText, { color: c.body }]}>{city ?? 'Your city — select one'}</Text>
           </Pressable>
         ) : null}
       </View>
@@ -103,7 +105,6 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
     paddingHorizontal: space.s24,
     paddingBottom: space.s24,
     paddingTop: space.s16,
@@ -117,7 +118,6 @@ const styles = StyleSheet.create({
   },
   skipText: {
     ...typo.body,
-    color: colors.mute,
   },
   artWrap: {
     flex: 1,
@@ -130,12 +130,10 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typo.display,
-    color: colors.ink,
     textAlign: 'center',
   },
   caption: {
     ...typo.body,
-    color: colors.body,
     textAlign: 'center',
   },
   dots: {
@@ -148,10 +146,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 999,
-    backgroundColor: colors.hairline,
   },
   dotActive: {
-    backgroundColor: colors.ink,
     width: 20,
   },
   cityBlock: {
@@ -159,7 +155,6 @@ const styles = StyleSheet.create({
   },
   cityField: {
     borderRadius: 999,
-    backgroundColor: colors.canvasSoft,
     minHeight: 48,
     alignItems: 'center',
     justifyContent: 'center',
@@ -167,6 +162,5 @@ const styles = StyleSheet.create({
   },
   cityFieldText: {
     ...typo.body,
-    color: colors.body,
   },
 })

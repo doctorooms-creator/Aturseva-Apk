@@ -19,7 +19,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Platform, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChevronLeft, XCircle } from 'lucide-react-native'
-import { colors, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { cancelPublicBooking, getBookingToken, type TokenState } from '@/lib/api'
 import { getBookingPhone } from '@/lib/storage'
 import { Chip, PillButton } from '@/components/press'
@@ -48,6 +49,7 @@ function dateLabel(iso: string): string {
 type Live = 'Pending' | 'Approve'
 
 export default function TokenScreen() {
+  const c = useColors()
   const router = useRouter()
   const params = useLocalSearchParams<{ id?: string; new?: string }>()
   const bookingId = typeof params.id === 'string' ? params.id : ''
@@ -143,9 +145,9 @@ export default function TokenScreen() {
 
   if (!bookingId) {
     return (
-      <View style={styles.screen}>
+      <View style={[styles.screen, { backgroundColor: c.canvas }]}>
         <View style={styles.errorWrap}>
-          <Text style={styles.errorTitle}>Booking not found.</Text>
+          <Text style={[styles.errorTitle, { color: c.ink }]}>Booking not found.</Text>
           <Chip label="Back to Home" onPress={() => void router.replace('/')} />
         </View>
       </View>
@@ -153,13 +155,13 @@ export default function TokenScreen() {
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
         refreshControl={
           Platform.OS === 'web' ? undefined : (
-            <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void fetchToken() }} tintColor="#0A0A0A" />
+            <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void fetchToken() }} tintColor={c.ink} />
           )
         }
       >
@@ -168,11 +170,11 @@ export default function TokenScreen() {
           <View style={styles.backBtn}>
             <Chip
               label="Back"
-              leading={<ChevronLeft size={16} color={colors.ink} strokeWidth={2} />}
+              leading={<ChevronLeft size={16} color={c.ink} strokeWidth={2} />}
               onPress={() => void (celebrate ? router.replace('/') : router.back())}
             />
           </View>
-          <Text style={styles.topTitle} numberOfLines={1}>
+          <Text style={[styles.topTitle, { color: c.ink }]} numberOfLines={1}>
             {celebrate ? 'Booked' : 'Your booking'}
           </Text>
           <View style={styles.topSpacer} />
@@ -187,48 +189,48 @@ export default function TokenScreen() {
 
         {loading ? (
           <View style={styles.centerCol}>
-            <Text style={styles.loadingText}>Loading your booking…</Text>
+            <Text style={[styles.loadingText, { color: c.mute }]}>Loading your booking…</Text>
           </View>
         ) : !t ? (
           <View style={styles.errorWrap}>
-            <Text style={styles.errorTitle}>Could not load this booking.</Text>
-            <Text style={styles.errorCaption}>Check your connection and try again.</Text>
+            <Text style={[styles.errorTitle, { color: c.ink }]}>Could not load this booking.</Text>
+            <Text style={[styles.errorCaption, { color: c.mute }]}>Check your connection and try again.</Text>
             <Chip label="Try again" onPress={() => { setLoading(true); void fetchToken() }} />
           </View>
         ) : (
           <>
             {/* Booking id caption */}
-            <Text style={styles.apptCaption}>Booking #{t.bookingId.slice(-6).toUpperCase()}</Text>
+            <Text style={[styles.apptCaption, { color: c.mute }]}>Booking #{t.bookingId.slice(-6).toUpperCase()}</Text>
 
             {/* THE TOKEN — protagonist: largest content on the screen */}
             {t.status === 'Canceled' ? (
-              <View style={styles.tokenCard}>
-                <Text style={styles.tokenPendingTitle}>No token — cancelled</Text>
-                <Text style={styles.tokenPendingCaption}>
+              <View style={[styles.tokenCard, { backgroundColor: c.canvasSoft }]}>
+                <Text style={[styles.tokenPendingTitle, { color: c.ink }]}>No token — cancelled</Text>
+                <Text style={[styles.tokenPendingCaption, { color: c.body }]}>
                   This booking was cancelled, so no token was assigned. Book again any time — it takes 3 taps.
                 </Text>
               </View>
             ) : tokenConfirmed ? (
-              <View style={styles.tokenCard}>
+              <View style={[styles.tokenCard, { backgroundColor: c.canvasSoft }]}>
                 <View style={styles.tokenLiveRow}>
                   <PulseDot size={10} />
-                  <Text style={styles.tokenLiveLabel}>Turn confirmed</Text>
+                  <Text style={[styles.tokenLiveLabel, { color: c.tealLive }]}>Turn confirmed</Text>
                 </View>
-                <Text style={styles.tokenNumber} adjustsFontSizeToFit minimumFontScale={0.6}>
+                <Text style={[styles.tokenNumber, { color: c.ink }]} adjustsFontSizeToFit minimumFontScale={0.6}>
                   {t.tokenNumber}
                 </Text>
-                <Text style={styles.tokenOrder}>
+                <Text style={[styles.tokenOrder, { color: c.body }]}>
                   Token {t.tokenNumber} · position {t.queuePosition > 0 ? `#${t.queuePosition}` : '—'}
                 </Text>
               </View>
             ) : (
-              <View style={styles.tokenCard}>
+              <View style={[styles.tokenCard, { backgroundColor: c.canvasSoft }]}>
                 <View style={styles.tokenLiveRow}>
                   <PulseDot size={10} />
-                  <Text style={styles.tokenLiveLabel}>Request sent</Text>
+                  <Text style={[styles.tokenLiveLabel, { color: c.tealLive }]}>Request sent</Text>
                 </View>
-                <Text style={styles.tokenPendingTitle}>Token being assigned</Text>
-                <Text style={styles.tokenPendingCaption}>
+                <Text style={[styles.tokenPendingTitle, { color: c.ink }]}>Token being assigned</Text>
+                <Text style={[styles.tokenPendingCaption, { color: c.body }]}>
                   Reception confirms your request and assigns the token — this screen updates
                   automatically. No need to refresh.
                 </Text>
@@ -244,11 +246,11 @@ export default function TokenScreen() {
               <TimelineStep label="Completed" done={t.status === 'Visited' || t.status === 'Finish'} />
             </View>
             {t.status === 'Canceled' ? (
-              <Text style={styles.canceledBanner}>This booking was cancelled.</Text>
+              <Text style={[styles.canceledBanner, { color: c.error }]}>This booking was cancelled.</Text>
             ) : null}
 
             {/* Visit facts — everything, one card */}
-            <View style={styles.factsCard}>
+            <View style={[styles.factsCard, { borderColor: c.hairline }]}>
               <FactRow label="Doctor" value={t.doctorName ? `Dr. ${t.doctorName.replace(/^Dr\.?\s*/, '')}` : '—'} />
               {t.hospitalName ? <FactRow label="Clinic" value={t.hospitalName} /> : null}
               <FactRow label="Date" value={dateLabel(t.date)} />
@@ -291,14 +293,14 @@ export default function TokenScreen() {
               <View style={styles.cancelRow}>
                 <Chip
                   label="Cancel booking"
-                  leading={<XCircle size={15} color={colors.error} strokeWidth={2} />}
+                  leading={<XCircle size={15} color={c.error} strokeWidth={2} />}
                   onPress={() => setCancelOpen(true)}
                 />
               </View>
             ) : null}
 
             {/* Freshness honesty — last-updated stamp */}
-            <Text style={styles.updatedAt}>
+            <Text style={[styles.updatedAt, { color: c.mute }]}>
               {updatedAt
                 ? `Updated ${new Date(updatedAt).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })}`
                 : ''}
@@ -311,8 +313,8 @@ export default function TokenScreen() {
       {/* Cancel confirm sheet — reason optional, destructive confirmed */}
       <BottomSheet visible={cancelOpen} onClose={() => setCancelOpen(false)} accessibilityLabel="Cancel booking">
         <GrabHandle />
-        <Text style={styles.sheetTitle}>Cancel this appointment?</Text>
-        <Text style={styles.sheetBody}>
+        <Text style={[styles.sheetTitle, { color: c.ink }]}>Cancel this appointment?</Text>
+        <Text style={[styles.sheetBody, { color: c.body }]}>
           The slot goes back to the pool for other patients. You can book again any time. No fee is
           charged either way — payment happens only at the clinic.
         </Text>
@@ -320,13 +322,13 @@ export default function TokenScreen() {
           value={cancelReason}
           onChangeText={setCancelReason}
           placeholder="Reason (optional) — helps the clinic"
-          placeholderTextColor={colors.mute}
+          placeholderTextColor={c.mute}
           autoCorrect={false}
           underlineColorAndroid="transparent"
           accessibilityLabel="Cancellation reason"
-          style={styles.reasonInput}
+          style={[styles.reasonInput, { borderColor: c.hairline, backgroundColor: c.canvas, color: c.ink }]}
         />
-        {cancelError ? <Text style={styles.sheetError}>{cancelError}</Text> : null}
+        {cancelError ? <Text style={[styles.sheetError, { color: c.error }]}>{cancelError}</Text> : null}
         <View style={styles.sheetActions}>
           <PillButton label="Keep my booking" height={52} onPress={() => setCancelOpen(false)} style={styles.sheetBtn} />
           <PillButton
@@ -334,7 +336,7 @@ export default function TokenScreen() {
             height={52}
             loading={cancelling}
             onPress={() => void doCancel()}
-            style={[styles.sheetBtn, styles.cancelBtn]}
+            style={[styles.sheetBtn, { backgroundColor: c.error }]}
           />
         </View>
       </BottomSheet>
@@ -343,10 +345,11 @@ export default function TokenScreen() {
 }
 
 function FactRow({ label, value }: { label: string; value: string }) {
+  const c = useColors()
   return (
     <View style={styles.factRow}>
-      <Text style={styles.factLabel}>{label}</Text>
-      <Text style={styles.factValue} numberOfLines={2}>
+      <Text style={[styles.factLabel, { color: c.body }]}>{label}</Text>
+      <Text style={[styles.factValue, { color: c.ink }]} numberOfLines={2}>
         {value}
       </Text>
     </View>
@@ -354,22 +357,29 @@ function FactRow({ label, value }: { label: string; value: string }) {
 }
 
 function TimelineStep({ label, done }: { label: string; done: boolean }) {
+  const c = useColors()
   return (
     <View style={styles.timelineStep}>
-      <View style={[styles.timelineDot, done && styles.timelineDotDone]} />
-      <Text style={[styles.timelineLabel, !done && styles.timelineLabelPending]}>{label}</Text>
+      <View
+        style={[
+          styles.timelineDot,
+          { borderColor: c.mute, backgroundColor: c.canvas },
+          done && { borderColor: c.tealLive, backgroundColor: c.tealLive },
+        ]}
+      />
+      <Text style={[styles.timelineLabel, { color: c.ink }, !done && styles.timelineLabelPending]}>{label}</Text>
     </View>
   )
 }
 
 function TimelineLine({ done }: { done: boolean }) {
-  return <View style={[styles.timelineLine, done && styles.timelineLineDone]} />
+  const c = useColors()
+  return <View style={[styles.timelineLine, { backgroundColor: c.hairline }, done && { backgroundColor: c.tealLive }]} />
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
   },
   content: {
     paddingBottom: space.s24,
@@ -388,7 +398,6 @@ const styles = StyleSheet.create({
   },
   topTitle: {
     ...typo.title,
-    color: colors.ink,
     flex: 1,
   },
   topSpacer: {
@@ -400,7 +409,6 @@ const styles = StyleSheet.create({
   },
   apptCaption: {
     ...typo.caption,
-    color: colors.mute,
     marginHorizontal: space.s16,
     marginTop: space.s4,
     fontVariant: ['tabular-nums'],
@@ -408,7 +416,6 @@ const styles = StyleSheet.create({
   tokenCard: {
     marginHorizontal: space.s16,
     marginTop: space.s12,
-    backgroundColor: colors.canvasSoft,
     borderRadius: radius.card,
     padding: space.s20,
     gap: space.s8,
@@ -420,29 +427,24 @@ const styles = StyleSheet.create({
   },
   tokenLiveLabel: {
     ...typo.caption,
-    color: colors.tealLive,
     fontWeight: '600',
   },
   tokenNumber: {
     fontSize: 44,
     lineHeight: 48,
     fontWeight: '700',
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
     letterSpacing: 0.5,
   },
   tokenOrder: {
     ...typo.caption,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
   },
   tokenPendingTitle: {
     ...typo.display,
-    color: colors.ink,
   },
   tokenPendingCaption: {
     ...typo.body,
-    color: colors.body,
   },
   timelineCard: {
     marginHorizontal: space.s16,
@@ -462,34 +464,21 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 999,
     borderWidth: 1.5,
-    borderColor: colors.mute,
-    backgroundColor: colors.canvas,
-  },
-  timelineDotDone: {
-    backgroundColor: colors.tealLive,
-    borderColor: colors.tealLive,
   },
   timelineLabel: {
     ...typo.caption,
-    color: colors.ink,
     fontWeight: '600',
   },
   timelineLabelPending: {
-    color: colors.mute,
     fontWeight: '400',
   },
   timelineLine: {
     flex: 1,
     height: 2,
-    backgroundColor: colors.hairline,
     marginHorizontal: space.s4,
-  },
-  timelineLineDone: {
-    backgroundColor: colors.tealLive,
   },
   canceledBanner: {
     ...typo.caption,
-    color: colors.error,
     marginHorizontal: space.s16,
     marginTop: space.s4,
     fontWeight: '600',
@@ -500,7 +489,6 @@ const styles = StyleSheet.create({
     marginTop: space.s12,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     gap: space.s8,
   },
@@ -513,11 +501,9 @@ const styles = StyleSheet.create({
   },
   factLabel: {
     ...typo.body,
-    color: colors.body,
   },
   factValue: {
     ...typo.bodyStrong,
-    color: colors.ink,
     flex: 1,
     textAlign: 'right',
     fontVariant: ['tabular-nums'],
@@ -536,7 +522,6 @@ const styles = StyleSheet.create({
   },
   updatedAt: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
     marginTop: space.s20,
     fontVariant: ['tabular-nums'],
@@ -551,7 +536,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typo.body,
-    color: colors.mute,
   },
   errorWrap: {
     flex: 1,
@@ -562,22 +546,18 @@ const styles = StyleSheet.create({
   },
   errorTitle: {
     ...typo.title,
-    color: colors.ink,
     textAlign: 'center',
   },
   errorCaption: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
   },
   sheetTitle: {
     ...typo.title,
-    color: colors.ink,
     paddingHorizontal: space.s4,
   },
   sheetBody: {
     ...typo.body,
-    color: colors.body,
     marginTop: space.s8,
     marginBottom: space.s12,
     paddingHorizontal: space.s4,
@@ -586,17 +566,13 @@ const styles = StyleSheet.create({
     minHeight: 56,
     borderRadius: radius.input,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
-    backgroundColor: colors.canvas,
     paddingHorizontal: space.s16,
     paddingVertical: space.s12,
     ...typo.body,
-    color: colors.ink,
     textAlignVertical: 'top',
   },
   sheetError: {
     ...typo.caption,
-    color: colors.error,
     marginTop: space.s8,
     fontWeight: '600',
   },
@@ -607,8 +583,5 @@ const styles = StyleSheet.create({
   },
   sheetBtn: {
     flex: 1,
-  },
-  cancelBtn: {
-    backgroundColor: colors.error,
   },
 })

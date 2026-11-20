@@ -6,7 +6,8 @@
 
 import { type ReactNode } from 'react'
 import { Modal, Pressable, StyleSheet, View } from 'react-native'
-import { colors, elevation, radius, space } from '@/lib/tokens'
+import { elevation, radius, space } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 export function BottomSheet({
   visible,
@@ -19,18 +20,20 @@ export function BottomSheet({
   children: ReactNode
   accessibilityLabel?: string
 }) {
+  const c = useColors()
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} accessibilityLabel={accessibilityLabel}>
       <View style={styles.scrim}>
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Close sheet" />
-        <View style={styles.sheet}>{children}</View>
+        <View style={[styles.sheet, { backgroundColor: c.canvas }]}>{children}</View>
       </View>
     </Modal>
   )
 }
 
 export function GrabHandle() {
-  return <View style={styles.handle} />
+  const c = useColors()
+  return <View style={[styles.handle, { backgroundColor: c.hairline }]} />
 }
 
 const styles = StyleSheet.create({
@@ -40,7 +43,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   sheet: {
-    backgroundColor: colors.canvas,
     borderTopLeftRadius: radius.sheetTop,
     borderTopRightRadius: radius.sheetTop,
     paddingHorizontal: space.s16,
@@ -53,7 +55,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 4,
     borderRadius: 999,
-    backgroundColor: colors.hairline,
     marginTop: space.s4,
     marginBottom: space.s12,
   },

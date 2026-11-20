@@ -17,7 +17,8 @@ import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, Text
 import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
 import { ChevronRight, MapPin } from 'lucide-react-native'
-import { colors, space, TOUCH, type as typo } from '@/lib/tokens'
+import { space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { getDoctors, getStats } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { getCity, getRecentSearches, pushRecentSearch, setCity } from '@/lib/storage'
@@ -58,6 +59,7 @@ function symptomRowsFor(query: string): SymptomRow[] {
 }
 
 export default function HomeScreen() {
+  const c = useColors()
   const router = useRouter()
 
   // Live data (doc 08 #1/#8): stats 5-min SWR · doctors rail SWR.
@@ -151,12 +153,12 @@ export default function HomeScreen() {
   return (
     <>
     <ScrollView
-      style={styles.screen}
+      style={[styles.screen, { backgroundColor: c.canvas }]}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
       refreshControl={
         Platform.OS === 'web' ? undefined : (
-          <RefreshControl refreshing={rail.refreshing || stats.refreshing} onRefresh={refreshAll} tintColor="#0A0A0A" />
+          <RefreshControl refreshing={rail.refreshing || stats.refreshing} onRefresh={refreshAll} tintColor={c.ink} />
         )
       }
     >
@@ -197,7 +199,7 @@ export default function HomeScreen() {
         {stats.data ? (
           <>
             <PulseDot size={8} />
-            <Text style={styles.trustText}>
+            <Text style={[styles.trustText, { color: c.body }]}>
               {stats.data.doctors} doctors · {stats.data.hospitals} hospitals · {stats.data.bookings} visits booked — live
             </Text>
           </>
@@ -208,10 +210,10 @@ export default function HomeScreen() {
 
       {/* Doctor rail — LIVE cards */}
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Doctors</Text>
-        <View style={styles.liveChip}>
+        <Text style={[styles.sectionTitle, { color: c.ink }]}>Doctors</Text>
+        <View style={[styles.liveChip, { backgroundColor: c.tealLiveSoft }]}>
           <PulseDot size={6} />
-          <Text style={styles.liveText}>live</Text>
+          <Text style={[styles.liveText, { color: c.tealLive }]}>live</Text>
         </View>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
@@ -223,7 +225,7 @@ export default function HomeScreen() {
           </>
         ) : rail.data && rail.data.doctors.length === 0 ? (
           <View style={styles.railEmpty}>
-            <Text style={styles.railEmptyText}>No live doctors right now — check back in a little while.</Text>
+            <Text style={[styles.railEmptyText, { color: c.body }]}>No live doctors right now — check back in a little while.</Text>
           </View>
         ) : (
           rail.data?.doctors.map((d) => (
@@ -239,10 +241,10 @@ export default function HomeScreen() {
       {/* Quiet footer: city + version + legal (S3 law: ≤1 line each) */}
       <View style={styles.footer}>
         <Pressable style={styles.cityRow} onPress={() => setCitySheetOpen(true)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Change city">
-          <MapPin size={13} color={colors.mute} strokeWidth={2} />
-          <Text style={styles.cityText}>{city ?? 'Select city'} · change</Text>
+          <MapPin size={13} color={c.mute} strokeWidth={2} />
+          <Text style={[styles.cityText, { color: c.body }]}>{city ?? 'Select city'} · change</Text>
         </Pressable>
-        <Text style={styles.versionText}>Aturseva v{version} · APK-B2</Text>
+        <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B2</Text>
         <QuietAction
           label="Privacy · Terms"
           onPress={() => {
@@ -262,46 +264,46 @@ export default function HomeScreen() {
         <>
           <Pressable style={({ pressed }) => [styles.suggestRow, pressed && { opacity: 0.7 }]} onPress={() => applyQuery(query)} accessibilityRole="button">
             <View style={styles.suggestRowMain}>
-              <Text style={styles.suggestRowText} numberOfLines={1}>
+              <Text style={[styles.suggestRowText, { color: c.ink }]} numberOfLines={1}>
                 Search for “{query.trim()}”
               </Text>
-              <Text style={styles.suggestRowCaption} numberOfLines={1}>
+              <Text style={[styles.suggestRowCaption, { color: c.body }]} numberOfLines={1}>
                 Doctors matching this word or name
               </Text>
             </View>
-            <ChevronRight size={16} color={colors.mute} strokeWidth={2} />
+            <ChevronRight size={16} color={c.mute} strokeWidth={2} />
           </Pressable>
           {symptomRows.length === 0 ? (
-            <Text style={styles.suggestHonest}>No symptom match — searching by doctor name still works.</Text>
+            <Text style={[styles.suggestHonest, { color: c.body }]}>No symptom match — searching by doctor name still works.</Text>
           ) : null}
         </>
       ) : null}
       {query.trim().length === 0 && recents.length > 0 ? (
-        <Text style={styles.suggestCaption}>Recent</Text>
+        <Text style={[styles.suggestCaption, { color: c.mute }]}>Recent</Text>
       ) : null}
       {query.trim().length === 0
         ? recents.map((r) => (
             <Pressable key={`recent-${r}`} style={({ pressed }) => [styles.suggestRow, pressed && { opacity: 0.7 }]} onPress={() => applyQuery(r)} accessibilityRole="button">
-              <Text style={styles.suggestRowText} numberOfLines={1}>
+              <Text style={[styles.suggestRowText, { color: c.ink }]} numberOfLines={1}>
                 {r}
               </Text>
-              <ChevronRight size={16} color={colors.mute} strokeWidth={2} />
+              <ChevronRight size={16} color={c.mute} strokeWidth={2} />
             </Pressable>
           ))
         : null}
-      {query.trim().length === 0 ? <Text style={styles.suggestCaption}>Search by problem</Text> : null}
+      {query.trim().length === 0 ? <Text style={[styles.suggestCaption, { color: c.mute }]}>Search by problem</Text> : null}
       {query.trim().length === 0
         ? symptomRows.map((row) => (
             <Pressable key={`sym-${row.term}`} style={({ pressed }) => [styles.suggestRow, pressed && { opacity: 0.7 }]} onPress={() => applyQuery(row.term)} accessibilityRole="button">
               <View style={styles.suggestRowMain}>
-                <Text style={styles.suggestRowText} numberOfLines={1}>
+                <Text style={[styles.suggestRowText, { color: c.ink }]} numberOfLines={1}>
                   {row.specialtyNames.join(' · ')}
                 </Text>
-                <Text style={styles.suggestRowCaption} numberOfLines={1}>
+                <Text style={[styles.suggestRowCaption, { color: c.body }]} numberOfLines={1}>
                   Treats {row.term}
                 </Text>
               </View>
-              <ChevronRight size={16} color={colors.mute} strokeWidth={2} />
+              <ChevronRight size={16} color={c.mute} strokeWidth={2} />
             </Pressable>
           ))
         : null}
@@ -314,7 +316,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: colors.canvas,
     flex: 1,
   },
   content: {
@@ -343,7 +344,6 @@ const styles = StyleSheet.create({
   },
   trustText: {
     ...typo.caption,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
     flex: 1,
   },
@@ -357,20 +357,17 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typo.title,
-    color: colors.ink,
   },
   liveChip: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: colors.tealLiveSoft,
     borderRadius: 999,
     paddingHorizontal: space.s8,
     paddingVertical: 2,
   },
   liveText: {
     ...typo.caption,
-    color: colors.tealLive,
     fontWeight: '600',
   },
   railRow: {
@@ -382,7 +379,6 @@ const styles = StyleSheet.create({
   },
   railEmptyText: {
     ...typo.body,
-    color: colors.body,
   },
   footer: {
     marginTop: space.s32,
@@ -398,24 +394,20 @@ const styles = StyleSheet.create({
   },
   cityText: {
     ...typo.caption,
-    color: colors.body,
   },
   versionText: {
     ...typo.caption,
-    color: colors.mute,
   },
   safeBottom: {
     height: space.s24,
   },
   suggestHonest: {
     ...typo.body,
-    color: colors.body,
     paddingHorizontal: space.s4,
     marginBottom: space.s8,
   },
   suggestCaption: {
     ...typo.caption,
-    color: colors.mute,
     marginTop: space.s12,
     marginBottom: space.s4,
     paddingHorizontal: space.s4,
@@ -433,11 +425,9 @@ const styles = StyleSheet.create({
   },
   suggestRowText: {
     ...typo.bodyStrong,
-    color: colors.ink,
     flex: 1,
   },
   suggestRowCaption: {
     ...typo.caption,
-    color: colors.body,
   },
 })

@@ -7,7 +7,8 @@
 
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native'
 import { Check, MapPin } from 'lucide-react-native'
-import { colors, space, TOUCH, type as typo } from '@/lib/tokens'
+import { space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 
 export const TOP_CITIES = [
@@ -44,11 +45,12 @@ export function CityPickerSheet({
   onClose: () => void
   onPick: (city: string | null) => void
 }) {
+  const c = useColors()
   return (
     <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="City picker">
       <GrabHandle />
-      <Text style={styles.title}>Your city</Text>
-      <Text style={styles.caption}>Doctor lists and suggestions adapt to your city.</Text>
+      <Text style={[styles.title, { color: c.ink }]}>Your city</Text>
+      <Text style={[styles.caption, { color: c.body }]}>Doctor lists and suggestions adapt to your city.</Text>
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
         {TOP_CITIES.map((city) => (
           <Pressable
@@ -58,14 +60,14 @@ export function CityPickerSheet({
             accessibilityRole="button"
             accessibilityLabel={city}
           >
-            <MapPin size={18} color={current === city ? colors.tealLive : colors.body} strokeWidth={2} />
-            <Text style={[styles.rowText, current === city && { color: colors.ink, fontWeight: '600' }]}>{city}</Text>
-            {current === city ? <Check size={18} color={colors.tealLive} strokeWidth={2.5} /> : null}
+            <MapPin size={18} color={current === city ? c.tealLive : c.body} strokeWidth={2} />
+            <Text style={[styles.rowText, current === city && { color: c.ink, fontWeight: '600' }]}>{city}</Text>
+            {current === city ? <Check size={18} color={c.tealLive} strokeWidth={2.5} /> : null}
           </Pressable>
         ))}
       </ScrollView>
       <Pressable style={({ pressed }) => [styles.laterRow, pressed && { opacity: 0.7 }]} onPress={() => onPick(null)} accessibilityRole="button">
-        <Text style={styles.laterText}>I will choose later</Text>
+        <Text style={[styles.laterText, { color: c.mute }]}>I will choose later</Text>
       </Pressable>
     </BottomSheet>
   )
@@ -74,12 +76,10 @@ export function CityPickerSheet({
 const styles = StyleSheet.create({
   title: {
     ...typo.title,
-    color: colors.ink,
     paddingHorizontal: space.s4,
   },
   caption: {
     ...typo.caption,
-    color: colors.body,
     marginTop: 2,
     paddingHorizontal: space.s4,
     marginBottom: space.s12,
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
   },
   rowText: {
     ...typo.body,
-    color: colors.body,
     flex: 1,
   },
   laterRow: {
@@ -107,6 +106,5 @@ const styles = StyleSheet.create({
   },
   laterText: {
     ...typo.caption,
-    color: colors.mute,
   },
 })

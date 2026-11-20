@@ -5,7 +5,8 @@
 
 import { type ReactNode } from 'react'
 import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native'
-import { colors, motion, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { motion, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 interface PillButtonProps {
   label: string
@@ -29,11 +30,12 @@ export function PillButton({
   height = 52,
   style,
 }: PillButtonProps) {
+  const c = useColors()
   const base: ViewStyle =
     variant === 'primary'
-      ? { backgroundColor: colors.ink, height }
+      ? { backgroundColor: c.ink, height }
       : variant === 'secondary'
-        ? { backgroundColor: colors.canvasSoft, height }
+        ? { backgroundColor: c.canvasSoft, height }
         : { backgroundColor: 'transparent', height: TOUCH }
   return (
     <Pressable
@@ -54,9 +56,10 @@ export function PillButton({
       <Text
         style={[
           typo.bodyStrong,
-          variant === 'primary' && { color: colors.canvas },
-          variant === 'secondary' && { color: colors.ink },
-          variant === 'quiet' && { color: colors.body },
+          {
+            color:
+              variant === 'primary' ? c.canvas : variant === 'quiet' ? c.body : c.ink,
+          },
         ]}
         numberOfLines={1}
       >
@@ -76,6 +79,7 @@ interface ChipProps {
 }
 
 export function Chip({ label, onPress, selected = false, disabled = false, leading }: ChipProps) {
+  const c = useColors()
   return (
     <Pressable
       onPress={onPress}
@@ -86,14 +90,14 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
       hitSlop={6}
       style={({ pressed }) => [
         styles.chip,
-        selected ? styles.chipSelected : styles.chipDefault,
+        { backgroundColor: selected ? c.ink : c.canvasSoft },
         disabled && styles.disabled,
         pressed && styles.pressed,
       ]}
     >
       {leading}
       <Text
-        style={[typo.body, styles.chipText, selected && { color: colors.canvas }]}
+        style={[typo.body, styles.chipText, { color: selected ? c.canvas : c.ink }]}
         numberOfLines={1}
       >
         {label}
@@ -104,9 +108,10 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
 
 /** Quiet text row action (share/legal links) — still ≥44px hit. */
 export function QuietAction({ label, onPress }: { label: string; onPress?: () => void }) {
+  const c = useColors()
   return (
     <Pressable onPress={onPress} hitSlop={8} style={styles.quietWrap} accessibilityRole="button">
-      <Text style={[typo.caption, { color: colors.body }]} numberOfLines={1}>
+      <Text style={[typo.caption, { color: c.body }]} numberOfLines={1}>
         {label}
       </Text>
     </Pressable>
@@ -140,15 +145,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: space.s8,
   },
-  chipDefault: {
-    backgroundColor: colors.canvasSoft,
-  },
-  chipSelected: {
-    backgroundColor: colors.ink,
-  },
-  chipText: {
-    color: colors.ink,
-  },
+  chipText: {},
   quietWrap: {
     minHeight: TOUCH,
     alignItems: 'center',

@@ -9,7 +9,8 @@
 
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { Star } from 'lucide-react-native'
-import { colors, radius, space, type as typo } from '@/lib/tokens'
+import { radius, space, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import type { DoctorCard } from '@/lib/api'
 import { Avatar } from '@/components/avatar'
 import { Chip } from '@/components/press'
@@ -23,32 +24,37 @@ export function ListingCard({
   onOpen: () => void
   onBook: () => void
 }) {
+  const c = useColors()
   const hasRating = doctor.rating > 0 && doctor.ratingCount > 0
   return (
     <Pressable
       onPress={onOpen}
       accessibilityRole="button"
       accessibilityLabel={`${doctor.name}, ${doctor.specialization}`}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.card,
+        { backgroundColor: c.canvas, borderColor: c.hairline },
+        pressed && styles.pressed,
+      ]}
     >
       <Avatar name={doctor.name} size={56} />
       <View style={styles.col}>
-        <Text style={styles.name} numberOfLines={1}>
+        <Text style={[styles.name, { color: c.ink }]} numberOfLines={1}>
           {doctor.name}
         </Text>
-        <Text style={styles.spec} numberOfLines={1}>
+        <Text style={[styles.spec, { color: c.body }]} numberOfLines={1}>
           {doctor.specialization || 'Doctor'}
         </Text>
-        <Text style={styles.city} numberOfLines={1}>
+        <Text style={[styles.city, { color: c.mute }]} numberOfLines={1}>
           {[doctor.city, doctor.state].filter(Boolean).join(', ')}
         </Text>
         <View style={styles.metaRow}>
-          <Text style={styles.fee}>₹{doctor.fees.toLocaleString('en-IN')}</Text>
-          <Text style={styles.feeCaption}>visit</Text>
+          <Text style={[styles.fee, { color: c.ink }]}>₹{doctor.fees.toLocaleString('en-IN')}</Text>
+          <Text style={[styles.feeCaption, { color: c.mute }]}>visit</Text>
           {hasRating ? (
             <View style={styles.ratingChip}>
-              <Star size={11} color={colors.ink} strokeWidth={2.4} fill={colors.ink} />
-              <Text style={styles.ratingText}>
+              <Star size={11} color={c.ink} strokeWidth={2.4} fill={c.ink} />
+              <Text style={[styles.ratingText, { color: c.body }]}>
                 {doctor.rating.toFixed(1)} · {doctor.ratingCount}
               </Text>
             </View>
@@ -62,13 +68,14 @@ export function ListingCard({
 
 /** One listing-card-shaped skeleton (mirrors the final layout). */
 export function ListingCardSkeleton() {
+  const c = useColors()
   return (
-    <View style={[styles.card, styles.skeletonCard]}>
-      <View style={[styles.skeletonAvatar, { backgroundColor: colors.canvasSoft }]} />
+    <View style={[styles.card, styles.skeletonCard, { backgroundColor: c.canvas, borderColor: c.hairline }]}>
+      <View style={[styles.skeletonAvatar, { backgroundColor: c.canvasSoft }]} />
       <View style={styles.skeletonCol}>
-        <View style={styles.skeletonLine} />
-        <View style={[styles.skeletonLine, { width: '55%' }]} />
-        <View style={[styles.skeletonLine, { width: '40%' }]} />
+        <View style={[styles.skeletonLine, { backgroundColor: c.canvasSoft }]} />
+        <View style={[styles.skeletonLine, { width: '55%', backgroundColor: c.canvasSoft }]} />
+        <View style={[styles.skeletonLine, { width: '40%', backgroundColor: c.canvasSoft }]} />
       </View>
     </View>
   )
@@ -77,9 +84,7 @@ export function ListingCardSkeleton() {
 const styles = StyleSheet.create({
   card: {
     borderRadius: radius.card,
-    backgroundColor: colors.canvas,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -96,15 +101,12 @@ const styles = StyleSheet.create({
   },
   name: {
     ...typo.bodyStrong,
-    color: colors.ink,
   },
   spec: {
     ...typo.caption,
-    color: colors.body,
   },
   city: {
     ...typo.caption,
-    color: colors.mute,
   },
   metaRow: {
     flexDirection: 'row',
@@ -114,13 +116,11 @@ const styles = StyleSheet.create({
   },
   fee: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
     fontSize: 16,
   },
   feeCaption: {
     ...typo.caption,
-    color: colors.mute,
   },
   ratingChip: {
     flexDirection: 'row',
@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     ...typo.caption,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
   },
   skeletonCard: {
@@ -148,6 +147,5 @@ const styles = StyleSheet.create({
     height: 12,
     width: '75%',
     borderRadius: radius.pill,
-    backgroundColor: colors.canvasSoft,
   },
 })

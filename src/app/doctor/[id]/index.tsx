@@ -15,7 +15,8 @@ import { useState } from 'react'
 import { Image, Platform, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChevronLeft, BadgeCheck, Star } from 'lucide-react-native'
-import { colors, radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 import { getDoctor, type ScheduleRow } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { Chip, PillButton } from '@/components/press'
@@ -28,6 +29,7 @@ import { SlotSheet } from '@/components/booking/slot-sheet'
 const WEEK_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 export default function DoctorProfileScreen() {
+  const c = useColors()
   const router = useRouter()
   const { id } = useLocalSearchParams<{ id?: string }>()
   const doctorId = typeof id === 'string' ? id : ''
@@ -44,8 +46,8 @@ export default function DoctorProfileScreen() {
 
   if (!doctorId) {
     return (
-      <View style={styles.screen}>
-        <Text style={styles.errorText}>Doctor not found.</Text>
+      <View style={[styles.screen, { backgroundColor: c.canvas }]}>
+        <Text style={[styles.errorText, { color: c.ink }]}>Doctor not found.</Text>
         <View style={styles.errorAction}>
           <Chip label="Back to Home" onPress={() => void router.replace('/')} />
         </View>
@@ -62,7 +64,7 @@ export default function DoctorProfileScreen() {
         showsVerticalScrollIndicator={false}
         refreshControl={
           Platform.OS === 'web' ? undefined : (
-            <RefreshControl refreshing={q.refreshing} onRefresh={q.refresh} tintColor="#0A0A0A" />
+            <RefreshControl refreshing={q.refreshing} onRefresh={q.refresh} tintColor={c.ink} />
           )
         }
       >
@@ -71,11 +73,11 @@ export default function DoctorProfileScreen() {
           <View style={styles.backBtn}>
             <Chip
               label="Back"
-              leading={<ChevronLeft size={16} color={colors.ink} strokeWidth={2} />}
+              leading={<ChevronLeft size={16} color={c.ink} strokeWidth={2} />}
               onPress={() => void router.back()}
             />
           </View>
-          <Text style={styles.topTitle} numberOfLines={1}>
+          <Text style={[styles.topTitle, { color: c.ink }]} numberOfLines={1}>
             Doctor
           </Text>
           <View style={styles.topSpacer} />
@@ -95,23 +97,27 @@ export default function DoctorProfileScreen() {
             <View style={styles.identity}>
               <View style={styles.identityMedia}>
                 {d.photo ? (
-                  <Image source={{ uri: d.photo }} style={styles.photo} accessibilityLabel={`${d.name} photo`} />
+                  <Image
+                    source={{ uri: d.photo }}
+                    style={[styles.photo, { backgroundColor: c.canvasSoft }]}
+                    accessibilityLabel={`${d.name} photo`}
+                  />
                 ) : (
                   <Avatar name={d.name} size={72} />
                 )}
                 {d.registration ? (
-                  <View style={styles.regChip}>
-                    <BadgeCheck size={13} color={colors.tealLive} strokeWidth={2.2} />
-                    <Text style={styles.regChipText} numberOfLines={1}>
+                  <View style={[styles.regChip, { backgroundColor: c.tealLiveSoft }]}>
+                    <BadgeCheck size={13} color={c.tealLive} strokeWidth={2.2} />
+                    <Text style={[styles.regChipText, { color: c.tealLive }]} numberOfLines={1}>
                       Reg. {d.registration}
                     </Text>
                   </View>
                 ) : null}
               </View>
               <View style={styles.identityCol}>
-                <Text style={styles.name}>{d.name}</Text>
-                <Text style={styles.spec}>{d.specialization || 'Doctor'}</Text>
-                <Text style={styles.quietLine}>
+                <Text style={[styles.name, { color: c.ink }]}>{d.name}</Text>
+                <Text style={[styles.spec, { color: c.body }]}>{d.specialization || 'Doctor'}</Text>
+                <Text style={[styles.quietLine, { color: c.mute }]}>
                   {[
                     d.experience ? `${d.experience} yrs` : '',
                     d.education ? d.education : '',
@@ -124,28 +130,28 @@ export default function DoctorProfileScreen() {
             </View>
 
             {/* Fee block — the number is BIG (honesty through scale) */}
-            <View style={styles.feeBlock}>
+            <View style={[styles.feeBlock, { backgroundColor: c.canvasSoft }]}>
               <View style={styles.feeRow}>
-                <Text style={styles.fee}>₹{d.fees.toLocaleString('en-IN')}</Text>
-                <Text style={styles.feeCaption}>first visit</Text>
+                <Text style={[styles.fee, { color: c.ink }]}>₹{d.fees.toLocaleString('en-IN')}</Text>
+                <Text style={[styles.feeCaption, { color: c.body }]}>first visit</Text>
               </View>
-              <Text style={styles.feeNote}>Pay at the clinic — no advance payment.</Text>
+              <Text style={[styles.feeNote, { color: c.mute }]}>Pay at the clinic — no advance payment.</Text>
             </View>
 
             {/* Timing table — 7-day fixed grid */}
-            <Text style={styles.sectionTitle}>Clinic hours</Text>
-            <View style={styles.timingCard}>
+            <Text style={[styles.sectionTitle, { color: c.ink }]}>Clinic hours</Text>
+            <View style={[styles.timingCard, { borderColor: c.hairline }]}>
               {WEEK_ORDER.map((day) => {
                 const row = scheduleForDay(d.schedules, day)
                 return (
                   <View key={day} style={styles.timingRow}>
-                    <Text style={[styles.timingDay, !row && styles.timingClosed]}>{day}</Text>
+                    <Text style={[styles.timingDay, { color: !row ? c.mute : c.ink }]}>{day}</Text>
                     {row ? (
-                      <Text style={styles.timingHours} numberOfLines={1}>
+                      <Text style={[styles.timingHours, { color: c.body }]} numberOfLines={1}>
                         {row.start} – {row.end}
                       </Text>
                     ) : (
-                      <Text style={styles.timingClosedText}>Closed</Text>
+                      <Text style={[styles.timingClosedText, { color: c.mute }]}>Closed</Text>
                     )}
                   </View>
                 )
@@ -155,10 +161,10 @@ export default function DoctorProfileScreen() {
             {/* Ratings summary — only when real (honesty law) */}
             {d.ratingCount > 0 ? (
               <>
-                <Text style={styles.sectionTitle}>Ratings</Text>
-                <View style={styles.ratingCard}>
-                  <Star size={16} color={colors.ink} strokeWidth={2.2} fill={colors.ink} />
-                  <Text style={styles.ratingText}>
+                <Text style={[styles.sectionTitle, { color: c.ink }]}>Ratings</Text>
+                <View style={[styles.ratingCard, { borderColor: c.hairline }]}>
+                  <Star size={16} color={c.ink} strokeWidth={2.2} fill={c.ink} />
+                  <Text style={[styles.ratingText, { color: c.ink }]}>
                     {d.rating.toFixed(1)} · {d.ratingCount} {d.ratingCount === 1 ? 'review' : 'reviews'}
                   </Text>
                 </View>
@@ -166,22 +172,22 @@ export default function DoctorProfileScreen() {
             ) : null}
 
             {/* Quiet stats — real API numbers only */}
-            <Text style={styles.quietStat}>
+            <Text style={[styles.quietStat, { color: c.mute }]}>
               {d.totalAppointments} visits · {d.totalPatients} patients on Aturseva
             </Text>
 
             {/* Practices-at */}
             {d.hospitals.length > 0 ? (
               <>
-                <Text style={styles.sectionTitle}>Practices at</Text>
-                <View style={styles.hospitalCard}>
+                <Text style={[styles.sectionTitle, { color: c.ink }]}>Practices at</Text>
+                <View style={[styles.hospitalCard, { borderColor: c.hairline }]}>
                   {d.hospitals.map((h) => (
                     <View key={h.id} style={styles.hospitalRow}>
-                      <Text style={styles.hospitalName} numberOfLines={1}>
+                      <Text style={[styles.hospitalName, { color: c.ink }]} numberOfLines={1}>
                         {h.name}
                       </Text>
                       {h.city ? (
-                        <Text style={styles.hospitalCity} numberOfLines={1}>
+                        <Text style={[styles.hospitalCity, { color: c.mute }]} numberOfLines={1}>
                           {h.city}
                         </Text>
                       ) : null}
@@ -194,8 +200,8 @@ export default function DoctorProfileScreen() {
             {/* Description — only when the doctor wrote one */}
             {d.description ? (
               <>
-                <Text style={styles.sectionTitle}>About</Text>
-                <Text style={styles.aboutText}>{d.description}</Text>
+                <Text style={[styles.sectionTitle, { color: c.ink }]}>About</Text>
+                <Text style={[styles.aboutText, { color: c.body }]}>{d.description}</Text>
               </>
             ) : null}
 
@@ -213,8 +219,8 @@ export default function DoctorProfileScreen() {
           </>
         ) : q.error ? (
           <View style={styles.errorWrap}>
-            <Text style={styles.errorText}>Could not load this doctor.</Text>
-            <Text style={styles.errorCaption}>{q.error.message}</Text>
+            <Text style={[styles.errorText, { color: c.ink }]}>Could not load this doctor.</Text>
+            <Text style={[styles.errorCaption, { color: c.mute }]}>{q.error.message}</Text>
             <View style={styles.errorAction}>
               <Chip label="Try again" onPress={q.refresh} />
             </View>
@@ -225,7 +231,7 @@ export default function DoctorProfileScreen() {
       {/* Sticky bottom CTA — fee in the button, safe-area padded (S5 law).
           B3: opens the S6 slot sheet (the golden journey's first step). */}
       {d ? (
-        <View style={styles.ctaBar}>
+        <View style={[styles.ctaBar, { borderTopColor: c.hairline, backgroundColor: c.canvas }]}>
           <PillButton
             label={`Book appointment — ₹${d.fees.toLocaleString('en-IN')}`}
             height={56}
@@ -258,10 +264,11 @@ function scheduleForDay(schedules: ScheduleRow[], day: string): ScheduleRow | nu
 }
 
 function ProfileSkeleton() {
+  const c = useColors()
   return (
     <View style={styles.skelCol}>
       <View style={styles.skelIdentity}>
-        <View style={styles.skelAvatar} />
+        <View style={[styles.skelAvatar, { backgroundColor: c.canvasSoft }]} />
         <View style={styles.skelIdentityRails}>
           <SkeletonBlock width="70%" height={18} />
           <SkeletonBlock width="45%" height={12} radiusValue={radius.pill} />
@@ -279,7 +286,6 @@ function ProfileSkeleton() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.canvas,
   },
   content: {
     paddingBottom: space.s24,
@@ -298,7 +304,6 @@ const styles = StyleSheet.create({
   },
   topTitle: {
     ...typo.title,
-    color: colors.ink,
     flex: 1,
   },
   topSpacer: {
@@ -326,13 +331,11 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: radius.card,
-    backgroundColor: colors.canvasSoft,
   },
   regChip: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: colors.tealLiveSoft,
     borderRadius: radius.pill,
     paddingHorizontal: space.s8,
     paddingVertical: 3,
@@ -340,26 +343,21 @@ const styles = StyleSheet.create({
   },
   regChipText: {
     ...typo.caption,
-    color: colors.tealLive,
     fontWeight: '600',
   },
   name: {
     ...typo.title,
-    color: colors.ink,
     fontSize: 22,
   },
   spec: {
     ...typo.body,
-    color: colors.body,
   },
   quietLine: {
     ...typo.caption,
-    color: colors.mute,
   },
   feeBlock: {
     marginHorizontal: space.s16,
     marginTop: space.s24,
-    backgroundColor: colors.canvasSoft,
     borderRadius: radius.card,
     padding: space.s16,
   },
@@ -369,7 +367,6 @@ const styles = StyleSheet.create({
     gap: space.s8,
   },
   fee: {
-    color: colors.ink,
     fontSize: 36,
     lineHeight: 42,
     fontWeight: '700',
@@ -377,16 +374,13 @@ const styles = StyleSheet.create({
   },
   feeCaption: {
     ...typo.caption,
-    color: colors.body,
   },
   feeNote: {
     ...typo.caption,
-    color: colors.mute,
     marginTop: 4,
   },
   sectionTitle: {
     ...typo.bodyStrong,
-    color: colors.ink,
     marginHorizontal: space.s16,
     marginTop: space.s24,
     marginBottom: space.s8,
@@ -395,7 +389,6 @@ const styles = StyleSheet.create({
     marginHorizontal: space.s16,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     gap: space.s8,
   },
@@ -407,19 +400,13 @@ const styles = StyleSheet.create({
   },
   timingDay: {
     ...typo.body,
-    color: colors.ink,
   },
   timingHours: {
     ...typo.body,
-    color: colors.body,
     fontVariant: ['tabular-nums'],
-  },
-  timingClosed: {
-    color: colors.mute,
   },
   timingClosedText: {
     ...typo.caption,
-    color: colors.mute,
   },
   ratingCard: {
     marginHorizontal: space.s16,
@@ -428,17 +415,14 @@ const styles = StyleSheet.create({
     gap: space.s8,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
   },
   ratingText: {
     ...typo.bodyStrong,
-    color: colors.ink,
     fontVariant: ['tabular-nums'],
   },
   quietStat: {
     ...typo.caption,
-    color: colors.mute,
     marginHorizontal: space.s16,
     marginTop: space.s12,
     fontVariant: ['tabular-nums'],
@@ -447,7 +431,6 @@ const styles = StyleSheet.create({
     marginHorizontal: space.s16,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.hairline,
     padding: space.s16,
     gap: space.s8,
   },
@@ -459,16 +442,13 @@ const styles = StyleSheet.create({
   },
   hospitalName: {
     ...typo.body,
-    color: colors.ink,
     flex: 1,
   },
   hospitalCity: {
     ...typo.caption,
-    color: colors.mute,
   },
   aboutText: {
     ...typo.body,
-    color: colors.body,
     marginHorizontal: space.s16,
   },
   shareRow: {
@@ -483,8 +463,6 @@ const styles = StyleSheet.create({
     paddingTop: space.s8,
     paddingBottom: space.s12,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.hairline,
-    backgroundColor: colors.canvas,
   },
   errorWrap: {
     padding: space.s24,
@@ -493,12 +471,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...typo.title,
-    color: colors.ink,
     textAlign: 'center',
   },
   errorCaption: {
     ...typo.caption,
-    color: colors.mute,
     textAlign: 'center',
   },
   errorAction: {
@@ -519,7 +495,6 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: radius.card,
-    backgroundColor: colors.canvasSoft,
   },
   skelIdentityRails: {
     flex: 1,

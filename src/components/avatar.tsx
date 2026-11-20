@@ -4,9 +4,11 @@
  */
 
 import { StyleSheet, Text, View } from 'react-native'
-import { colors, type as typo } from '@/lib/tokens'
+import { type as typo } from '@/lib/tokens'
+import { useColors } from '@/lib/theme'
 
 export function Avatar({ name, size = 56 }: { name: string; size?: number }) {
+  const c = useColors()
   const initials = name
     .split(/\s+/)
     .filter(Boolean)
@@ -14,19 +16,15 @@ export function Avatar({ name, size = 56 }: { name: string; size?: number }) {
     .map((w) => w[0]?.toUpperCase() ?? '')
     .join('')
   return (
-    <View style={[styles.base, { width: size, height: size, borderRadius: size / 2 }]}>
-      <Text style={[typo.bodyStrong, styles.initials]}>{initials || '?'}</Text>
+    <View style={[styles.base, { width: size, height: size, borderRadius: size / 2, backgroundColor: c.canvasSoft }]}>
+      <Text style={[typo.bodyStrong, { color: c.ink }]}>{initials || '?'}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   base: {
-    backgroundColor: colors.canvasSoft,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  initials: {
-    color: colors.ink,
   },
 })

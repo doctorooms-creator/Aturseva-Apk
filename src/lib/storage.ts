@@ -10,10 +10,15 @@
  *                              recent bookings so the tab opens useful)
  * - aturseva.booking-phone   string (last mobile booked with — B3: the
  *                              guest's identity-lite, pre-fills lookup/cancel)
+ * - aturseva.theme            'light' | 'dark' | 'system' (B4: appearance
+ *                              preference — the ONLY new key; auth token lives
+ *                              in secure-store, not this whitelist)
  * All reads/writes are fail-quiet: storage failure never breaks the app.
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+export type ThemeMode = 'light' | 'dark' | 'system'
 
 const K = {
   onboardingDone: 'aturseva.onboarding-done',
@@ -21,6 +26,7 @@ const K = {
   recentSearches: 'aturseva.recent-searches',
   bookingIds: 'aturseva.booking-ids',
   bookingPhone: 'aturseva.booking-phone',
+  theme: 'aturseva.theme',
 } as const
 
 export async function getOnboardingDone(): Promise<boolean> {
@@ -119,6 +125,25 @@ export async function getBookingPhone(): Promise<string> {
 export async function setBookingPhone(mobile: string): Promise<void> {
   try {
     await AsyncStorage.setItem(K.bookingPhone, mobile)
+  } catch {
+    /* fail-quiet */
+  }
+}
+
+/** B4 — appearance preference. Invalid/absent values resolve to 'system'
+ * (the doc 03 default: follow the OS). Fail-quiet. */
+export async function getThemeMode(): Promise<ThemeMode> {
+  try {
+    const v = (await AsyncStorage.getItem(K.theme)) as ThemeMode | null
+    return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+  } catch {
+    return 'system'
+  }
+}
+
+export async function setThemeMode(mode: ThemeMode): Promise<void> {
+  try {
+    await AsyncStorage.setItem(K.theme, mode)
   } catch {
     /* fail-quiet */
   }
