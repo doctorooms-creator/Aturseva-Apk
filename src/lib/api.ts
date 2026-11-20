@@ -13,7 +13,7 @@
 
 const rawBase = process.env.EXPO_PUBLIC_API_BASE
 export const API_BASE =
-  rawBase === '' ? '' : (rawBase ?? 'https://doctorooms-hms.vercel.app').replace(/\/+$/, '')
+  rawBase === '' ? '' : (rawBase ?? 'https://aturseva.com').replace(/\/+$/, '')
 
 const TIMEOUT_MS = 8000
 const RETRY_DELAY_MS = 500

@@ -129,7 +129,7 @@ export default function ConfirmBookingScreen() {
       await pushBookingId(placed.id)
       await setBookingPhone(mobile)
       // Stack replace — the success screen owns the back stack from here.
-      void router.replace({ pathname: `/booking/${placed.id}`, params: { new: '1' } })
+      void router.replace({ pathname: '/booking/[id]', params: { id: placed.id, new: '1' } })
     } catch (err) {
       if (err instanceof ApiError && err.kind === 'server') {
         setServerError(err.message)

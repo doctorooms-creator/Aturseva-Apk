@@ -16,7 +16,7 @@ export function buildShareCard(d: {
   id: string
   webBase?: string
 }): string {
-  const base = d.webBase ?? 'https://doctorooms-hms.vercel.app'
+  const base = d.webBase ?? 'https://aturseva.com'
   const lines = [`${d.name}${d.specialization ? ` — ${d.specialization}` : ''}`]
   lines.push(`₹${d.fees.toLocaleString('en-IN')} per visit`)
   if (d.city) lines.push(`· ${d.city}`)
@@ -54,7 +54,7 @@ export function buildTokenShareCard(t: {
   bookingId: string
   webBase?: string
 }): string {
-  const base = t.webBase ?? 'https://doctorooms-hms.vercel.app'
+  const base = t.webBase ?? 'https://aturseva.com'
   const lines: string[] = []
   if (t.tokenNumber) lines.push(`Token ${t.tokenNumber}`)
   if (t.doctorName) lines.push(`${t.doctorName}${t.hospitalName ? ` · ${t.hospitalName}` : ''}`)

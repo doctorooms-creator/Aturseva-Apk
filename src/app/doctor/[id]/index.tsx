@@ -243,8 +243,8 @@ export default function DoctorProfileScreen() {
           onConfirm={(date, time) => {
             setBookSheetOpen(false)
             void router.push({
-              pathname: `/doctor/${doctorId}/book`,
-              params: { date, time, name: d.name, spec: d.specialization, fee: String(d.fees) },
+              pathname: '/doctor/[id]/book',
+              params: { id: doctorId, date, time, name: d.name, spec: d.specialization, fee: String(d.fees) },
             })
           }}
         />

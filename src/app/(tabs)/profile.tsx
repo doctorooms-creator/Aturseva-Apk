@@ -14,7 +14,7 @@ import { colors, radius, space, type as typo } from '@/lib/tokens'
 import { getCity, setCity } from '@/lib/storage'
 import { CityPickerSheet } from '@/components/city-picker'
 
-const WEB_URL = 'https://doctorooms-hms.vercel.app'
+const WEB_URL = 'https://aturseva.com'
 
 export default function ProfileScreen() {
   const [city, setCityState] = useState<string | null>(null)
