@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Verification:**\n\n1. **Single centered mark, nothing clipped** — Yes. A single teal flame/drop over a black diya arc, horizontally centered with generous white margins; nothing touches the edges.\n2. **Works on white background** — Yes. Dark teal (#1D7A6E-ish) and black strokes have strong contrast against the white/transparent background.\n3. **Recognizable at small sizes** — Yes. The flame + base-arc silhouette is simple, bold, and reads clearly even at 48–96px.\n4. **No text** — Confirmed, no text elements present.\n\nMinor note: the composition sits slightly above center (more whitespace at bottom), but this is acceptable and doesn't harm the mark.\n\n**VERDICT: PASS** — Clean, single, centered diya mark with strong contrast, no clipping, and no text.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193267,
+  "id": "20261121004742d0b15036709649e6",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121004742d0b15036709649e6",
+  "usage": {
+    "completion_tokens": 182,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 454,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 636
+  }
+}

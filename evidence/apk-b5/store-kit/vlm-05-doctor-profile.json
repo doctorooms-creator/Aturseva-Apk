@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Doctor Profile — QA Review**\n\n1) **Doctor name + credentials + fee** ✅ — \"Rajesh\", General Physician, \"2 yrs · MD · Gandhinagar, Gujarat\", and fee ₹300 first visit shown upfront with \"Pay at the clinic — no advance payment\" note.\n2) **Clinic hours** ✅ — Full Mon–Sat schedule (09:00–17:00) with Sunday marked \"Closed\", clearly grouped in a card.\n3) **Practice locations** ✅ — \"Practices at\" section lists Rajesh Clinic (Gandhinagar) and CIIMS Hospital (Ahmedabad).\n4) **Book CTA** ✅ — Prominent black \"Book appointment — ₹300\" pill button fixed at bottom, high contrast and unambiguous.\n5) **Clean render** ✅ — Consistent typography, generous spacing, subtle dividers/cards; \"17 visits · 4 patients on Aturseva\" is faint (likely intentional meta info). \"Share on WhatsApp\" is partially clipped behind the CTA bar — a minor overlap, but the primary CTA isn't compromised.\n\n**VERDICT: PASS** — All key info (identity, fee, hours, locations, booking) is complete and clearly rendered, with only a minor clipped secondary action.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193250,
+  "id": "2026112100472320074d8769144aa9",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112100472320074d8769144aa9",
+  "usage": {
+    "completion_tokens": 269,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 4035,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4304
+  }
+}

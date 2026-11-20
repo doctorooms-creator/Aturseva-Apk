@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Review of Queue Tracker Screen (Play Store screenshot):**\n\n1) **Clean render** ✓ — No broken layouts, clipped text, overlapping elements, or artifacts. Whitespace below content is acceptable for a status screen.\n\n2) **Queue/waiting status card with booking reference** ✓ — \"Waiting for confirmation\" pill, \"Not in the line yet\" headline, explanatory copy, and booking card with doctor, clinic, and booking reference #M7TBCG all present and legible.\n\n3) **Auto-refresh hint visible** ✓ — \"Updated 4:45 pm · refreshes automatically\" line plus a \"Refresh now\" action.\n\n4) **Store-listing quality** ✓ — Clear hierarchy, readable font sizes, sensible contrast (teal status dot/pill, gray meta text), no placeholders or lorem text. Minor nitpick: large empty region below the fold could benefit from a help/support link.\n\nVERDICT: PASS — All required elements render cleanly with status card, booking reference, and auto-refresh hint clearly visible.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193212,
+  "id": "202611210046477a7e2337021d4621",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210046477a7e2337021d4621",
+  "usage": {
+    "completion_tokens": 213,
+    "completion_tokens_details": {
+      "reasoning_tokens": 212
+    },
+    "prompt_tokens": 4031,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4244
+  }
+}

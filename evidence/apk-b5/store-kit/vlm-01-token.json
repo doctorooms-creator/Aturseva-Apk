@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1) **Clean render:** Yes — no broken layout, overlaps, or clipping; all text readable, consistent spacing.\n\n2) **Booking details:** All present in the detail card — Doctor (Dr. Rajesh), Clinic (Rajesh Clinic), Date (Tomorrow), Time (10:30), Fee (₹300 · pay at clinic), plus bonus fields (city, patient, reason).\n\n3) **Token/status card:** Yes — a prominent card with \"Request sent\" status, \"Token being assigned\" headline, clear explanation, and a 3-step progress tracker (Booked → Confirmed → Completed).\n\n4) **Store-listing quality:** Professional, uncluttered, well-structured with clear CTAs (Track queue, Share token, Cancel booking).\n\nVERDICT: PASS — clean, professional token screen with all booking details and a clear status card.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193207,
+  "id": "202611210046429eb7cf06b40e44b4",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210046429eb7cf06b40e44b4",
+  "usage": {
+    "completion_tokens": 181,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 4054,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4235
+  }
+}

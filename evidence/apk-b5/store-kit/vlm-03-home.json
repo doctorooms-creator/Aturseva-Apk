@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Search field has placeholder \"Doctor name or problem — fever, knee pain\". Symptom chips row present (fever, knee pain, skin, child, acidity). Proof strip shows \"97 doctors · 13 hospitals · 58 visits booked — live\". Doctor card present with fee (Rajesh, ₹300). However, \"acidity\" chip is clipped at right edge, and the second doctor card \"Dr. QA...\" is cut off mid-screen, suggesting broken horizontal layout. Minor edge clipping of horizontally scrollable content may be acceptable, but card truncation is unclear. VERDICT: PASS",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193280,
+  "id": "20261121004757d8dc19efc92b433b",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121004757d8dc19efc92b433b",
+  "usage": {
+    "completion_tokens": 124,
+    "completion_tokens_details": {
+      "reasoning_tokens": 123
+    },
+    "prompt_tokens": 4090,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4214
+  }
+}

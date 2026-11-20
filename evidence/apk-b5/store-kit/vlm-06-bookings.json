@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Verified against the screenshot:\n\n**1) Upcoming booking card with doctor, date, time — PASS**\n- Card shows **Dr. Rajesh**, specialty \"General Physician\" (doctor details ✓)\n- Date/time present: **Sat, 21 Nov · 10:30** ✓\n- Status chip \"Awaiting confirmation\" (amber) renders cleanly and doesn't overlap the date text.\n\n**2) Tabs/filters visible — PASS**\n- Two pill tabs: **Upcoming (1)** (active, black) and **Past (0)** (inactive, light gray) — clearly visible and consistent with the card count.\n- Guest phone-lookup context supported: \"Showing bookings for 98•••0005\" with a \"Change\" pill button.\n\n**3) Clean render — PASS**\n- Header (\"Bookings\" + subtitle), card, tabs, and bottom nav (Home / Bookings / Profile) are all legible, aligned, with no clipped text, overlapping elements, or layout artifacts. Large empty area below the card is acceptable for a single-item list.\n\nMinor nit (non-blocking): phone mask shows 4 visible digits (\"0005\") at the end — usually masked to last 2–3, but functionally fine.\n\n**VERDICT: PASS** — Upcoming booking card (doctor, date, time), filter tabs, and phone-lookup header all render cleanly with no visual defects.",
+        "reasoning_content": "Verification task; end with verdict.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193256,
+  "id": "202611210047304289e5557407428c",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210047304289e5557407428c",
+  "usage": {
+    "completion_tokens": 300,
+    "completion_tokens_details": {
+      "reasoning_tokens": 7
+    },
+    "prompt_tokens": 4031,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4331
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Checklist:**\n1. Wordmark \"Aturseva\" — ✅ clearly readable, bold black ink, large and dominant.\n2. Diya mark — ✅ renders correctly: teal flame/drop seated on a black curved lamp base (smile-like bowl), reads as a diya.\n3. Tagline — ✅ \"Book the doctor. Skip the queue. Your live token, in your pocket.\" fully readable in gray.\n4. Teal live-queue line — ✅ \"● Live queue position — real time\" in teal, the sole accent color, clearly visible.\n5. Composition — ✅ balanced left mark / right text block, comfortable margins, nothing clipped; thin baseline rule and \"aturseva.com\" sit neatly at bottom.\nDesign law — ✅ white canvas, black wordmark, single teal accent throughout.\n\n**VERDICT: PASS** — all five checks satisfied with clean hierarchy and correct accent discipline.",
+        "reasoning_content": "Check image: wordmark readable, diya mark (teal flame over black smile curve) present, tagline readable, teal live-queue line visible, composition balanced. Some extra gray text \"Book the doctor...\" — fine. Verdict PASS.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193262,
+  "id": "202611210047379487a3acb4c2436c",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611210047379487a3acb4c2436c",
+  "usage": {
+    "completion_tokens": 247,
+    "completion_tokens_details": {
+      "reasoning_tokens": 51
+    },
+    "prompt_tokens": 788,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1035
+  }
+}

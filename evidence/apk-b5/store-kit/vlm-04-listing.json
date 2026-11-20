@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Checklist:**\n1) Symptom-to-specialty mapping: ✅ \"fever → General Physician\" shown under the search title.\n2) Result count + doctor cards: ✅ \"3 doctors found\" with 3 cards (Dr. QA P1 Med ₹500, Dr. Wizard UI ₹300, Dr. Prod Final ₹400), each with \"visit\" fee label and a Book button.\n3) Clean render: ✅ No overlap; avatar initials, text block, and Book button are well-spaced and aligned.\n\nVERDICT: PASS — mapping, count, fees, and Book buttons all render clearly with no layout issues.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795193243,
+  "id": "20261121004719d9b8a7d82ec44551",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121004719d9b8a7d82ec44551",
+  "usage": {
+    "completion_tokens": 135,
+    "completion_tokens_details": {
+      "reasoning_tokens": 134
+    },
+    "prompt_tokens": 4032,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4167
+  }
+}
