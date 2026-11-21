@@ -1,0 +1,47 @@
+```json
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Count line '0 doctors found' is present above the empty state; contract specifies NO count line on a zero-result screen. It is also redundant with the empty-state title.",
+      "severity": "blocking",
+      "where": "Left-aligned grey text below the city chips row (~y=131)"
+    },
+    {
+      "what": "Grey caption 'Try one of these common problems, or browse every doctor.' appears to be a light grey (~#9AA0A6 on white, roughly 2.8–3.3:1), below the 4.5:1 AA threshold.",
+      "severity": "minor",
+      "where": "Caption under the 'No doctors for ...' title"
+    },
+    {
+      "what": "'0 doctors found' small grey text appears well below AA contrast (light grey on white, ~2.5–3:1).",
+      "severity": "minor",
+      "where": "Below city chips, left gutter"
+    },
+    {
+      "what": "'Back' pill touch target looks under 44px tall (approx 36–38px) and the query echo 'zzqxnotreal' is not tappable — acceptable, but the Back control itself should be padded to >=44px.",
+      "severity": "minor",
+      "where": "Top-left back bar"
+    },
+    {
+      "what": "Problem-word chips (fever, knee pain, skin, child, acidity, headache) look ~38–40px tall, under the 44px minimum for primary recovery actions.",
+      "severity": "minor",
+      "where": "Chip grid in empty state"
+    }
+  ],
+  "measured_notes": [
+    "Back pill approx 36–38px tall; under 44px target.",
+    "Chips approx 38–40px tall; under 44px.",
+    "Caption grey text estimated ~2.8–3.3:1 contrast on white; fails 4.5:1.",
+    "'0 doctors found' grey text estimated ~2.5–3:1; fails 4.5:1.",
+    "No truncation/ellipsis observed anywhere; query echo and all chip labels render fully.",
+    "Left/right gutters look consistent at ~16px; internal chip gaps ~10–12px, close to spec.",
+    "Icon, title, caption, chips and browse chip are all present — no dead end; wording is honest and specific to the query."
+  ],
+  "non_blocking_notes": [
+    "City filter chips ('Gandhinagar' black, 'All cities' grey) use black rather than the single teal accent — arguably fine as neutral selection, but inconsistent with 'one accent' law if teal is the selection color elsewhere.",
+    "Browse all doctors chip has no stronger visual weight than the suggestion chips; as the primary recovery action it could be the teal accent.",
+    "Large empty white area below the chips is acceptable for an empty state but could vertically center content slightly higher."
+  ],
+  "one_line": "Honest, complete empty state with real next actions, but the forbidden '0 doctors found' count line, sub-44px chips/back control, and low-contrast grey captions break the contract and AA."
+}
+```

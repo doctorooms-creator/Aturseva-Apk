@@ -1,0 +1,42 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Back button touch target appears under 44px height (pill roughly ~36px tall) — violates touch target law",
+      "severity": "minor",
+      "where": "Top-left 'Back' pill button"
+    },
+    {
+      "what": "Test/QA placeholder data visible in a patient-facing browse screen ('QA Browser Hospital', 'QA City Hospital', 'QA Trial Clinic') — violates honesty law (real data only)",
+      "severity": "blocking",
+      "where": "Hospital list cards, rows 2-5 and below"
+    },
+    {
+      "what": "Duplicate hospital entries with identical names ('QA Browser Hospital' Surat, 'QA City Hospital' Ahmedabad) — looks like seeded test data, undermines trust",
+      "severity": "minor",
+      "where": "Rows 2 and 4, rows 3 and 6"
+    },
+    {
+      "what": "List is scrollable but the last visible card ('QA City Hospital', Ahmedabad) is cut off at screen bottom edge mid-content; not a defect per se but confirm list does not dead-end — flagged for verification, not truncation of text by the card itself",
+      "severity": "minor",
+      "where": "Bottom of viewport, row 6"
+    }
+  ],
+  "measured_notes": [
+    "Count line reads '12 hospitals found' matching the stated contract of 12 real hospitals — count honesty looks correct",
+    "Gutters appear ~12-16px on left/right edges of the search field and cards — consistent with the 16px gutter law, no obvious mismatch",
+    "Card internal gaps between name/type/location/stats lines look ~4-6px, tighter than the 12px internal-gap spec for grouped content but visually consistent across all cards",
+    "No ellipsis/truncation observed on any hospital name, city, or type text — longest name 'QA Browser Hospital' fits fully",
+    "Search field height looks ~44-48px — passes touch target; 'All cities' chip looks ~36-40px tall, borderline",
+    "No teal accent visible on this screen; grey scale only — acceptable since no live/primary action is present on a browse list",
+    "Chevron affordance on each card is present and right-aligned, affordance clarity OK",
+    "Grey secondary text on white appears roughly #6b6b6b on #fff (~5:1) — passes AA; '12 hospitals found' line looks lighter grey, closer to ~#8a8a8a (~3.5:1) — borderline AA fail for small text"
+  ],
+  "non_blocking_notes": [
+    "Card radius consistent across all list cards; consistent rhythm maintained",
+    "Avatar initials circles are consistent size and correctly derived from names (CH, QB, QC, QT)",
+    "'0 doctors · 1 department' rows are honest empty-adjacent states, but a patient-facing improvement would be an explicit action hint; logged as copy consideration",
+    "'All cities' chip has no visible selected/unselected distinction beyond fill; minor affordance polish"
+  ],
+  "one_line": "Honest count and clean hierarchy, but QA test data leaking into a patient-facing screen is a blocking honesty failure, plus a borderline-contrast count line and sub-44px Back target."
+}

@@ -188,8 +188,9 @@ export default function HospitalsScreen() {
         {cityFilter ? <Chip label="All cities" onPress={() => setCityFilter(null)} /> : null}
       </View>
 
-      {/* Count line — real totals only */}
-      {total !== null ? (
+      {/* Count line — real totals only; at 0 the EmptyState below carries
+          the message (B12: "0 hospitals found" above it was redundant noise) */}
+      {total !== null && total > 0 ? (
         <Text style={[styles.countLine, { color: c.mute }]}>
           {total} {total === 1 ? 'hospital' : 'hospitals'} found
         </Text>
@@ -235,7 +236,9 @@ export default function HospitalsScreen() {
                 caption="Clear the search or the city filter to see every hospital."
                 actions={[
                   ...(submitted ? [{ label: 'Clear search', onPress: clearSearch }] : []),
-                  ...(cityFilter ? [{ label: 'All cities', onPress: () => setCityFilter(null) }] : []),
+                  ...(cityFilter
+                    ? [{ label: 'All cities', onPress: () => setCityFilter(null), primary: true }]
+                    : []),
                 ]}
               />
             </View>

@@ -1,0 +1,38 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "No teal accent present anywhere on the screen — the primary 'Book' action renders as a grey pill, violating the contract that the single teal accent marks live/primary actions",
+      "severity": "minor",
+      "where": "Book button, doctor card (right side, ~y=218)"
+    },
+    {
+      "what": "'1 doctor found' count line appears in a mid-grey on near-black canvas; estimated contrast ~4.5:1 or slightly below — borderline AA on this dark background",
+      "severity": "minor",
+      "where": "Count line below city chips (~y=148)"
+    },
+    {
+      "what": "'fever → General Physician' mapping line is small, dim grey, and low-contrast; it also reads as a plain text line rather than the distinct honesty mapping treatment",
+      "severity": "minor",
+      "where": "Below back bar (~y=65)"
+    }
+  ],
+  "measured_notes": [
+    "Fee hierarchy holds: '₹300' is the largest text on the card (~20-22px), bigger than 'Rajesh' (~16-17px) — law 3 satisfied",
+    "Book button approx 66×44px; back button approx 96×40px (slightly under 44px height, borderline)",
+    "City chips approx 44px tall — compliant touch targets",
+    "Grey secondary text ('General Physician', 'Gandhinagar, Gujarat', 'visit') on dark card: estimated ~5:1, passes AA",
+    "No truncation or ellipsis observed; all strings render fully within card bounds",
+    "Screen gutters appear consistent ~16px left/right; card radius consistent (~14-16px) across card and chips",
+    "No light-mode artifacts: no white patches, dark card on dark canvas with subtle hairline border visible"
+  ],
+  "non_blocking_notes": [
+    "'That is every doctor for this search' honesty empty-state line is present and correct — good honesty behavior for a 1-result result set",
+    "'All cities' chip is a ghost/dark pill; selected state ('Gandhinagar' white pill) is clear, but selected state uses white rather than any accent — acceptable under restraint law",
+    "Avatar 'R' circle is flat grey; cosmetic only",
+    "Vast empty space below a single result is expected for 1 result; no dead-end since Book action is available"
+  ],
+  "one_line": "Dark mode holds up cleanly — no light-mode artifacts, honest count/empty-state copy, correct fee hierarchy — but the teal primary accent is entirely absent from the Book button and the count/mapping grey text is borderline on AA contrast."
+}
+```

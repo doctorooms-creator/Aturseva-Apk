@@ -1,0 +1,32 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Grey meta text (location line 'Ahmedabad, Gujarat' and 'Multi-Speciality') appears low-contrast dark grey on near-black background; borderline against 4.5:1 AA for small text.",
+      "severity": "minor",
+      "where": "Hospital identity block, top of screen"
+    },
+    {
+      "what": "Address text wraps across two lines but sits visually close to the contact card's left icon; not truncated, but the icon-to-text gutter is tighter than the 12px internal gap standard appears to allow.",
+      "severity": "minor",
+      "where": "Contact card, address line"
+    }
+  ],
+  "measured_notes": [
+    "Departments count '2 departments' matches actual rows: General Medicine and Cardiology — honesty law satisfied.",
+    "Cardiology row states 'No doctors listed yet' — honest empty state naming the situation; row remains tappable (chevron), not a dead end.",
+    "Department rows ~72–80px tall, well over 44px touch target; chevron affordance present on both rows.",
+    "Back button ~44px tall pill; Call button ~48px tall, full-width within contact card — meets touch-target law.",
+    "No ellipsis/truncation observed on any visible text; address wraps fully ('...near chakudia mahadev rakhial').",
+    "Screen gutters look consistent ~16px left/right; card radius consistent (~12–16px) across department cards, contact card, and fact pill.",
+    "No teal accent visible anywhere — no live/primary action flagged teal on this screen; grey-scale restraint holds, though accent absence means no visual cue for the Call primary action."
+  ],
+  "non_blocking_notes": [
+    "'CH' monogram avatar is a placeholder-style circle; acceptable but could be logged.",
+    "Meta separators ('·') in department rows are very small and low-contrast; legible but faint.",
+    "Large empty dark area below the contact card; fine for a short profile but consider anchoring content."
+  ],
+  "one_line": "Dark-mode hospital profile is honest, untruncated, touch-friendly and structurally consistent, held back only by borderline grey meta-text contrast and a missing teal cue on the primary Call action."
+}
+```

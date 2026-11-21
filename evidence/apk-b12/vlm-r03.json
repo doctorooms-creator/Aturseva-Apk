@@ -1,0 +1,20 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Fee (₹200–₹1,000) renders bold at ~18px, clearly the largest number on each card — law 3 satisfied.",
+    "Book pill approx 68x40–44px; measures right at/above the 44px minimum height — acceptable but worth re-checking in a live build.",
+    "Footer 'That is every doctor for this search' is now visible at list end, plain grey text, no fabricated count, offers no fake CTA — honest, calm end-of-list grammar.",
+    "No truncation/ellipsis observed on names, specialities, or locations; all fit on one or two full lines within the card.",
+    "No teal accent visible in this scrolled region — list is grey scale on white canvas with hairline card borders, consistent with restraint law; teal presumably reserved for primary actions elsewhere.",
+    "Card radius and ~16px gutters / ~12px gaps appear consistent across all seven visible cards."
+  ],
+  "non_blocking_notes": [
+    "'Book' label appears mid-grey rather than accent-styled; if these pills are the primary action per card, consider teal fill/stroke, but on a neutral list this is cosmetic.",
+    "Location text (city, state) is slightly lighter grey — estimate contrast still ≥4.5:1 on white, but verify on the #F4F4F2 tinted variant if avatars sit on tinted surfaces.",
+    "Avatar initials (DN, DR, DS, DP, DA) duplicate the grey-scale palette consistently — fine."
+  ],
+  "one_line": "End-of-list retake passes: footer is honest and calm, fees dominate, no truncation or dead ends, touch targets measure at spec."
+}
+```

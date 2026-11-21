@@ -1,0 +1,22 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [
+    { "what": "Problem-word chips ('fever', 'knee pain', 'skin', 'child', 'acidity', 'headache') appear roughly 36-40px tall — under the 44px minimum touch target", "severity": "minor", "where": "suggestion chips row(s), mid-screen" },
+    { "what": "'All cities' filter chip looks under 44px tall (~40px) and narrower than a comfortable target", "severity": "minor", "where": "top filter row, next to 'Gandhinagar'" }
+  ],
+  "measured_notes": [
+    "Redundant '0 doctors found' count line is confirmed absent — empty state headline 'No doctors for \"zzqxnotreal\"' carries the message alone; hierarchy is now one ink-filled primary pill ('Browse all doctors', ~44px tall, full-bleed black fill) vs quiet grey outline chips — clear single-primary grammar",
+    "Helper text 'Try one of these common problems...' is mid-grey on white, estimated ~4.6-5:1 — passes AA",
+    "Headline and query string render fully, no ellipsis anywhere; chips wrap to a second row rather than truncating",
+    "Screen gutters consistent ~16px left/right on header, chips, and primary pill; internal chip gaps ~12px",
+    "Empty state offers real next actions (6 concrete condition chips + browse-all fallback) — no dead end; no fabricated counts or data"
+  ],
+  "non_blocking_notes": [
+    "Large vertical whitespace below the empty state (~half the viewport empty) is acceptable on a zero-result doorway but could pull content slightly up",
+    "Decorative search-icon circle ~72px is fine; icon stroke is light grey — decorative only, not gating",
+    "'Gandhinagar' active filter is ink-filled while 'Browse all doctors' is also ink-filled — two filled elements on screen; acceptable since they're different zones, but worth watching for accent dilution if teal is later applied"
+  ],
+  "one_line": "Retake passes: the redundant count line is gone, one clear ink-filled primary with quiet alternate chips, honest empty state with real next actions; only remaining issues are a few chips a few px under the 44px touch-target floor."
+}
+```

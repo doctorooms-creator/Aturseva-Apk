@@ -1,0 +1,20 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Count line '0 hospitals found' is confirmed removed — no fabricated numbers on screen.",
+    "Empty state names the situation ('No hospitals for this search') and explains the remedy ('Clear the search or the city filter...') — honest, no dead end.",
+    "'All cities' CTA in the empty state is the single ink-filled primary; measured pill height ≈ 44-48px, width ≈ 100px, comfortably over the 44px target.",
+    "Header chips ('Gandhinagar' ink pill ≈ 44px tall, 'All cities' grey chip ≈ 44px tall) and 'Back' pill (≈ 44px tall) all clear the touch-target minimum.",
+    "Search field ≈ 44-52px tall with left icon and placeholder 'Search hospitals'; no truncation observed anywhere on screen.",
+    "Screen gutters look consistent at ~16px left/right; internal gaps between header, search, and chip row sit around 12px; empty-state content centered with generous top spacing."
+  ],
+  "non_blocking_notes": [
+    "'All cities' appears twice (chip row + CTA), which is slightly redundant, but the CTA is clearly the primary and the chip row is the existing filter UI — acceptable, log it.",
+    "Empty-state icon sits in a plain light-grey circle; neutral and consistent with the greyscale law.",
+    "Body copy under the headline wraps to two lines ('...to see every / hospital.'); it is a full wrap, not truncation — cosmetic only."
+  ],
+  "one_line": "Honest empty state with a clear single primary action, no fabricated counts, adequate touch targets and consistent spacing — no blocking defects."
+}
+```

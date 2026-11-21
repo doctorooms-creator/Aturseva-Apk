@@ -7,3 +7,11 @@ web-build/
 .DS_Store
 *.orig.*
 expo-env.d.ts
+e2e-boot.sh
+e2e-sweep-b12.sh
+e2e-measure-b12.sh
+e2e-retake-b12.sh
+e2e-retake2-b12.sh
+e2e-final-b12.sh
+e2e-golden-b12.sh
+e2e-shots-b12/

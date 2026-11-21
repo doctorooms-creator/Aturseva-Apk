@@ -1,0 +1,42 @@
+```json
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Primary action 'Book' pill rendered in grey on grey, not the single teal accent; it reads as disabled/dead rather than the live action, and grey-on-grey contrast looks below 4.5:1",
+      "severity": "blocking",
+      "where": "Doctor card, right side 'Book' pill"
+    },
+    {
+      "what": "Selected city chip 'Gandhinagar' uses solid black fill, violating the one-teal-accent law for primary/selected states; black competes with the accent system",
+      "severity": "minor",
+      "where": "Filter chip row under the query echo"
+    },
+    {
+      "what": "'Book' pill height looks ~36-40px, under the 44px minimum touch target (and the pill is small relative to the tappable card's visual affordance)",
+      "severity": "blocking",
+      "where": "Doctor card, 'Book' pill"
+    },
+    {
+      "what": "Honesty mapping line 'fever → General Physician' appears in very light grey (~#B0B0B0 on white, est. contrast ~2.2:1) at small size — fails AA 4.5:1",
+      "severity": "blocking",
+      "where": "Directly under the back bar, query echo line"
+    }
+  ],
+  "measured_notes": [
+    "Count line '1 doctor found' matches the number of cards shown — honest",
+    "Fee '₹300' is bold, tabular-looking, and visually the largest number in the card (~18-20px vs 13-14px body) — hierarchy by scale respected",
+    "No truncation/ellipsis observed; name, specialization, city 'Gandhinagar, Gujarat' all render fully",
+    "Gutters: card and chips align to approx 16px left/right screen edge; internal text gap looks ~12px — rhythm consistent",
+    "Card radius consistent (~16px) between doctor card and chips; 'That is every doctor for this search' is a named-end empty state, not a dead end",
+    "Back pill and city chips measure roughly 44px tall — compliant",
+    "Rating chip correctly absent (no fabricated rating shown)"
+  ],
+  "non_blocking_notes": [
+    "Back button label + chevron inside a pill is slightly heavier than a hairline back bar; consider plain back affordance per restraint law",
+    "Avatar 'R' circle is oversized relative to the compact card; tighten vertical rhythm inside the card",
+    "Book pill's grey fill matches the chip greys, weakening scannability of the one action per card"
+  ],
+  "one_line": "Structure and honesty are right (true count, full text, named end state, biggest fee), but the primary Book action and honesty line fail the accent/contrast/touch-target laws — repaint Book in teal at 44px and darken the mapping line to pass."
+}
+```

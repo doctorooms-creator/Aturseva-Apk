@@ -1,0 +1,35 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Background content (hospital profile) remains at near-full brightness behind the sheet; the scrim is too shallow, so the underlying 'Call 9106096746' button and address text compete visually with the sheet's doctor rows. Scrim depth does not establish the sheet as the modal layer.",
+      "severity": "minor",
+      "where": "Area above the sheet, behind the dimmed hospital profile"
+    },
+    {
+      "what": "Rating/reviews text '★ 4.0 · 1' renders grey on a dark grey card surface; secondary meta line appears at roughly the AA minimum and could dip below 4.5:1 against the raised card background.",
+      "severity": "minor",
+      "where": "Dr. Varun Malik row, third meta line"
+    }
+  ],
+  "measured_notes": [
+    "Sheet title 'General Medicine' is large/bold, caption '2 doctors in this department' is small grey — caption contrast estimated ~4.5–5:1 on dark sheet, borderline but readable.",
+    "Doctor rows measure approximately 88–96px tall each — comfortably above the 44px touch minimum.",
+    "Grab handle is visible at top center of the sheet; small (roughly 36×5px) but conventional and non-interactive.",
+    "Doctor name text ~17–18px bold; meta lines ~13–14px grey; fee '₹1,000 visit' is NOT the biggest element on the sheet — the title is larger, but fee is prominent within each row (law 3 partially satisfied at row level).",
+    "No truncation/ellipsis observed on any meta line or name; 'Shed-4 first floor janak estate near chakudia mahadev rakhial' wraps to two lines without ellipsis.",
+    "Chevron affordances on both doctor rows and department rows are present and vertically centered.",
+    "Screen gutters appear consistent ~16px on both sheet and underlying profile; card gaps ~12px; card radius consistent across rows.",
+    "Both rows show real data only (names, fee, availability); Cardiology empty state behind ('No doctors listed yet') names the situation honestly.",
+    "Teal accent: no teal visible on this screen — 'Available' and primary actions render grey/white; the single-accent contract is technically unviolated but the 'Available' live status appears to forfeit its accent."
+  ],
+  "non_blocking_notes": [
+    "'Available' status on both doctors appears grey rather than the teal live accent defined by law 1 — likely a missed accent opportunity, not a violation.",
+    "Avatar initials 'DV'/'R' circles are small (~44px) but acceptable.",
+    "Underlying page's '2 departments' chip and department rows could be dimmed further to strengthen modal hierarchy.",
+    "Back button and hospital header text on the dimmed layer still read as fully interactive; consider disabling interaction while the sheet is open."
+  ],
+  "one_line": "Dark-mode doctor sheet passes: rows exceed touch minimums, no truncation, honest data throughout; only scrim depth and borderline-grey meta contrast need logging."
+}
+```

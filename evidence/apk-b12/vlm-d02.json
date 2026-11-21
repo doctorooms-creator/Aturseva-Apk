@@ -1,0 +1,34 @@
+```json
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Pagination footer is missing entirely: no 'Showing N of 90' line and no 'Show more' affordance; the 6th card is cut off mid-content (its fee row clipped at the bottom edge) with no way to continue.",
+      "severity": "blocking",
+      "where": "Bottom of list / screen footer"
+    },
+    {
+      "what": "'Book' pill buttons appear ~36-40px tall, under the 44px minimum touch target.",
+      "severity": "minor",
+      "where": "Right side of each doctor card"
+    }
+  ],
+  "measured_notes": [
+    "Count line reads '90 doctors found' — real total present, grey text, appears ≥4.5:1 on white.",
+    "Fee (₹300/₹600) is the largest text in each card — hierarchy law 3 satisfied.",
+    "Card text is one line each, no ellipsis/truncation observed on names, specialties, or locations.",
+    "Sixth card is clipped by the viewport at its fee row ('₹450' partially visible) with no footer below it.",
+    "'Book' buttons estimate ~90px wide × ~38px tall — width fine, height likely <44px.",
+    "Name inconsistency: first card shows bare 'Rajesh' while all others use the 'Dr.' prefix — data-quality/honesty flag.",
+    "Initials avatar placeholders ('R', 'DQ') repeated for multiple doctors ('DQ' ×5) — generic placeholder identity, worth verifying against real data rule.",
+    "Canvas is white, cards on hairline-bordered white/light surfaces, single grey+teal-looking palette; no fabricated stats visible."
+  ],
+  "non_blocking_notes": [
+    "Back bar title 'All doctors' and 'All cities' chip match the doorway contract; no query echo residue.",
+    "Empty/edge state not applicable here since data exists, but list continuation is the failure.",
+    "Avatar initials could carry a subtle tint; current grey is consistent with restraint law.",
+    "Card radius and 16px gutters look consistent across cards."
+  ],
+  "one_line": "Doorway is honest and cards are clean, but the browse-all promise breaks at the bottom: 90 doctors, no 'Showing N of M / Show more' footer, and the list simply runs off-screen."
+}
+```

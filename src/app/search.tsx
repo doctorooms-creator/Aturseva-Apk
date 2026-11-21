@@ -202,8 +202,9 @@ export default function SearchScreen() {
         ) : null}
       </View>
 
-      {/* Count line — real totals only */}
-      {total !== null ? (
+      {/* Count line — real totals only; at 0 the EmptyState below carries
+          the message (B12: "0 doctors found" above it was redundant noise) */}
+      {total !== null && total > 0 ? (
         <Text style={[styles.countLine, { color: c.mute }]}>
           {total} {total === 1 ? 'doctor' : 'doctors'} found
         </Text>
@@ -254,7 +255,7 @@ export default function SearchScreen() {
                       void router.replace({ pathname: '/search', params: { q: w } })
                     },
                   })),
-                  { label: 'Browse all doctors', onPress: clearToBrowseAll },
+                  { label: 'Browse all doctors', onPress: clearToBrowseAll, primary: true },
                 ]}
               />
             </View>

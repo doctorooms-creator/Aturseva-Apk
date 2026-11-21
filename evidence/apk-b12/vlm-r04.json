@@ -1,0 +1,36 @@
+```json
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Duplicate hospital entry: 'QA City Hospital / Multi-Speciality / Ahmedabad, Gujarat / 0 doctors · 1 department' appears twice in the same list (row 1 and row 4). A patient scanning for a hospital cannot trust the list when the same entity is presented as two separate results; this violates the honesty law (list must reflect the real result set, deduplicated).",
+      "severity": "blocking",
+      "where": "Card 1 (top, partially scrolled) and Card 4, both 'QA City Hospital, Ahmedabad, Gujarat'"
+    },
+    {
+      "what": "Secondary metadata text ('Multi-Speciality', city, and '0 doctors · 1 department' lines) renders in a light grey that appears to fall below the 4.5:1 AA threshold on the white/tinted card surface — visually around 3.5–4:1 (#9x–A0 grey range).",
+      "severity": "minor",
+      "where": "All hospital cards, lines 2–4 under each hospital name"
+    },
+    {
+      "what": "End-of-list footer 'That is every hospital for this search' is small grey text (~13px) and its contrast also looks borderline (~4:1); as the terminal honest state it should be clearly legible.",
+      "severity": "minor",
+      "where": "Footer below Zydus Hospital card"
+    }
+  ],
+  "measured_notes": [
+    "Footer in view: 'That is every hospital for this search' — grammatically correct, no ellipsis, no dead end (list terminates honestly after 12 cards).",
+    "7 cards visible in this viewport (QC, QS, QT, QC-duplicate, AH, SH, ZH); card rhythm is consistent: equal vertical gaps (~12px), consistent radius, uniform 16px side gutters.",
+    "Card internal layout consistent: avatar monogram left, name bold ~15px, three grey metadata lines ~13px, chevron right — no truncation or ellipsis observed on any hospital name, specialty, city, or count line.",
+    "Chevron glyph is small (~10–14px) but the full card appears to be the tap target, which comfortably exceeds 44px height (~100px+); no sub-44px interactive element identified.",
+    "'0 doctors · 1 department' cards (QC, QS, QT) present per instruction — not counted as defects.",
+    "No fee numbers on hospital cards — correct, hospitals carry no fee concept; hierarchy-by-scale law not applicable here."
+  ],
+  "non_blocking_notes": [
+    "Monogram avatar tiles use a light grey fill with dark monogram — reads slightly heavy against the restraint law but acceptable.",
+    "Doctor/department counts use a middot separator consistently — good rhythm.",
+    "The duplicate QC card also repeats its identical avatar ('QC'), reinforcing that it is the same entity, not a namesake clinic."
+  ],
+  "one_line": "Honest end-of-list footer and clean card rhythm pass, but the same 'QA City Hospital' appearing twice in one result list is a blocking honesty defect, with borderline grey text contrast as a minor flag."
+}
+```

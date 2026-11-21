@@ -117,7 +117,10 @@ const styles = StyleSheet.create({
   fee: {
     ...typo.bodyStrong,
     fontVariant: ['tabular-nums'],
-    fontSize: 16,
+    // B12: the decision number reads strongest on the card (Uber-upfront:
+    // fee visible BEFORE tap; hierarchy-by-scale) — 15→18px over the name.
+    fontSize: 18,
+    lineHeight: 24,
   },
   feeCaption: {
     ...typo.caption,

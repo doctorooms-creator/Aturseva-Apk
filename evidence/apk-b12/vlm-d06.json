@@ -1,0 +1,29 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Back chip touch target appears under 44px height (~40px visual pill); borderline and should be measured/adjusted",
+      "severity": "minor",
+      "where": "top-left '< Back' chip"
+    }
+  ],
+  "measured_notes": [
+    "Back pill height approx 38-42px — under the 44px law, borderline",
+    "Department rows approx 72-76px tall — comfortably exceed 44px touch target",
+    "Call chip approx 44-48px tall — passes",
+    "Fact strip shows only '2 departments' and '2 doctors listed'; no fabricated 0 beds or established year — honest",
+    "Cardiology row shows 'No doctors listed yet' without ellipsis; 'Room OPD-1' and address wrap fully, no truncation sighted",
+    "Grey secondary text on white estimates ~4.6-5.5:1; address grey on white ~4.6:1; all pass AA estimate; no text on tinted #F4F4F2 background except chips which appear compliant",
+    "Left gutters consistent ~16px across back bar, hero, departments, contact card; card radius consistent (~12-14px)",
+    "No about/facilities/accreditation sections present — correctly absent",
+    "Restraint: white canvas, hairline card borders, grey scale; no teal accent visible — Call chip is grey, acceptable since no live state shown, though teal could legitimately mark it as primary"
+  ],
+  "non_blocking_notes": [
+    "'Call 9106096746' chip uses same grey as '2 departments' chip — consider the single teal accent for the primary call action per law (1)",
+    "Contact card has no hospital phone label — chip text carries the number, fine, but hierarchy could surface 'Contact' heading for consistency with 'Departments' heading",
+    "Chevron on Cardiology row invites navigation but the department has no doctors — ensure the destination handles the empty state honestly (cannot verify from this screen)"
+  ],
+  "one_line": "Honest, restrained hospital profile that passes: facts are truthful, rows are tall and uncut, gutters consistent; only the back chip's ~40px height and a missing teal accent on the call action need attention."
+}
+```

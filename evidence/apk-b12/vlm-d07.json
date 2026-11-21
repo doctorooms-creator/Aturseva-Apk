@@ -1,0 +1,37 @@
+```json
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Doctor meta line (e.g. '₹1,000 visit · Available · ★ 4.0 · 1') renders in mid-grey at ~11-12px; estimated contrast ~3.5-4:1 on white, likely below the 4.5:1 AA floor the design laws mandate",
+      "severity": "minor",
+      "where": "Bottom sheet doctor rows, meta line under specialization"
+    },
+    {
+      "what": "Fee (₹1,000 visit) is the same size and weight as the rest of the meta line, violating law (3) that the fee be the most important number by scale",
+      "severity": "minor",
+      "where": "Doctor rows meta line"
+    },
+    {
+      "what": "Nothing inside the rows signals tappability beyond a light grey chevron; no teal accent or hairline affordance ties the row to the 'primary action' contract, so tap-through clarity relies entirely on the chevron",
+      "severity": "minor",
+      "where": "Doctor rows (Dr. Varun Malik, Rajesh)"
+    }
+  ],
+  "measured_notes": [
+    "Sheet structure correct: grab handle (~40x5px grey pill) centered, title 'General Medicine' ~18-20px bold, caption '2 doctors in this department' present beneath — matches contract",
+    "Row height: each doctor row is roughly 85-90px tall including padding; avatar circle ~48px; comfortably exceeds the 44px touch target minimum",
+    "No truncation/ellipsis observed; the hospital address card ('Shed-4 first floor janak estate near chakudia mahadev rakhial') wraps to two lines instead of clipping — good",
+    "Scrim present: underlying hospital profile visibly dimmed behind the sheet",
+    "Second doctor 'Rajesh' shows no rating value — consistent with law (2); only Dr. Malik shows '★ 4.0 · 1' and it includes a review count, so no fabricated numbers",
+    "Screen gutters look consistent at ~16px left/right on both the underlying screen and the sheet rows; internal spacing between avatar and text reads ~12px",
+    "Card radius consistent between sheet rows and underlying department cards (~12-16px rounded)"
+  ],
+  "non_blocking_notes": [
+    "'Back' pill and '2 departments' pill sit close to the top; a hairline separation between sheet title block and rows would aid scanning",
+    "Meta line uses '·' separators with inconsistent spacing density ('4.0 · 1' reads oddly; consider '4.0 (1)')",
+    "Chevron grey could be one step darker to strengthen the tap affordance without adding a second accent color"
+  ],
+  "one_line": "The sheet honors the contract (handle, title, caption, honest data, tall rows, scrim, no truncation) with only AA-contrast on the meta line, undersized fee emphasis, and a weak tap affordance as strict-review flags."
+}
+```

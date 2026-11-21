@@ -1,0 +1,32 @@
+```json
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "A count line '0 hospitals found' is shown. Screen contract explicitly specifies NO count line on this screen. Even though '0' is honest data, its presence violates the agreed contract for the honest-empty state, and a bare '0' line competes with the EmptyState message.",
+      "severity": "blocking",
+      "where": "Below the city filter chips, left-aligned small grey text"
+    },
+    {
+      "what": "'All cities' clear action inside the EmptyState appears to be a small pill roughly 36-40px tall — below the 44px minimum touch target for the primary recovery action of the empty state.",
+      "severity": "blocking",
+      "where": "EmptyState button, centered under the explanatory copy"
+    }
+  ],
+  "measured_notes": [
+    "Count line text '0 hospitals found' is present at approx 12-13px, grey on white — contrast likely passes AA but the element itself is contract-prohibited.",
+    "EmptyState 'All cities' pill measures approx 72-80px wide × 36-38px tall — under 44px height.",
+    "Filter chips ('Gandhinagar', 'All cities') measure approx 40-44px tall; 'All cities' chip is borderline at ~44px.",
+    "Search field approx 48-52px tall, full width with ~16px gutters — passes.",
+    "No truncation/ellipsis observed; all text fits within card/screen edges.",
+    "Left gutters look consistent ~16px; back bar, search, chips and count all align to it."
+  ],
+  "non_blocking_notes": [
+    "Active city chip is solid black while the design law specifies ONE teal accent for primary/live states; a filled black chip reads as a second accent language. Cosmetic-to-minor depending on token mapping, but worth logging.",
+    "EmptyState icon (building in grey circle) is decorative grey — fine, but the grey circle-on-grey palette makes the empty state feel monochrome; the single teal accent could legitimately mark the clear action instead.",
+    "Large empty whitespace below the EmptyState is acceptable for a zero-result list but the vertical centering could be improved (content sits high, ~y280-470 of 844).",
+    "EmptyState copy correctly names the situation and offers both remedies ('Clear the search or the city filter') — honest, no fabricated data."
+  ],
+  "one_line": "Honest empty state with a clear action, but the contract-prohibited '0 hospitals found' count line and an under-44px clear button force a FAIL."
+}
+```
