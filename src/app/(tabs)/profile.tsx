@@ -17,11 +17,11 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as Linking from 'expo-linking'
 import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
-import { Bell, ChevronRight, FileCheck2, Globe, LogOut, MapPin, Moon, MonitorSmartphone, Star, Sun, UserRound } from 'lucide-react-native'
+import { Bell, ChevronRight, ClipboardList, FileCheck2, Globe, LogOut, MapPin, Moon, MonitorSmartphone, Receipt, Star, Sun, UserRound } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors, useTheme } from '@/lib/theme'
 import type { AuthUser } from '@/lib/api'
@@ -111,7 +111,16 @@ export default function ProfileScreen() {
   }
 
   return (
-    <View style={[styles.screen, { backgroundColor: c.canvas }]}>
+    // B8 scroll fix: the account section grew to 5 rows — a plain View
+    // overflowed short screens (Sign out + version clipped behind the tab
+    // bar). ScrollView + flexGrow keeps the short-screen footer pinned
+    // (marginTop auto on the version line) and scrolls when long — the
+    // sticky-footer law in RN form.
+    <ScrollView
+      style={[styles.screen, { backgroundColor: c.canvas }]}
+      contentContainerStyle={styles.screenContent}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.safeTop} />
       <Text style={[styles.title, { color: c.ink }]}>Profile</Text>
 
@@ -176,6 +185,20 @@ export default function ProfileScreen() {
               onPress={() => void router.push('/reports')}
             />
             <Row
+              icon={<ClipboardList size={20} color={c.body} strokeWidth={2} />}
+              label="Medical history"
+              value="Visits, prescriptions and stays"
+              chevron={<ChevronRight size={18} color={c.mute} strokeWidth={2} />}
+              onPress={() => void router.push('/medical-history')}
+            />
+            <Row
+              icon={<Receipt size={20} color={c.body} strokeWidth={2} />}
+              label="Bills"
+              value="Payments and billing records"
+              chevron={<ChevronRight size={18} color={c.mute} strokeWidth={2} />}
+              onPress={() => void router.push('/bills')}
+            />
+            <Row
               icon={<Star size={20} color={c.body} strokeWidth={2} />}
               label="Rate your visits"
               value="Help the next patient choose"
@@ -233,7 +256,7 @@ export default function ProfileScreen() {
         ) : null}
       </View>
 
-      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B6</Text>
+      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B8</Text>
       <View style={styles.footerPad} />
 
       <CityPickerSheet
@@ -265,7 +288,7 @@ export default function ProfileScreen() {
           setUser(u)
         }}
       />
-    </View>
+    </ScrollView>
   )
 }
 
@@ -365,6 +388,9 @@ function Row({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  screenContent: {
+    flexGrow: 1,
   },
   safeTop: {
     height: 24,

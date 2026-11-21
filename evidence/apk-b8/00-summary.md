@@ -1,0 +1,91 @@
+# APK-B8 — PATIENT RECORDS VIEWERS: bills + medical history (evidence pack)
+
+> Batch: APK-B8 (worklog R37 "deferred GO-gated candidates for next
+> batch" — owner GO "further development as per plan"). App repo
+> `ffd60ef → <this commit>`. ZERO web-repo changes (both endpoints are
+> existing patient-side routes — doc 14 additive law intact, G2 intact).
+
+## What landed
+
+| Screen | What | API (Bearer, contract-verified verbatim) |
+|---|---|---|
+| Bills & payments viewer | `/bills` (stack, back to Profile) — READ-ONLY records: OPD receipts (doctor · hospital · receipt tail-8 · ₹ tabular · method · date · status chip), IPD stay bills (bill/admission tail-8 · ward · Net/Paid/Balance money ladder + Advance adjusted / Discount only when >0 · recorded payments sub-rows), online payment attempts (amount · status · date). Zones hide-if-empty ABSOLUTE (fresh patient = one honest doorway, not three empty headings). NO pay button in-app — the online gateway is a P2 owner-blocked item; a fake pay CTA would be a dead button (honest-copy law). | GET /api/patient/bills |
+| Medical history timeline | `/medical-history` (stack) — one date-desc timeline of the monolith's normalized events: appointment / prescription / lab_report / ipd_admission — round icon chip + uppercase zone label + title + tabular date + description bits + status chip. Summary line "N events · newest first" only when data exists. | GET /api/patient/medical-history |
+| Profile account rows | "Your account" grew 3 → 5 rows: Medical history (ClipboardList) + Bills (Receipt) between Reports and Rate. Guest = section hidden (progressive disclosure unchanged). Footer label APK-B6 → APK-B8. | — |
+| Profile scroll fix (VLM-fix loop) | Profile was the only non-scroll tab; with 5 account rows it overflowed short screens (Sign out + version clipped behind the web tab-bar overlay — VLM audit caught it). Fixed: ScrollView + flexGrow contentContainer (RN sticky-footer form — footer pins when short, scrolls when long). Home/Bookings were already ScrollView. | — |
+
+Money law mirrored from web §9.1: plain ink + tabular numerals, NO
+colored money. Status ladders degrade unknown values to mute — never
+a guess. Adapters: getPatientBills / getMedicalHistory (+ full row
+types) in src/lib/api.ts.
+
+## Web-E2E results (PROD via :8090 — API proxied to aturseva.com, session b8)
+
+1. Fresh patient registered on prod (`b8tester1795229488@aturseva.app`,
+   mobile 9895229488) → login → Profile "Your account" shows all 5 rows
+   (screenshot 01, scrolled-to-footer retake).
+2. `/medical-history` fresh → honest empty doorway "Nothing here yet —
+   your history builds itself as you visit" (screenshot 02).
+3. `/bills` fresh → honest empty doorway "No bills yet — … payments
+   happen at the hospital counter" (screenshot 03).
+4. RAW prod cross-check (curl with the patient's Bearer token):
+   `/api/patient/bills` → `{"ipdBills":[],"opdBills":[],"gatewayTransactions":[]}`
+   · `/api/patient/medical-history` → `{"events":[],"summary":{"total":0,…}}`
+   — the app renders EXACTLY what the server said (honest-empty law).
+5. Golden-journey booking regression ×2: Rajesh ₹300 CTA → slot sheet →
+   confirm → Booked (#O2W2N2, then #VYGA99 with the ACCOUNT mobile).
+6. Identity law discovered + documented (report-only): the app's
+   postPublicBooking does NOT send the Bearer session — identity
+   resolves by MOBILE (resolvePublicPatient: mobileNo → patient user).
+   A signed-in patient booking with their account mobile → booking
+   ties to the account → timeline shows it; a different mobile →
+   honest guest-split (booking lands on the guest identity).
+7. DATA-side timeline verification: after booking #VYGA99 with the
+   account mobile, `/medical-history` shows "1 event · newest first" →
+   APPOINTMENT card "Appointment with Rajesh · 21 Nov 2026 ·
+   follow-up · 09:15 · Rajesh Clinic · Pending" (screenshot 04) — the
+   timeline seam fills with real data, zero further code needed.
+8. Guest doorways: sign out → direct /bills + /medical-history both show
+   the sign-in doorway (never a wall) (screenshot 05).
+9. pageErrors 0 · console = known-benign RN-web Animated warning only.
+
+## VLM audits — 4/4 PASS (vlm-01..04.json)
+
+- vlm-01 profile: first attempt FAIL (Sign out clipped behind the tab
+  bar at scroll-top — the scroll-fix trigger). Fixed → scrolled retake →
+  PASS (notes: version-string fallback on web preview shows 0.1.0 —
+  Constants.expoConfig is unavailable in the static export, native
+  shows 0.3.0; mute section headers are the intended caption design).
+- vlm-02 timeline event card: PASS (zone label → title → date → meta →
+  chip hierarchy called logical and quiet).
+- vlm-03 bills empty: PASS ("no dark patterns or misleading payment
+  affordances" — the honesty called out).
+- vlm-04 history empty: PASS (calm, readable).
+
+## Gates
+
+tsc strict 0 · eslint 0/0 · 2 new stack routes (`/bills`,
+`/medical-history` — typed-route set regenerated by the export) · dist
+re-exported EXPO_PUBLIC_API_BASE="" · :8090 verified 200 serving the
+B8 bundle.
+
+## Honest limits
+
+- IPD bills / OPD bills / gateway zones have NO prod data for any real
+  patient yet — verified honest-empty; zones appear the moment the
+  hospitals record them (seam law).
+- The timeline's non-appointment event types (prescription, lab report,
+  hospital stay) render via the same verified path but had no prod rows
+  to show this round — they follow the exact contract shapes.
+- No OTA update / APK build shipped this round: EXPO_TOKEN lost in
+  sandbox reset #4 (owner must mint a fresh access token; then the
+  febe3a99 artifact fetch AND the B8 OTA publish both unblock — one
+  action, two unblocks).
+- Web preview footer version quirk (fallback 0.1.0) — web-only, native
+  unaffected.
+
+## What did NOT land this round (standing owner-blocked items)
+
+- Labs hub (Vercel token) · push/OTP (Firebase/Twilio) · near-me maps
+  (Maps key) · iOS (Apple) · Play console upload — all accounts-last.
+- B8 OTA publish + febe3a99 artifact link — both EXPO_TOKEN-blocked.

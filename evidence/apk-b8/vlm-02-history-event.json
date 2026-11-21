@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "## UI Audit — 'Medical history'\n\n### (1) Card composition & alignment, icon/text hierarchy\n- Card sits on a light gray surface with rounded corners on a white canvas — consistent with the calm aesthetic. ✅\n- Round icon-in-circle motif is present, properly circular, top-left aligned with the text block's cap height. ✅\n- Clear hierarchy: uppercase zone label (APPOINTMENT, small, gray) → semibold title ('Appointment with Rajesh') → tabular date line (21 Nov 2026) → gray meta line (follow-up · 09:15 · Rajesh Clinic). Progression is logical and quiet. ✅\n- Left alignment is consistent across label/title, though date/meta lines sit flush left outside the icon gutter — acceptable, but aligning text to the icon's left edge would tighten the grid. Minor.\n- Summary line '1 event · newest first' is correctly placed above the card in small gray type. ✅\n\n### (2) Truncation, overlap, contrast\n- No truncation or overlap; all strings fit with comfortable padding. ✅\n- Near-black title on light card: strong contrast. ✅\n- Gray meta line and zone label are small but appear legible; confirm they meet ~4.5:1 in production. ⚠️ Minor caution.\n- Large empty region below the single card is acceptable for an empty-ish list state.\n\n### (3) Status chip grammar\n- 'Pending' rendered as a soft pill with muted warm tint and rounded corners — calm, not shouty, no all-caps or saturated alarm styling. ✅\n- Appropriate capitalization (title case, not SCREAMING). Pill size proportionate to text. ✅\n\n### (4) Visual defects\n- Baseline of 'Pending' chip sits close to the card's bottom padding; slightly more breathing room would help. Minor.\n- The '·' separators in the meta line render fine; no clipped glyphs.\n- Back arrow and title header spacing is balanced. No defects of consequence.\n\n---\n\n**Verdict: PASS** — Composition, hierarchy, chip grammar, and contrast all conform to the calm design language; only minor padding refinements suggested.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795229758,
+  "id": "20261121105547e7021cdc24ce4ccf",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121105547e7021cdc24ce4ccf",
+  "usage": {
+    "completion_tokens": 460,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 607,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1067
+  }
+}

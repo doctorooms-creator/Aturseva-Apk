@@ -1175,3 +1175,130 @@ function htmlToText(html: string): string {
     .replace(/\n{3,}/g, '\n\n')
     .trim()
 }
+
+// ————— APK-B8 · Bills & medical history (doc 08, patient Bearer) —————
+// Both contracts read VERBATIM from the existing monolith routes
+// (GET /api/patient/bills · GET /api/patient/medical-history) — zero
+// web-repo changes (additive law).
+
+/** OPD bill — the receipt a patient gets at the clinic after a visit. */
+export interface OpdBillRow {
+  id: string
+  receiptNo: string
+  totalAmount: number
+  paymentMethod: string
+  paymentDate: string
+  status: string
+  createdAt: string
+  patientName: string
+  doctorName: string
+  hospitalName: string
+}
+
+/** One recorded payment against an IPD bill (receipt no + amount + how). */
+export interface IpdPaymentRow {
+  id: string
+  receiptNo: string
+  amount: number
+  paymentMethod: string
+  paymentDate: string
+}
+
+/** IPD bill — the consolidated hospital-stay bill (net payable, paid,
+ *  balance computed by the server; payments sub-rows). */
+export interface IpdBillRow {
+  id: string
+  billNo: string
+  status: string
+  totalAmount: number
+  netPayable: number
+  advanceAdjusted: number
+  discountAmount: number
+  paidAmount: number
+  balance: number
+  generatedAt: string | null
+  finalizedAt: string | null
+  createdAt: string
+  admissionNo: string
+  patientName: string
+  hospitalName: string
+  wardName: string
+  payments: IpdPaymentRow[]
+}
+
+/** Online payment attempt (Razorpay order → payment ids + status). */
+export interface GatewayTxnRow {
+  id: string
+  razorpayOrderId: string
+  razorpayPaymentId: string | null
+  amount: number
+  currency: string
+  status: string
+  errorMessage: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface PatientBills {
+  ipdBills: IpdBillRow[]
+  opdBills: OpdBillRow[]
+  gatewayTransactions: GatewayTxnRow[]
+}
+
+/** GET /api/patient/bills — the patient's own bills (Bearer). */
+export async function getPatientBills(): Promise<PatientBills> {
+  const raw = await fetchJson<{
+    ipdBills: IpdBillRow[]
+    opdBills: OpdBillRow[]
+    gatewayTransactions: GatewayTxnRow[]
+  }>('/api/patient/bills', { auth: true })
+  return {
+    ipdBills: raw.ipdBills ?? [],
+    opdBills: raw.opdBills ?? [],
+    gatewayTransactions: raw.gatewayTransactions ?? [],
+  }
+}
+
+/** Normalized timeline event from /api/patient/medical-history. */
+export type MedicalEventType = 'appointment' | 'prescription' | 'lab_report' | 'ipd_admission'
+
+export interface MedicalEventRow {
+  id: string
+  type: MedicalEventType
+  title: string
+  description: string
+  date: string
+  status: string
+}
+
+export interface MedicalHistorySummary {
+  total: number
+  appointments: number
+  prescriptions: number
+  labReports: number
+  admissions: number
+}
+
+export interface MedicalHistory {
+  events: MedicalEventRow[]
+  summary: MedicalHistorySummary
+}
+
+/** GET /api/patient/medical-history — one timeline of the patient's
+ *  appointments, prescriptions, lab reports and hospital stays (Bearer). */
+export async function getMedicalHistory(): Promise<MedicalHistory> {
+  const raw = await fetchJson<{
+    events: MedicalEventRow[]
+    summary: MedicalHistorySummary
+  }>('/api/patient/medical-history', { auth: true })
+  return {
+    events: raw.events ?? [],
+    summary: raw.summary ?? {
+      total: 0,
+      appointments: 0,
+      prescriptions: 0,
+      labReports: 0,
+      admissions: 0,
+    },
+  }
+}
