@@ -18,12 +18,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Platform, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { ChevronLeft, XCircle } from 'lucide-react-native'
+import { ChevronLeft, Check } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
 import { cancelPublicBooking, getBookingToken, type TokenState } from '@/lib/api'
 import { getBookingPhone } from '@/lib/storage'
-import { Chip, PillButton } from '@/components/press'
+import { Chip, PillButton, QuietAction } from '@/components/press'
 import { PulseDot } from '@/components/pulse-dot'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { OfflineBanner } from '@/components/offline-banner'
@@ -261,12 +261,14 @@ export default function TokenScreen() {
               {t.disease ? <FactRow label="Reason" value={t.disease} /> : null}
             </View>
 
-            {/* Actions stack */}
+            {/* Actions stack — B11 hierarchy law: ONE primary when the
+                visit is upcoming (Track queue — filled pill), Share token
+                secondary; when the visit is done, Share token carries the
+                primary slot. Same two-width rhythm — no flat stack. */}
             {upcoming ? (
               <View style={styles.actionRow}>
                 <PillButton
                   label="Track queue"
-                  variant="secondary"
                   height={52}
                   onPress={() => void router.push(`/booking/${bookingId}/queue`)}
                   style={styles.actionBtn}
@@ -276,7 +278,7 @@ export default function TokenScreen() {
             <View style={styles.actionRow}>
               <PillButton
                 label="Share token"
-                variant="secondary"
+                variant={upcoming ? 'secondary' : 'primary'}
                 height={52}
                 onPress={() => void openWhatsApp(shareCard)}
                 style={styles.actionBtn}
@@ -288,14 +290,12 @@ export default function TokenScreen() {
               </View>
             ) : null}
 
-            {/* Quiet destructive — never one-tap (money/visit law) */}
+            {/* Quiet destructive — never one-tap (money/visit law). B11:
+                text-only muted red (QuietAction tone=error) — an iconed
+                pill reads LOUDER than a quiet action should. */}
             {cancellable ? (
               <View style={styles.cancelRow}>
-                <Chip
-                  label="Cancel booking"
-                  leading={<XCircle size={15} color={c.error} strokeWidth={2} />}
-                  onPress={() => setCancelOpen(true)}
-                />
+                <QuietAction label="Cancel booking" tone="error" onPress={() => setCancelOpen(true)} />
               </View>
             ) : null}
 
@@ -366,7 +366,9 @@ function TimelineStep({ label, done }: { label: string; done: boolean }) {
           { borderColor: c.mute, backgroundColor: c.canvas },
           done && { borderColor: c.tealLive, backgroundColor: c.tealLive },
         ]}
-      />
+      >
+        {done ? <Check size={9} color={c.canvas} strokeWidth={3.4} /> : null}
+      </View>
       <Text style={[styles.timelineLabel, { color: c.ink }, !done && styles.timelineLabelPending]}>{label}</Text>
     </View>
   )

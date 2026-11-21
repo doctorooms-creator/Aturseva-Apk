@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "## RETAKEN Audit\n\n**1) First doctor card specialty — FIXED ✅**\n\"General Physician\" is now fully readable on the Rajesh card, with \"Gandhinagar\" also intact. The 264px width resolved the truncation.\n\n**2) Hospital meta — FIXED ✅**\n\"Multi-Specialty\", \"Ahmedabad\", and \"2 doctors · 2 departments\" all display fully on the CIIMS Hospital card. The \"0 doctors · 1 de…\" cut on the second card is a horizontal-scroll peek, which is expected carousel behavior, not a defect.\n\n**3) Footer — FIXED ✅**\nNow reads \"Aturseva v0.3.0\" only. No internal build string exposed. \"Delhi · change\" and \"Privacy · Terms\" are intact and legible.\n\n**4) Hierarchy / spacing / polish**\n- Clear section rhythm: search → quick filters → live status strip → Doctors → Hospitals → footer.\n- Avatar/name/fee layout on cards is balanced; \"₹300 / visit\" alignment is acceptable.\n- Live badges (\"● live\" strip, \"Doctors ● live\") are consistent in style.\n- Bottom nav (Home / Bookings / Profile) is well-spaced and properly anchored.\n\n**Minor non-blocking notes (cosmetic only):**\n- The partial second doctor card (\"De…\") shows a cut-off name at the screen edge — fine as a scroll affordance, but the avatar \"DQ\" clipping feels slightly tight.\n- Fee text could use ~2px more breathing room from the card's right edge.\n\n**Verdict: PASS** ✅\n\nAll four previously failed items are resolved; no remaining functional or readability defects.",
+        "reasoning_content": "Review screenshot: first doctor card shows \"General Physician\" fully readable, \"Gandhinagar\" readable. Second card peeking (De…, DQ) — horizontal rail peeking is intentional. Footer: \"Aturseva v0.3.0\" — clean. Hospital meta \"Multi-Specialty / Ahmedabad / 2 doctors · 2 departments\" readable. Minor issues: fee \"₹300\" tight alignment, \"visits booked — live\" ok, \"See all\" fine. Second doctor card name truncated? It's a peek, expected in carousels. Verdict PASS.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795265904,
+  "id": "20261121205813dc805da5ac75420c",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121205813dc805da5ac75420c",
+  "usage": {
+    "completion_tokens": 480,
+    "completion_tokens_details": {
+      "reasoning_tokens": 125
+    },
+    "prompt_tokens": 586,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1066
+  }
+}

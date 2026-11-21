@@ -299,9 +299,16 @@ export default function ConfirmBookingScreen() {
         <View style={styles.scrollBottomPad} />
       </ScrollView>
 
-      {/* Sticky confirm — 56px, loading state keeps the label */}
+      {/* Sticky confirm — 56px, loading keeps the label; the fee rides IN
+          the button (B11: the decision's price echoes at the tap itself —
+          same law as the recap sheet's CTA). */}
       <View style={[styles.ctaBar, { borderTopColor: c.hairline, backgroundColor: c.canvas }]}>
-        <PillButton label="Confirm booking" height={56} loading={submitting} onPress={() => void submit()} />
+        <PillButton
+          label={fee > 0 ? `Confirm booking · ₹${fee.toLocaleString('en-IN')}` : 'Confirm booking'}
+          height={56}
+          loading={submitting}
+          onPress={() => void submit()}
+        />
       </View>
     </View>
   )

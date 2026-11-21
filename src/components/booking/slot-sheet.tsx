@@ -100,7 +100,10 @@ function SlotChip({
       accessibilityState={{ disabled: !free, selected }}
       style={({ pressed }) => [
         styles.slotChip,
-        { backgroundColor: c.canvasSoft },
+        // B11 state grammar (VLM fix-loop): AVAILABLE = white pill + hairline
+        // ring (an OPEN affordance); taken/past = soft-grey, faded,
+        // struck-through (closed); SELECTED = teal ring + teal soft fill.
+        free ? { backgroundColor: c.canvas, borderColor: c.hairline } : { backgroundColor: c.canvasSoft },
         !free && styles.slotChipClosed,
         selected && {
           borderColor: c.tealLive,
@@ -267,7 +270,7 @@ export function SlotSheet({
   const gridSkeleton = (
     <View style={styles.gridSkeleton}>
       {Array.from({ length: 12 }).map((_, i) => (
-        <SkeletonBlock key={i} width={72} height={TOUCH - 12} radiusValue={radius.pill} />
+        <SkeletonBlock key={i} width={72} height={TOUCH} radiusValue={radius.pill} />
       ))}
     </View>
   )
@@ -373,7 +376,8 @@ export function SlotSheet({
         )
       ) : null}
 
-      {/* Fee line + confirm — sticky sheet-bottom (52px pill) */}
+      {/* Fee line + confirm — sticky sheet-bottom (52px pill). B11: an
+          unselected state gets its honest hint (why is the button dim?) */}
       <View style={[styles.footer, { borderTopColor: c.hairline }]}>
         <View style={styles.feeLine}>
           <Text style={[styles.feeText, { color: c.ink }]}>₹{doctor.fees.toLocaleString('en-IN')} · pay at the clinic</Text>
@@ -381,7 +385,9 @@ export function SlotSheet({
             <Text style={[styles.feeTime, { color: c.tealLive }]}>
               {selectedDate === ymd(today) ? 'Today' : shortDate(selectedDate)} · {selectedTime}
             </Text>
-          ) : null}
+          ) : (
+            <Text style={[styles.feeHint, { color: c.mute }]}>Pick a time to continue</Text>
+          )}
         </View>
         <PillButton label="Confirm slot" height={52} disabled={!selectedTime} onPress={confirm} style={styles.confirmBtn} />
       </View>
@@ -456,7 +462,10 @@ const styles = StyleSheet.create({
     gap: space.s8,
   },
   slotChip: {
-    minHeight: TOUCH - 12,
+    // B11 UX fix: was TOUCH - 12 (32px) — under the doc 04 44px law in
+    // the most-tapped grid of the app (VLM-measured). The sheet scrolls;
+    // height is cheap, mistaps are not.
+    minHeight: TOUCH,
     minWidth: 68,
     paddingHorizontal: space.s12,
     alignItems: 'center',
@@ -515,6 +524,9 @@ const styles = StyleSheet.create({
     ...typo.caption,
     fontWeight: '600',
     fontVariant: ['tabular-nums'],
+  },
+  feeHint: {
+    ...typo.caption,
   },
   confirmBtn: {
     flex: 1,

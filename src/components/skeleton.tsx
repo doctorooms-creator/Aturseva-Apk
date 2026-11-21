@@ -66,7 +66,11 @@ export function TrustStripSkeleton() {
   return <SkeletonBlock width={220} height={12} radiusValue={radius.pill} />
 }
 
-const CARD_W = 232
+// B11 UX fix (VLM-measured): 232 truncated the most common specialty
+// ("General Physician" needs 97px, the col got 83 — ellipsis on the
+// FIRST card patients see). 264 gives the text col ~102px: the common
+// spec fits; longer specs ellipsize honestly (numberOfLines=1 stays).
+const CARD_W = 264
 
 const styles = StyleSheet.create({
   railCard: {

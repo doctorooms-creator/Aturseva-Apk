@@ -106,12 +106,23 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
   )
 }
 
-/** Quiet text row action (share/legal links) — still ≥44px hit. */
-export function QuietAction({ label, onPress }: { label: string; onPress?: () => void }) {
+/** Quiet text row action (share/legal links) — still ≥44px hit.
+ *  B11: optional tone 'error' — the QUIET destructive pattern (token
+ *  screen cancel: text-only muted red, no icon — an iconed button reads
+ *  louder than a quiet action should). */
+export function QuietAction({
+  label,
+  onPress,
+  tone = 'body',
+}: {
+  label: string
+  onPress?: () => void
+  tone?: 'body' | 'error'
+}) {
   const c = useColors()
   return (
     <Pressable onPress={onPress} hitSlop={8} style={styles.quietWrap} accessibilityRole="button">
-      <Text style={[typo.caption, { color: c.body }]} numberOfLines={1}>
+      <Text style={[typo.caption, { color: tone === 'error' ? c.error : c.body }]} numberOfLines={1}>
         {label}
       </Text>
     </Pressable>

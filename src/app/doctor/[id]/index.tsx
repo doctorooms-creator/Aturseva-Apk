@@ -496,7 +496,9 @@ const styles = StyleSheet.create({
   ctaBar: {
     paddingHorizontal: space.s16,
     paddingTop: space.s8,
-    paddingBottom: space.s12,
+    // B11: 12→20px under the 56px pill (VLM-measured tight clearance —
+    // the sticky CTA deserves breathing room above the viewport edge).
+    paddingBottom: space.s20,
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   errorWrap: {
