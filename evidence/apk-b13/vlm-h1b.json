@@ -1,0 +1,45 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Data inconsistency contradicting footer: footer says 'Delhi' but visible live hospitals (CIIMS Hospital — Ahmedabad, and a partially visible one) are Ahmedabad-based; location honesty failure after onboarding",
+      "severity": "blocking",
+      "where": "footer 'Delhi · change' vs Hospitals cards showing 'Ahmedabad'"
+    },
+    {
+      "what": "Hospital card shows '0 doctors · 1 de…' with '1 de' cut at screen edge — fabricated-looking/ambiguous count and truncated decision content",
+      "severity": "blocking",
+      "where": "right-edge hospital card (QB)"
+    },
+    {
+      "what": "Doctor card on right edge truncated ('D…', name/area cut off) — carousel cards extend past gutter with no visible affordance; content needed for decisions is clipped",
+      "severity": "minor",
+      "where": "Doctors row, second card"
+    },
+    {
+      "what": "'acidit…' quick-filter chip appears clipped at right edge ('acidity' partially cut)",
+      "severity": "minor",
+      "where": "quick-filter chips row, last chip"
+    },
+    {
+      "what": "'change' affordance in footer is a small plain text link, likely under 44px tall, low discoverability for a corrective action",
+      "severity": "minor",
+      "where": "footer 'Delhi · change'"
+    }
+  ],
+  "measured_notes": [
+    "Footer 'change' text link ~12-13px tall, well below 44px touch target",
+    "Footer text appears mid-grey (~#9?) on white, contrast roughly 3.5–4:1, borderline below AA 4.5:1 for small text",
+    "Screen gutters look ~16px on left; right edge cards are deliberately bleeding (carousel) but clipped mid-glyph ('acidit…', '1 de…')",
+    "Live counts line '97 doctors · 13 hospitals · 66 visits booked — live' matches teal live dot/badge pattern; hierarchy: search reads first, acceptable",
+    "'live' badge on Doctors header uses teal tint with darker teal text — likely passes AA on light tint",
+    "Card radius consistent on visible full cards (~12–16px); hairline borders present"
+  ],
+  "non_blocking_notes": [
+    "Hospitals 'See all' pill is grey-on-grey tint; contrast borderline but large text, log only",
+    "Large dead whitespace between footer links and bottom nav — cosmetic",
+    "Bottom nav labels ('Home' etc.) sit very close to screen bottom edge; safe-area padding looks thin",
+    "Avatar circles (R, DQ, CH, QB) grey-scale, consistent with restraint law"
+  ],
+  "one_line": "Footer claims Delhi while the live hospitals are in Ahmedabad — a blocking honesty defect, compounded by edge-clipped cards and truncated hospital meta; the 'change' link is also too small and too quiet to be a discoverable fix."
+}

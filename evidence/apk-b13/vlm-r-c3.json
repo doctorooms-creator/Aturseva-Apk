@@ -1,0 +1,18 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Fix verified: Guwahati (current city, row 20) is fully on-screen at the bottom of the list with bold label, teal pin icon, and teal check mark on the right — selection state clearly visible on open, no scroll-to-top regression.",
+    "Sheet opens from bottom with grab handle visible (~150px wide, centered) and grey scrim over the background screen; scrim tap-to-close pattern consistent.",
+    "City rows appear ~48-52px tall (e.g. Bhopal to Nagpur spacing), satisfying the 44px touch target rule.",
+    "City labels render in full with no truncation or ellipsis; grey pin icons on non-selected rows, teal pin on selected row — one-accent restraint held.",
+    "'I will choose later' action sits below the list, ~44px row height; header 'Your city' is the largest text and reads first (hierarchy by scale).",
+    "'Skip' link top-right is grey on grey scrim-tinted background; estimated contrast ~4.5:1, borderline but appears AA-passing."
+  ],
+  "non_blocking_notes": [
+    "List shows rows 14-20 only; a search field or the sheet's scroll affordance for rows 1-13 is not visible — acceptable since the current row is auto-scrolled, but a partial top row edge could hint scrollability more explicitly.",
+    "Subtitle 'Search and hospitals start with your city filter.' is small grey text; fine on white, but verify it stays ≥4.5:1.",
+    "Selected row's teal check sits close to the right gutter; alignment looks consistent but padding could be nudged for polish."
+  ],
+  "one_line": "The retake passes: on reopen the sheet auto-scrolls so Guwahati is on-screen with its teal pin and check clearly confirming the current city, with no regressions from the scroll."
+}

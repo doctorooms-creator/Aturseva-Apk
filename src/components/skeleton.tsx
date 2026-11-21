@@ -44,18 +44,25 @@ export function SkeletonBlock({
   )
 }
 
-/** One rail-card-shaped skeleton (avatar circle + text rails). */
+/** One rail-card-shaped skeleton (avatar + text rails + fee row — mirrors
+ * the B13 DoctorRailCard layout: top row avatar/name rails, bottom fee row). */
 export function DoctorRailSkeleton() {
   const c = useColors()
   return (
     <View style={[styles.railCard, { backgroundColor: c.canvas, borderColor: c.hairline }]}>
-      <View style={styles.avatarCol}>
-        <View style={[styles.avatar, { backgroundColor: c.canvasSoft }]} />
+      <View style={styles.top}>
+        <View style={styles.avatarCol}>
+          <View style={[styles.avatar, { backgroundColor: c.canvasSoft }]} />
+        </View>
+        <View style={styles.rails}>
+          <SkeletonBlock width="80%" height={14} />
+          <SkeletonBlock width="60%" height={10} radiusValue={radius.pill} />
+          <SkeletonBlock width="40%" height={12} radiusValue={radius.pill} />
+        </View>
       </View>
-      <View style={styles.rails}>
-        <SkeletonBlock width="80%" height={14} />
-        <SkeletonBlock width="60%" height={10} radiusValue={radius.pill} />
-        <SkeletonBlock width="40%" height={12} radiusValue={radius.pill} />
+      <View style={styles.feeRow}>
+        <SkeletonBlock width={44} height={14} />
+        <SkeletonBlock width={64} height={10} radiusValue={radius.pill} />
       </View>
     </View>
   )
@@ -66,20 +73,31 @@ export function TrustStripSkeleton() {
   return <SkeletonBlock width={220} height={12} radiusValue={radius.pill} />
 }
 
-// B11 UX fix (VLM-measured): 232 truncated the most common specialty
+// B11 UX fix (VLM-measured): 232 truncated the most common spec text
 // ("General Physician" needs 97px, the col got 83 — ellipsis on the
-// FIRST card patients see). 264 gives the text col ~102px: the common
-// spec fits; longer specs ellipsize honestly (numberOfLines=1 stays).
+// FIRST card patients see). 264 gave the spec col ~102px. (Now consumed
+// by the HOSPITAL rail card only — the doctor rail moved to its own
+// wider constant in B13; hospital names measure un-truncated at 264.)
 const CARD_W = 264
+
+// B13 no-truncation fix: the DOCTOR rail card restructured (fee → bottom
+// row) and widened to 300 so the name/spec column gets ≥200px — measured
+// ellipsized nodes on home ("Dr. QA ProdOnco", "IVF & Fertility
+// Specialist") at 264 are gone; longest real specialization (169px) fits.
+const DOCTOR_CARD_W = 300
 
 const styles = StyleSheet.create({
   railCard: {
-    width: CARD_W,
+    width: DOCTOR_CARD_W,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
     padding: space.s16,
+    gap: space.s8,
+  },
+  top: {
     flexDirection: 'row',
     gap: space.s12,
+    alignItems: 'flex-start',
   },
   avatarCol: {
     alignItems: 'center',
@@ -94,6 +112,12 @@ const styles = StyleSheet.create({
     gap: space.s8,
     justifyContent: 'center',
   },
+  feeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.s8,
+  },
 })
 
 export const RAIL_CARD_WIDTH = CARD_W
+export const DOCTOR_RAIL_WIDTH = DOCTOR_CARD_W

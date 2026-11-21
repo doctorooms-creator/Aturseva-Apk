@@ -1,0 +1,40 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Contract mismatch: checked city is Kochi (6th row, bold + teal check + teal icon), but the stated current city is Mumbai and the sheet contract says Mumbai should be checked on the 2nd row. Either fabricated state or wrong selection rendered.",
+      "severity": "blocking",
+      "where": "Sheet list, row 6 ('Kochi')"
+    },
+    {
+      "what": "City list does not include Mumbai at all — the patient's current city cannot be re-selected or confirmed, a dead end for the stated task.",
+      "severity": "blocking",
+      "where": "Sheet city list (Bhopal, Nagpur, Surat, Patna, Kochi, Coimbatore, Guwahati)"
+    },
+    {
+      "what": "Checkmark touch/selection state sits at the far right edge with no visible row affordance on the checked row; checkmark appears ~16-20px icon, and rows read as text-only targets — row height looks ~44px but the 'I will choose later' link is a small centered text (~13-14px) with target height well under 44px.",
+      "severity": "minor",
+      "where": "Sheet footer link 'I will choose later'"
+    },
+    {
+      "what": "Scrimmed background does not read as the PROFILE screen — it shows only a greyed illustration card and 'Skip' label; no City row or profile content visible behind the scrim, so the sheet's originating surface cannot be verified.",
+      "severity": "minor",
+      "where": "Dimmed background above the sheet"
+    }
+  ],
+  "measured_notes": [
+    "Checked row 'Kochi': bold label, teal location pin, teal checkmark at right edge (~65% down the list, row 6 of 7) — not row 2, and not Mumbai.",
+    "Row spacing approx 44px between city label baselines; labels ~16-17px, dark grey/near-black, contrast on white comfortably above 4.5:1.",
+    "Sheet header 'Your city' ~20px bold; subline 'Search and hospitals start with your city filter.' ~13-14px grey, no truncation.",
+    "Grab handle present at sheet top center; sheet occupies bottom ~55% of screen with scrim above — bottom-sheet composition correct.",
+    "Footer 'I will choose later' ~13px grey text, roughly 30px tall hit area — under the 44px target.",
+    "No ellipsis/truncation observed anywhere in the sheet.",
+    "16px screen gutters appear respected on sheet edges; consistent card radius on sheet top corners."
+  ],
+  "non_blocking_notes": [
+    "Selection state uses the single teal accent correctly (icon + check), consistent with design law 1.",
+    "Empty-state/scrim treatment of background is clean; no visible bleed-through artifacts or misalignment of the sheet against screen edges.",
+    "Illustration behind scrim uses teal accent sparingly; acceptable."
+  ],
+  "one_line": "Sheet composition and restraint are right, but the checked city is Kochi instead of Mumbai, Mumbai is missing from the list entirely, and the 'I will choose later' link is under 44px — blocking honesty/contract failures."
+}

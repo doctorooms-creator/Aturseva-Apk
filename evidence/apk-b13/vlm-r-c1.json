@@ -1,0 +1,23 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Caption reads 'Search and hospitals start with your city filter.' — matches the fixed copy; honest, no over-promise about the global home rail.",
+    "Sheet has grab handle (small grey pill, top-center ~40x4px), bold title 'Your city', caption below — structure per law 8.",
+    "7 city rows (Delhi, Mumbai, Bengaluru, Hyderabad, Ahmedabad, Chennai, Kolkata), each with pin icon; row spacing ~52px apart vertically, so rows are >=44px tall.",
+    "'I will choose later' link at bottom, centered, appears in grey rather than teal — acceptable as it's not a live/selected state.",
+    "No truncation/ellipsis visible on any city name or caption.",
+    "Row text appears ~16px dark near-black on white; estimated contrast > 4.5:1. Caption grey on white estimated ~4.6:1 — borderline AA pass.",
+    "Sheet springs from bottom with grey scrim over onboarding content behind — task stays on screen.",
+    "16px left/right screen gutters appear respected on sheet content.",
+    "No fabricated numbers anywhere; empty/dead-end states not applicable here."
+  ],
+  "non_blocking_notes": [
+    "Skip button top-right sits on the scrim/onboarding layer, not the sheet — slightly ambiguous whether it closes the whole flow; worth logging.",
+    "Row pin icons are grey, consistent with grey-scale restraint; no selected city shown yet, so no teal accent needed on this surface.",
+    "'I will choose later' grey text could be misread as disabled rather than tappable; a hairline separator or slightly darker grey would help.",
+    "City rows appear flush without hairline dividers; a 1px separator list would better match the hairline-border law.",
+    "Bottom link sits very close to screen bottom edge; verify safe-area padding on device."
+  ],
+  "one_line": "Retake passes: honest fixed caption, correct sheet anatomy with 44px+ rows, no truncation or dead ends; only minor polish notes (skip button placement, lack of hairline dividers, 'choose later' affordance strength)."
+}

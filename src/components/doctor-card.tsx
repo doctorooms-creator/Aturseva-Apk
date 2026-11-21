@@ -3,6 +3,16 @@
  * (caption) · ₹fee (tabular bold) · city. Fees and counts are NEVER
  * fabricated — only what the API returned (doc 08 §5 forbids client-side
  * invention).
+ *
+ * APK-B13 (VLM audit + measurement round): NO-TRUNCATION law enforced on
+ * the home rail — measured ellipsized nodes ("Dr. QA ProdOnco",
+ * "IVF & Fertility Specialist"…) because the 264px card gave the name/spec
+ * column only ~112px beside the avatar + fee columns. Restructured: the
+ * fee moves to a bottom row of its own, the name/spec/city column gets the
+ * full width beside the avatar (≥200px at CARD_W 300), so names and the
+ * longest real specialization render un-truncated. Card widened 264→300.
+ * Fee keeps tabular bold 15 (rail is the teaser surface; the listing card
+ * carries the 18px decision number — B12 law unchanged).
  */
 
 import { Pressable, StyleSheet, Text, View } from 'react-native'
@@ -10,7 +20,7 @@ import { MapPin } from 'lucide-react-native'
 import { elevation, radius, space, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
 import { Avatar } from '@/components/avatar'
-import { RAIL_CARD_WIDTH } from '@/components/skeleton'
+import { DOCTOR_RAIL_WIDTH } from '@/components/skeleton'
 import type { DoctorCard } from '@/lib/api'
 
 function formatFee(fees: number): string {
@@ -48,27 +58,27 @@ export function DoctorRailCard({ doctor, onPress }: { doctor: DoctorCard; onPres
             </View>
           ) : null}
         </View>
-        <View style={styles.feeCol}>
+      </View>
+      <View style={styles.bottomRow}>
+        <View style={styles.feeRow}>
           <Text style={[styles.fee, { color: c.ink }]} numberOfLines={1}>
             {formatFee(doctor.fees)}
           </Text>
           <Text style={[styles.feeCaption, { color: c.mute }]}>visit</Text>
         </View>
-      </View>
-      {doctor.rating > 0 && doctor.ratingCount > 0 ? (
-        <View style={styles.ratingRow}>
-          <Text style={[styles.rating, { color: c.body }]}>
+        {doctor.rating > 0 && doctor.ratingCount > 0 ? (
+          <Text style={[styles.rating, { color: c.body }]} numberOfLines={1}>
             ★ {doctor.rating.toFixed(1)} · {doctor.ratingCount}
           </Text>
-        </View>
-      ) : null}
+        ) : null}
+      </View>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
   card: {
-    width: RAIL_CARD_WIDTH,
+    width: DOCTOR_RAIL_WIDTH,
     borderRadius: radius.card,
     borderWidth: StyleSheet.hairlineWidth,
     padding: space.s16,
@@ -99,8 +109,16 @@ const styles = StyleSheet.create({
   city: {
     ...typo.caption,
   },
-  feeCol: {
-    alignItems: 'flex-end',
+  bottomRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: space.s8,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: space.s4,
   },
   fee: {
     ...typo.bodyStrong,
@@ -109,10 +127,6 @@ const styles = StyleSheet.create({
   },
   feeCaption: {
     ...typo.caption,
-    marginTop: 2,
-  },
-  ratingRow: {
-    flexDirection: 'row',
   },
   rating: {
     ...typo.caption,

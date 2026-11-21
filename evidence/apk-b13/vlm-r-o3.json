@@ -1,0 +1,19 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "City pill (~y 705-750, ~45px tall) reads as tappable: soft grey fill plus a visible hairline ring and a right-aligned chevron-down, roughly vertically centered against the label 'Your city — select one'. Fix landed.",
+    "Progress dots: two inactive dots in a readable medium grey + third as an active black elongated pill — correct '2 inactive + 1 active-wide' pattern and consistent with slide 3 state.",
+    "Spacing: dots row to city pill gap ~28-32px; city pill to Get started pill ~14-16px — comfortable, no crowding introduced by the fix.",
+    "Get started pill ~44-48px tall, full-width black on white — passes 44px target and contrast (near-black on white, well above 4.5:1).",
+    "Heading 'Turn confirmed' is the largest element on screen; body copy is dark grey on white, estimated contrast ~7:1+, AA-clean.",
+    "Screen gutters look consistent ~16px on both edges for pill, button, and body text."
+  ],
+  "non_blocking_notes": [
+    "Body copy wraps to two centered lines ('...tells you exactly when to leave.') — a natural wrap, not truncation; no ellipsis.",
+    "Chevron could sit 2-3px further right for perfect optical alignment with the pill's right padding; cosmetic.",
+    "Illustration's teal squiggle accent is tasteful and within the one-accent law; teal dot in illustration also fine.",
+    "Skip link top-right is small (~14px) and its tap target may be near/under 44px — it looks like a plain text link; worth verifying in code but visually marginal, logged not gating."
+  ],
+  "one_line": "Retake passes: the city field now reads clearly as a tappable control via ring + chevron without breaking restraint, dots are legible, spacing is clean, and no blocking defects are visible."
+}

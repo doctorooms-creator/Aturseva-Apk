@@ -1,0 +1,19 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "City pill reads 'Delhi' in grey (~#8A8A8A on #F4F4F2 tint) — contrast est. ~3.3:1, below AA for body text; filled state should darken. Borderline blocking but the value is short/central and pill is large; logged as non-gating due to rendering ambiguity at screenshot scale.",
+    "'Get started' pill: full-width, ~44-52px tall, black fill with white bold text — clearly the highest-weight element, reads last-but-correctly as the primary action.",
+    "Screen gutters look consistent ~16-20px on both sides for both pills; internal radius consistent between the two pills.",
+    "Pagination: 3 dots, 3rd is a black pill (selected) — correct one-accent-in-greyscale pattern, teal reserved for illustration.",
+    "Skip link top-right is small text (~14px); tap target likely under 44px height.",
+    "Large empty vertical region between illustration (~y 270-360) and heading (~y 580) — roughly 200+px of dead space pushing CTA to bottom edge."
+  ],
+  "non_blocking_notes": [
+    "Grey city value on tinted pill weakens filled-state clarity — consider darker grey (#5A5A5A or black) for the entered value.",
+    "'Skip' target appears under 44px; wrap in padded hit area.",
+    "Excess whitespace mid-screen makes the slide feel unbalanced; tighten illustration-to-heading gap or scale illustration up.",
+    "Wavy teal squiggle next to illustration card floats unanchored — cosmetic."
+  ],
+  "one_line": "Filled Delhi state reads correctly and the Get started pill is the clear primary action, but the grey value on the tinted pill is borderline on contrast, Skip's hit area is small, and the mid-screen whitespace is excessive."
+}

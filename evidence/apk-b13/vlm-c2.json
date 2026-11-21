@@ -1,0 +1,19 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Sheet is scrolled to bottom: visible rows are Bhopal, Nagpur, Surat, Patna, Kochi, Coimbatore, Guwahati — no truncation or ellipsis on any city name; all names render in full.",
+    "'I will choose later' centered quiet link sits below Guwahati with roughly 30–35px clearance from the last row; no collision.",
+    "Rows appear ~52–56px tall (icon + label with generous vertical spacing), meeting the 44px minimum touch target.",
+    "Grab handle visible at sheet top center; grey scrim over the underlying screen with 'Skip' top-right — scrim tap-to-close contract appears honored.",
+    "List ends cleanly at Guwahati; no half-cut row or partial divider at the scroll edge — last row fully rendered above the link.",
+    "White sheet canvas, grey-scale icons/labels, no stray accent color except the teal dot in the dimmed illustration above the sheet — restraint law respected.",
+    "City label text (near-black on white) and the grey 'I will choose later' link both read at estimated ≥4.5:1 contrast; grey subtitle on white is borderline but roughly AA."
+  ],
+  "non_blocking_notes": [
+    "'I will choose later' grey looks on the light side (~#8x–9x grey); it passes AA but could be one step darker for comfort.",
+    "No hairline separators between city rows — spacing alone carries separation; consistent, but verify dividers elsewhere in the app for consistency.",
+    "Scrim illustration behind the sheet (teal squiggle, card icon) is inert decoration; harmless on this surface."
+  ],
+  "one_line": "City picker sheet ends cleanly at Guwahati with the 'I will choose later' link reachable, uncollided, and fully legible — contract met."
+}

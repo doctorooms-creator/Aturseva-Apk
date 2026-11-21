@@ -1,0 +1,20 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "City field: fill reads slightly lighter than the #0C0C0C canvas (est. ~#242424, low but perceptible separation) and is bordered by a hairline ring, so it now reads as a tappable control in dark mode; ring contrast is subtle but the lighter fill plus chevron resolves ambiguity",
+    "Chevron on the city field is clearly visible in light grey at the right edge of the control",
+    "Pager dots: two dots in a visible medium grey + one active white/elongated dot — all three distinguishable on the dark canvas",
+    "Body copy 'Your token number arrives instantly…' is a light grey (est. ~#B5B5B5) on near-black, comfortably above 4.5:1",
+    "'Your city — select one' label light grey on the dark field fill, est. ≥ 4.5:1; 'Skip' link grey but legible on black",
+    "City field height ≈ 48px and 'Get started' button ≈ 56px — both exceed the 44px minimum",
+    "No truncation or ellipsis observed; 'Turn confirmed' headline is the largest type and reads first",
+    "Screen gutters appear consistent at ~16px on both edges; card/control radius consistent (pill/rounded)"
+  ],
+  "non_blocking_notes": [
+    "City field fill vs canvas separation is still minimal — the hairline ring is doing most of the work; worth nudging fill a step lighter for robustness across devices",
+    "Illustration line weights and teal squiggle are decorative and fine, but the teal accent on the illustration is a second teal usage on a surface where the accent is meant for live/selected states — cosmetic only",
+    "'Skip' is fairly small typographically (~14px) though its hit area appears adequate"
+  ],
+  "one_line": "Dark-mode retake passes: the city field now reads as a tappable control via hairline ring + chevron, dots are visible, contrast is AA-safe, and no blocking defects remain."
+}

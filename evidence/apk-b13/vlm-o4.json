@@ -1,0 +1,24 @@
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "\"Guwahati\" in the city pill renders in the same mid-grey as a placeholder would, on the #F4F4F2 tinted pill — estimated contrast roughly 3.2–3.6:1, below the 4.5:1 AA floor for tinted backgrounds (law 5), and it fails law 2/honesty: a confirmed choice should not visually read as unfilled placeholder text.",
+      "severity": "minor",
+      "where": "City field pill, above the Get started button"
+    }
+  ],
+  "measured_notes": [
+    "City pill text \"Guwahati\": mid-grey (~#8a8a8a-ish) on soft grey (#F4F4F2) — estimated ~3.3:1, under 4.5:1.",
+    "\"Get started\" pill: white on near-black (~#111) — comfortably >4.5:1; height ~44–48px, width full minus 16px gutters; target OK.",
+    "City pill height ~44px, full-width with consistent ~16px gutters — touch target OK.",
+    "Skip label top-right: small grey text (~14px), estimated contrast ~3.5:1 on white — under AA for body-size text.",
+    "No truncation/ellipsis seen on any text; headline \"Turn confirmed\" and body copy fully wrap on two/three lines.",
+    "Hierarchy reads correctly: headline first, then illustration, then form controls; no layout shift or crowding between the Guwahati pill and Get started pill — ~12px gap visible."
+  ],
+  "non_blocking_notes": [
+    "Dark pill CTA conflicts with the stated single teal accent law — black is used as the accent here while teal appears only in the illustration dot/squiggle; cosmetic inconsistency worth logging.",
+    "Progress dots: first two light grey, third black — selected state via grey/black rather than teal, same accent-consistency note.",
+    "Skip button looks slightly under 44px tall as a text-only target (~14–18px hit area visually); flagging as observation since exact padding is not measurable from the screenshot."
+  ],
+  "one_line": "Passes on layout, targets, and hierarchy, but the confirmed \"Guwahati\" value sits at roughly AA-failing grey-on-tint contrast and reads like a placeholder rather than a committed choice — fix the text color before ship."
+}

@@ -1,0 +1,29 @@
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Inactive page dots are extremely dim (approx #3A3A3A on #0C0C0C, roughly 1.5:1) — nearly invisible in dark mode; progress through onboarding is unreadable",
+      "severity": "minor",
+      "where": "Pagination dots above the Next button (~y=723)"
+    },
+    {
+      "what": "'Skip' appears to be a small text link with an estimated touch height well under 44px",
+      "severity": "minor",
+      "where": "Top-right corner (~y=38)"
+    }
+  ],
+  "measured_notes": [
+    "Caption grey 'Search in your own words…' reads approx #9A9A9A on #0C0C0C ≈ 7:1 — passes AA comfortably",
+    "Title 'Find a doctor' near-white, approx 24-26px bold — dominant, correct hierarchy",
+    "Illustration stroke (white ring, teal accent dot/line) clearly visible against dark canvas; thin grey underline hairline visible but faint (~#555)",
+    "Active dot is a white pill ~20x8px; two inactive dots ~6px circles, very low contrast",
+    "Next button spans full width minus 16px gutters, height approx 64px — passes 44px rule",
+    "No truncation/ellipsis observed on headline or two-line caption"
+  ],
+  "non_blocking_notes": [
+    "Large dead vertical space between illustration (~y=395) and title (~y=630) — layout spacing could be tightened, cosmetic",
+    "Small grey circle top-right of illustration reads as a stray decorative dot; ambiguity is cosmetic only",
+    "Next button in near-white with dark label — high contrast, good, but verify it matches the teal accent language on slide 3's final CTA"
+  ],
+  "one_line": "Dark-mode slide 1 holds up: text contrast and art visibility pass, gated only by near-invisible inactive dots and a sub-44px Skip target."
+}

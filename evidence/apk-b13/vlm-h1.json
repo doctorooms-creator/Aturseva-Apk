@@ -1,0 +1,47 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Wrong city in footer: user completed onboarding with Delhi, but Hospitals section shows 'Ahmedabad' as location on cards (CIMS Hospital / Ahmedabad, and the second hospital card also shows an Ahmedabad-looking pin), contradicting the Delhi arrival contract. The footer 'Delhi · change' is correct but the hospital data reads as another city, which will feel like a data/fabrication error to the patient.",
+      "severity": "blocking",
+      "where": "Hospitals section, card subtitle 'Ahmedabad'"
+    },
+    {
+      "what": "Horizontal card carousels are cut off at the right edge with no affordance: second doctor card ('DQ', 'De…', 'Or…') and second hospital card ('QB', 'Q…', 'Mu…', '0 doctors · 1 de…') are partially visible/clipped, and key deciding text (specialty, location, doctor count) is cut off. For a patient deciding where to book, this content must not be truncated or left half-hidden with no visible scroll hint.",
+      "severity": "blocking",
+      "where": "Doctors row and Hospitals row, right edge"
+    },
+    {
+      "what": "Symptom chip row is clipped: the last chip 'acidity' is cut at the right screen edge mid-word/edge, and there is no visible 'more' affordance; a common symptom being half-cut looks like truncation rather than a scrollable rail.",
+      "severity": "minor",
+      "where": "Symptom chips row, top of screen"
+    },
+    {
+      "what": "Tab bar labels sit extremely close to the bottom edge and appear clipped ('Home' descender nearly touching screen bottom); icons+labels look like they may fall below comfortable 44px target height and violate safe-area spacing.",
+      "severity": "minor",
+      "where": "Bottom tab bar"
+    },
+    {
+      "what": "The single visible doctor card is 'Gandhinagar' located while user is in Delhi — same cross-city inconsistency; only one Delhi-relevant doctor is actually visible, weakening the 'real Delhi data' honesty contract.",
+      "severity": "blocking",
+      "where": "Doctors section, Rajesh card"
+    }
+  ],
+  "measured_notes": [
+    "Doctor card height ~110-120px; avatar circle ~48px; 'Rajesh' ~16-17px bold, 'General Physician' ~13px grey.",
+    "Chips: height ~40px (fever/knee pain/skin/child), slightly under the 44px target; search field ~44-48px tall.",
+    "Footer 'Delhi · change' ~13px grey, discoverable but small; 'change' looks tappable but small tap area.",
+    "Clipped text observed: 'acidity' chip right edge; second doctor card 'De…/Or…'; second hospital card '0 doctors · 1 de…'.",
+    "Screen gutters ~16px on left; card radius consistent ~12-16px across cards and chips.",
+    "Contrast: grey secondary text (~#8A8A8A on white) estimated ~3.4:1 — likely below AA 4.5:1 for 'General Physician', 'Gandhinagar', stats line, footer.",
+    "'live' badge is the only teal accent used on live/selected — restraint law respected."
+  ],
+  "non_blocking_notes": [
+    "White canvas, hairline card borders, single teal 'live' accent — visual restraint is followed.",
+    "Stats line '97 doctors · 13 hospitals · 66 visits booked — live' reads honest with a live marker; good.",
+    "'See all' pill next to Hospitals is a nice quiet affordance, though its tap target looks ~36px tall.",
+    "Empty vertical whitespace between footer and tab bar is large (~150px) — calm but slightly unbalanced.",
+    "Version and legal links ('Aturseva v0.3.0', 'Privacy · Terms') present and quiet — good."
+  ],
+  "one_line": "The shell is calm and restrained, but the handoff fails on honesty: Ahmedabad data shown to a Delhi user and right-edge-clipped cards/truncated hospital metadata mean the patient cannot fully decide from what's visible."
+}

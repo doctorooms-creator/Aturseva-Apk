@@ -1,0 +1,20 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "City row text reads dim grey (approx #B8B8B8) on near-black (#0C0C0C) — estimated contrast ~9.5:1, WCAG AA pass even though it appears visually muted.",
+    "'I will choose later' link appears mid-grey (approx #8C8C8C) on black — estimated contrast ~5.5:1, AA pass.",
+    "Grab handle visible at top of sheet (~36x4px, rounded, grey) — sheet-from-bottom pattern present.",
+    "Row pitch measured ~47px vertically between city rows (Delhi→Mumbai→Bengaluru...), each row comfortably ≥44px touch height.",
+    "Left gutter ~20px, consistent across header, rows, and link; no truncation/ellipsis on any city name or copy.",
+    "Single teal accent present only in the illustration dot; no teal misuse on rows or selection (no city selected yet — acceptable)."
+  ],
+  "non_blocking_notes": [
+    "City rows appear dimmed/almost ghosted in the rendering — contrast passes but the muted look may read as 'disabled' to users; worth a slight bump (e.g. #C9C9C9+) for confidence.",
+    "No visible city is in a selected/live state, so the one-accent rule is untested on this surface; verify teal ring on selection.",
+    "Base screen behind the sheet is essentially black; scrim is present in effect but its tap-to-close behavior cannot be verified from a static frame.",
+    "'Skip' (top right) is small grey text on black — target looks narrow (~40px wide); consider padding to guarantee 44px hit area.",
+    "Sheet corner radius and header hierarchy ('Your city' largest element, reads first) look correct."
+  ],
+  "one_line": "Dark-mode city sheet passes: AA-legible rows, no truncation, ≥44px rows, correct bottom-sheet anatomy — only cosmetic ghosting on row text and a possibly-undersized Skip target to log."
+}

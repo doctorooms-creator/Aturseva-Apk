@@ -1,0 +1,19 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "'Guwahati' now renders dark/ink semibold (~15-16px, ~#1A1A19) — clearly stronger than the grey placeholder voice; reads as a committed value.",
+    "Chevron-down still visible right of 'Guwahati' inside the field pill (~18px gap).",
+    "Field pill: full-width white canvas pill with hairline border, height ~50px (>=44px target), positioned above the Get started button with ~12px gap.",
+    "Get started pill: black, full-width, height ~52px, ~16px bottom gutter, ~16px side gutters — hierarchy holds: headline 'Turn confirmed' (~26px bold) > subcopy > city pill > CTA; CTA still reads last/bold as the action.",
+    "Body copy grey on white estimated ~4.6-5:1, passes AA; 'Skip' grey ~#8a8a8a on white ~3.5:1 — but it is a large-ish label/secondary escape affordance, logged non-blocking.",
+    "Progress dots: 3 dots, third (last) is active pill — consistent with slide 3."
+  ],
+  "non_blocking_notes": [
+    "'Skip' contrast slightly below AA if judged as body-size text (~#8a8a8a on white, ~3.5:1); recommend darkening one step.",
+    "City pill background appears near-white/very light tint rather than the specified #F4F4F2 — imperceptible but worth confirming token usage.",
+    "Progress dot active state is black not teal; acceptable on onboarding (teal reserved for live/selected), but note for consistency audit.",
+    "Illustration uses teal accent accents — consistent with restraint law."
+  ],
+  "one_line": "Retake passes: Guwahati reads as a committed ink-black semibold value with chevron and pill intact, hierarchy against Get started preserved."
+}

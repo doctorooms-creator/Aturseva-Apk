@@ -1,0 +1,24 @@
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Placeholder 'Your city — select one' renders in a mid-grey on the #F4F4F2 tinted field, estimated contrast ~3.5–4:1, below the 4.5:1 AA requirement for that text",
+      "severity": "minor",
+      "where": "City selection field above the 'Get started' button"
+    }
+  ],
+  "measured_notes": [
+    "Field reads exactly 'Your city — select one' with no residual city name, no teal highlight, no checkmark — honest reset confirmed",
+    "Field height ~44–48px and full-width with ~16px gutters; 'Get started' button ~56px tall — both meet the 44px minimum",
+    "Page indicator dots (~8px each) at slide 3 of 3, active dot is dark/filled, consistent with position 3",
+    "No truncation or ellipsis anywhere; illustration, title, body copy, field, and button all render fully within one screen height",
+    "Screen is white canvas, single teal accent confined to the illustration; controls use grey/black — restraint law intact",
+    "Title 'Turn confirmed' is the largest element on screen and reads first — hierarchy law holds"
+  ],
+  "non_blocking_notes": [
+    "'Skip' link at top right (~14px text) likely has enough implied tap area but padding is not visible; worth confirming 44px hit slop",
+    "Teal squiggle beside the illustration is decorative and reads as a hairline; fine",
+    "Vertical rhythm: large empty gap between illustration and title block (~250px) is generous but not a defect"
+  ],
+  "one_line": "Honest reset confirmed — field returned to unselected placeholder with no residue, layout intact; only the placeholder grey-on-tint contrast falls slightly short of AA."
+}

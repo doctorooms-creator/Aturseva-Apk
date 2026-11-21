@@ -1,0 +1,34 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "City field affordance is nearly invisible in dark mode: the pill fill is a very dark grey sitting on a near-black background with no visible border, so it does not read as a tappable selector — it looks like a dead strip of empty space.",
+      "severity": "blocking",
+      "where": "City pill above the 'Get started' CTA"
+    },
+    {
+      "what": "'Skip' link is small mid-grey text on black; estimated contrast ~3.5–4:1 (likely below AA 4.5:1) and its tap area appears to be only the text line, well under a 44px target height.",
+      "severity": "blocking",
+      "where": "Top-right corner"
+    },
+    {
+      "what": "Body caption text under the headline is rendered in a grey (~#8A8A8A on black, roughly 4–4.5:1) — borderline against AA 4.5:1 for the primary explanatory copy the patient must read.",
+      "severity": "minor",
+      "where": "Caption 'Your token number arrives instantly...'"
+    }
+  ],
+  "measured_notes": [
+    "Headline 'Turn confirmed': large white bold text on black, contrast ~19:1, reads first — hierarchy law satisfied.",
+    "CTA pill: white fill with dark 'Get started' label, contrast ~18:1; pill height ~56px, meets 44px target; spans full 16px gutters.",
+    "City pill: fill estimated ~#242422 on ~#000 background — pill-vs-canvas contrast ~1.5:1, no hairline border visible; internal label grey ~#9A9A9A on #242422 ≈ 4.5:1 but the control itself fails the affordance test.",
+    "No truncation/ellipsis observed; all copy fully visible.",
+    "Page dots: 3 indicators, active dot is white pill — acceptable; screen gutter spacing looks consistent ~16px.",
+    "No teal accent used on this surface except in the illustration; no selected/live state present — consistent with restraint law."
+  ],
+  "non_blocking_notes": [
+    "Illustration uses a dark card with white hairline border — the only bordered element on screen, which makes the city pill's borderlessness more conspicuous by comparison; consider matching hairline treatment.",
+    "Teal squiggle accent is decorative; fine under restraint rules but slightly disconnected from any functional teal usage.",
+    "Consider a subtle border or #F4F4F2-outline on the city pill and bumping 'Skip' to a lighter grey (#B0B0B0+) with a padded 44px hit area."
+  ],
+  "one_line": "Dark-mode slide fails on the invisible city-selector affordance and an under-contrast, undersized Skip link; headline and CTA are otherwise exemplary."
+}

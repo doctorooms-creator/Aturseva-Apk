@@ -1,0 +1,25 @@
+{
+  "overall": "PASS",
+  "defects": [
+    {
+      "what": "Skip button appears to be plain grey text with no visible padded hit area; rendered text height looks ~16-18px, likely under the 44px touch-target rule",
+      "severity": "minor",
+      "where": "top-right corner"
+    }
+  ],
+  "measured_notes": [
+    "White canvas throughout, no tinted cards on this surface — contrast risk low; caption grey reads ~#8A8A8A on white, borderline but appears to meet ~4.5:1",
+    "Title 'Find a doctor' reads first, bold and large (~24-28px), caption below in grey ~16px over two lines — correct title-then-caption hierarchy",
+    "No truncation or ellipsis anywhere; caption wraps cleanly across two full lines",
+    "Progress dots: active dot elongated (wider pill) and filled, two inactive dots grey — state is readable",
+    "Next pill spans near-full width with ~16px gutters, height ~56-60px; black on white contrast well above AA",
+    "Single teal accent appears only in the illustration (face/scan marks) — restrained, no competing accent colors"
+  ],
+  "non_blocking_notes": [
+    "Large empty white gap between illustration and title block creates generous breathing room but the illustration feels slightly disconnected from the text; acceptable for a calm first impression",
+    "Illustration line weights are consistent and friendly; the small grey circle top-right of the magnifier reads as intentional ornament",
+    "No grab-handle/scrim concern on this screen as no sheet is present",
+    "Skip text could sit on an invisible 44px hit slop even if visually small — verify in build, not blocking"
+  ],
+  "one_line": "Calm, honest, correctly-hierarched onboarding slide that passes on restraint and hierarchy; the only watch item is the Skip text's effective touch target."
+}

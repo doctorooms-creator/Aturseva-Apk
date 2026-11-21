@@ -15,3 +15,10 @@ e2e-retake2-b12.sh
 e2e-final-b12.sh
 e2e-golden-b12.sh
 e2e-shots-b12/
+e2e-sweep-b13.sh
+e2e-measure-b13.sh
+e2e-verify-b13.sh
+e2e-retake-b13.sh
+e2e-retake2-b13.sh
+e2e-diag-b13.sh
+e2e-shots-b13/

@@ -1,0 +1,19 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Doctor rail cards ~300px wide; name 'Rajesh' and specialization 'General Physician' fully readable, no ellipsis visible on either card",
+    "Fee row '₹300 visit' sits on its own bottom row, reads clearly, dark text on white card — estimated contrast well above 4.5:1",
+    "Doctor cards and hospital cards share uniform height and consistent radius; ~16px screen gutters and ~12px internal gaps look consistent",
+    "Stored city footer line reads 'Kochi · change' as expected; no sheet open, no scrim",
+    "Card chips at right edge (acidity, DQ card, QB hospital card) are cut by the viewport edge — this is horizontal rail overflow, not text truncation inside a card",
+    "Search bar and suggestion chips appear comfortably ≥44px tall; bottom nav items ~44px+ with icon+label"
+  ],
+  "non_blocking_notes": [
+    "Second visible hospital card shows '0 doctors · 1 de…' clipped at the card's right viewport edge — likely full text ('1 department') exists once scrolled into view, but verify the card's internal width doesn't ellipsize department count",
+    "Only one doctor card fully in view on first arrival; consider letting the rail peek slightly more to signal scrollability",
+    "'• live' pill next to 'Doctors' header and the live dot on the stats line are the only accent uses — restraint law holding",
+    "Hospitals 'See all' chip contrast on light grey appears ~4.5:1 — borderline; log for verification"
+  ],
+  "one_line": "Clean retake: doctor cards read fully with no truncation, fee row clear, calm hierarchy, correct Kochi footer — no blocking defects."
+}

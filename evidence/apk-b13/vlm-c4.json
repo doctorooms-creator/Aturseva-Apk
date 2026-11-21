@@ -1,0 +1,21 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Delhi row (first row, visible unscrolled) shows teal pin and teal check mark on the right — selection state correct per contract.",
+    "Sheet sits over home with scrim; home content behind is visible but greyed/dimmed, no distracting live elements bleeding through at full contrast.",
+    "Grab handle present at top center of sheet (~56px wide, ~5px tall).",
+    "Sheet title 'Your city' is the largest text on the sheet — reads first; subtitle in smaller grey.",
+    "Rows appear ~56-64px tall with generous vertical rhythm (~56px pitch) — touch targets look ≥44px.",
+    "Roughly 7 rows visible unscrolled (Delhi, Mumbai, Bengaluru, Hyderabad, Ahmedabad, Chennai, Kolkata); 'I will choose later' action visible at bottom, no dead end.",
+    "No truncation/ellipsis on any city name; all row content fully visible.",
+    "Check mark teal; Mumbai row pin grey — only one accent state, consistent with restraint law.",
+    "Sheet appears full-radius top corners (~16px), consistent card language."
+  ],
+  "non_blocking_notes": [
+    "'I will choose later' is small text (~14px) — its touch target spans roughly full width row height but the label itself is modest; consider a slightly clearer affordance.",
+    "Scrim shows search chips and doctor cards behind; the dimming looks adequate but 'fever'/'knee pain' chips remain faintly legible — acceptable.",
+    "Sheet corner radius vs underlying card radius not identical but close enough not to gate."
+  ],
+  "one_line": "Delhi row correctly selected with teal pin + check, sheet anchored over scrimmed home with clean rhythm, no truncation or dead ends — passes the contract."
+}

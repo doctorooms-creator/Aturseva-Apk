@@ -1,0 +1,22 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Scrim present behind sheet, medium grey overlay over onboarding content",
+    "Grab handle visible centered at sheet top, ~32px wide, small but present",
+    "Sheet top radius ~16-20px, visually consistent",
+    "Title 'Your city' reads ~18px bold/semibold, caption below ~13-14px grey — hierarchy correct",
+    "7 city rows (Delhi…Kolkata) with aligned map-pin icons at consistent left position; row vertical rhythm even at roughly 49-50px per row, satisfying 44px minimum",
+    "No check mark visible on any row — acceptable at onboarding since no city is selected yet, but noted",
+    "No truncation: all city names fully rendered; caption fits on one line",
+    "'I will choose later' quiet exit present at bottom, centered, appears >=44px tappable zone given row spacing above/below",
+    "Row text is near-black on white sheet — estimated contrast well above 4.5:1; caption grey reads ~#767676 range, borderline but approximately AA-compliant"
+  ],
+  "non_blocking_notes": [
+    "No selected/teal state shown in list; when a city is tapped expect the teal check per design law — not verifiable from this static frame",
+    "Pin icons appear grey (~#555) rather than grey-scale-lighter; consistent across rows so acceptable",
+    "The quiet exit is grey and quiet by design; discoverable enough given it is the only bottom-anchored text, but could be slightly larger if tap rates are low",
+    "Caption grey on white should be verified programmatically; visually it sits near the AA boundary"
+  ],
+  "one_line": "A disciplined city-picker sheet: even 44px+ rows, aligned icons, real content, discoverable quiet exit — passes with only verification-level notes."
+}

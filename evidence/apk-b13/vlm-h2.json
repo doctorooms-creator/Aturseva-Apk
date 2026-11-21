@@ -1,0 +1,31 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Stale-city residue: doctors and hospitals are still Ahmedabad-area data (Rajesh in Gandhinagar, CIIMS Hospital in Ahmedabad, '97 doctors · 13 hospitals · 66 visits booked') while the footer reads 'Mumbai · change'. Same-visit city switch to Mumbai should update or clearly scope this content; showing Mumbai in the footer over Ahmedabad listings is a dishonest state.",
+      "severity": "blocking",
+      "where": "Stats line, Doctors cards, Hospitals cards vs footer"
+    },
+    {
+      "what": "Horizontal card rows cut off at screen edge with no affordance: second doctor card ('DQ...') and second hospital card ('QB...') are clipped mid-content; the patient cannot see what they are or scroll indicator is absent.",
+      "severity": "minor",
+      "where": "Doctors row (right card), Hospitals row (right card)"
+    }
+  ],
+  "measured_notes": [
+    "Footer reads 'Mumbai · change' — city update itself propagated correctly, no reload needed.",
+    "Card content contradicts footer: Gandhinagar/Ahmedabad visible on every card — measured stale residue.",
+    "Search placeholder 'Doctor name or problem — fever, knee pain' fully visible, no truncation.",
+    "Footer 'change' link appears roughly 13–14px text; estimated touch target well under 44px height.",
+    "White canvas with light-grey pill chips and hairline card borders — restraint law visually intact; teal dot accent only on 'live' badge and stats dot.",
+    "Stats line '97 doctors · 13 hospitals · 66 visits booked — live' is grey on white, contrast appears around 4.5–5:1, likely AA-passing.",
+    "Bottom nav labels (Home, Bookings, Profile) ~12–13px grey; 'Bookings' and 'Profile' look borderline under 4.5:1."
+  ],
+  "non_blocking_notes": [
+    "Right-clipped cards may be intentional horizontal scroll carousels, but no partial second card edge/peek cue confirms scrollability beyond the clip itself.",
+    "Footer block (city, version, Privacy · Terms) is centered with generous whitespace — fine, but large empty region below cards before footer feels unbalanced.",
+    "'live' chip teal-on-light-tint contrast looks acceptable but worth a formal check on tinted background.",
+    "Version string 'Aturseva v0.3.0' small grey text — cosmetic only, not decision content."
+  ],
+  "one_line": "Footer honestly shows Mumbai, but the page body still serves Ahmedabad doctors and hospitals with no scoping label — a stale-city honesty failure."
+}

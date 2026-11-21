@@ -1,0 +1,41 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "City row text (Delhi, Mumbai, Bengaluru, Hyderabad, Ahmedabad, Chennai, Kolkata) renders far darker than the specified #B8B8B8 — appears roughly #3A3A3A–#4A4A4A on the #0C0C0C sheet, well below the 4.5:1 AA threshold. The primary decision content of the sheet is nearly unreadable.",
+      "severity": "blocking",
+      "where": "All seven city rows in the sheet body"
+    },
+    {
+      "what": "'I will choose later' link is barely visible — reads much darker than the specified #8C8C8C (est. ~#333333 on #0C0C0C, ~1.5–2:1). It is the sheet's escape action and effectively a dead end if unreadable.",
+      "severity": "blocking",
+      "where": "Bottom of sheet, centered link"
+    },
+    {
+      "what": "Row text appears vertically clipped: 'Delhi', 'Mumbai', 'Bengaluru', 'Hyderabad', 'Ahmedabad', 'Chennai', 'Kolkata' all show cut-off descenders/bottom edges, as if the label is cropped at the row's baseline. Content the patient needs to decide is not fully rendered.",
+      "severity": "blocking",
+      "where": "Every city row label"
+    },
+    {
+      "what": "Sheet edge separation from scrim is weak — the #0C0C0C sheet against the near-black background/scrim reads as almost no visible boundary; the top corners of the sheet are only faintly distinguishable.",
+      "severity": "minor",
+      "where": "Top edge of the bottom sheet"
+    }
+  ],
+  "measured_notes": [
+    "City row labels estimated at ~16px but at very low contrast (~2:1 or below by eye), failing AA 4.5:1 against the dark sheet.",
+    "'I will choose later' estimated ~14–15px, contrast well under 4.5:1 on #0C0C0C.",
+    "'Skip' (top right) is mid-grey on near-black, roughly 4–5:1 — borderline but the least alarming text on screen.",
+    "Row pitch looks ~53px with row text boxes around 44px height — touch targets appear compliant.",
+    "Sheet left/right gutters appear ~16px with 12px-ish internal spacing; radius on sheet top corners looks consistent (~16px).",
+    "Grab handle visible at sheet top center, dark grey (#262626-ish) — present but extremely low visibility against the sheet.",
+    "City labels show visible bottom clipping on all seven rows (descenders cut)."
+  ],
+  "non_blocking_notes": [
+    "Header 'Your city' (white, bold ~20px) and subtitle (light grey) read first and clear — hierarchy by scale is respected.",
+    "Illustration pin/teal accent dot is visible and uses the single teal accent appropriately.",
+    "Row icons (location pins) are slightly brighter than row text — inconsistent text/icon grey levels within rows.",
+    "No scrim tap target or scrim dimming visibly distinguishable behind the sheet — worth verifying interaction exists even if visually subtle."
+  ],
+  "one_line": "The sheet's structure, spacing and hierarchy are right, but nearly all row text and the 'choose later' link fail dark-mode contrast and appear baseline-clipped, making the core decision content unreadable — blocking."
+}

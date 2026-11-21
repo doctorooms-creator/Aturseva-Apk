@@ -1,0 +1,33 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "City-select field has no visible affordance (no chevron/caret or other tap indicator) — it reads as static text on a grey pill, not as a control that opens a bottom sheet",
+      "severity": "minor",
+      "where": "City field 'Your city — select one', lower third of the screen"
+    },
+    {
+      "what": "'Skip' link appears in a light grey that likely falls below WCAG AA 4.5:1 on white (~2.8–3.2:1 estimated)",
+      "severity": "minor",
+      "where": "Top-right chrome"
+    },
+    {
+      "what": "Pagination dots use black for the active state; the design law reserves teal for selected/live states",
+      "severity": "minor",
+      "where": "Progress dots between caption and city field"
+    }
+  ],
+  "measured_notes": [
+    "City pill measures ~48px tall; CTA pill ~56px — both meet/exceed the 44px minimum",
+    "Visual order observed: art → 'Turn confirmed' → caption → dots → city field → CTA; pagination dots are inserted between caption and city field, slightly breaking the contracted order",
+    "Large empty gap (~180–200px) between art block and title; no crowding between city field and CTA (~12–16px gap)",
+    "No truncation/ellipsis seen on title, caption, or city label",
+    "Title 'Turn confirmed' is near-black on white, high contrast; caption dark grey on white appears ≥4.5:1"
+  ],
+  "non_blocking_notes": [
+    "Layout is calm and uncluttered; single accent use (teal ring in the illustration) is consistent with restraint law",
+    "Screen gutters look consistent at ~16px on both sides; card/pill radii consistent between city field and CTA",
+    "Copy is honest and decision-supporting (no fabricated numbers)"
+  ],
+  "one_line": "Quiet, well-spaced decision slide that fails only on affordance details: the city field gives no visual cue that it opens a sheet, Skip is too light, and the active dot is black instead of teal."
+}

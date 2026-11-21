@@ -1,0 +1,39 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "Shot/context mismatch: this is the onboarding 'Your city' bottom sheet, not the retaken HOME with the restructured doctor rail. The doctor cards, fee rows, and 'Delhi · change' footer are not present in the image and cannot be verified. Also the selected city shown is Kochi, not Delhi.",
+      "severity": "blocking",
+      "where": "entire screenshot / bottom sheet"
+    },
+    {
+      "what": "Caption text 'Search and hospitals start with your city filter.' renders in light grey (~#8a8a8a on white, estimated contrast ~3.3:1), below WCAG AA 4.5:1.",
+      "severity": "blocking",
+      "where": "bottom sheet, under 'Your city' heading"
+    },
+    {
+      "what": "Footer link 'I will choose later' renders in light grey (~#9a9a9a on white, estimated contrast ~2.9:1), failing AA 4.5:1, and it is the primary escape action for the empty state.",
+      "severity": "blocking",
+      "where": "bottom of sheet"
+    },
+    {
+      "what": "'Skip' in the top-right sits on the grey scrim/canvas in mid-grey (estimated ~2.5–3:1 against the ~#c9c9c9 background); low contrast for the dismissal action.",
+      "severity": "minor",
+      "where": "top-right, above scrim"
+    }
+  ],
+  "measured_notes": [
+    "Grab handle present at sheet top; scrim above sheet with tap-to-dismiss implied; sheet springs from bottom — behavior law holds.",
+    "City rows measure roughly 49px vertical rhythm each; row hit area appears ≥44px tall — touch target law holds.",
+    "16px left gutter consistent on rows; 'Kochi' row shows teal pin + teal checkmark as the single accent — restraint law holds on this surface.",
+    "No ellipsis or truncation visible on any city name or caption text.",
+    "'Your city' heading is the largest element on the sheet — scale hierarchy reads correctly.",
+    "Grey scrim content (illustration card, squiggle) visible above sheet; only the sheet is interactive — task stays on its screen."
+  ],
+  "non_blocking_notes": [
+    "Selected row emphasis is done via bold weight + teal check + teal pin; consistent and calm.",
+    "City list is alphabetical within the shown window (Bhopal → Guwahati) which aids scanning; Delhi is not visible in the viewport — consider whether the full list needs scroll indication.",
+    "Row icons are uniform line-style pins; good rhythm and alignment across the list."
+  ],
+  "one_line": "The city sheet itself is clean, calm and law-compliant in structure, but the retake failed to capture the intended HOME/doctor-rail screen, and two grey captions/actions fall below AA contrast — fail until the correct screen is supplied and the greys are darkened."
+}

@@ -1,0 +1,29 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "City picker sheet is not present — screenshot shows the Profile screen with no sheet, no scrim dimming, and no city list rows; the 'Mumbai check on 2nd row' selection state cannot be verified",
+      "severity": "blocking",
+      "where": "full screen"
+    },
+    {
+      "what": "City row still reads 'Mumbai' with no sheet open, so there is no visible live/selected teal state anywhere on this surface",
+      "severity": "blocking",
+      "where": "Settings > City row"
+    }
+  ],
+  "measured_notes": [
+    "White canvas, ~16px gutters, cards (guest card + 3 settings rows) appear on a light tinted background (#F4F4F2-ish) with consistent radius",
+    "Grey body text ('Booking works without an account...', 'Mumbai', 'Follow system', 'aturseva.com') reads roughly mid-grey on the tinted card — estimated contrast around 4.5:1, borderline AA",
+    "Row height ~60-70px, chevrons and icons appear to sit within >=44px tall targets; bottom nav items ~56-60px tall",
+    "No truncation/ellipsis visible on any text; 'Guest', 'City', 'Appearance', 'Aturseva web' all render fully",
+    "'Aturseva v0.3.0' footer text is small (~12-13px) and light grey — likely below AA 4.5:1, but it is non-essential metadata",
+    "No teal accent used anywhere except 'Sign in or create account' link, which is not a live/selected state — possible accent misuse, or the selected city state simply lives on the missing sheet"
+  ],
+  "non_blocking_notes": [
+    "Hierarchy is reasonable: 'Profile' title reads first, guest card is the dominant element",
+    "Guest card and settings rows have slightly different tint treatments? Both appear similar light grey — consistent",
+    "'Sign in or create account' link appears to be a teal-colored text link within a comfortable tap area, but its exact height (~24px text line) may be under 44px as a target"
+  ],
+  "one_line": "The city picker sheet is entirely absent from this capture — only the Profile screen is shown, so the sheet contract, selection state, and scrim behavior cannot pass."
+}

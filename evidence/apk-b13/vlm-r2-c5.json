@@ -1,0 +1,21 @@
+{
+  "overall": "PASS",
+  "defects": [],
+  "measured_notes": [
+    "Kochi row is on-screen, visually selected: teal pin icon, bold/teal label, teal checkmark on right — selection state reads first",
+    "Sheet composes correctly: bottom sheet with grab handle (~40px wide grey bar near top of sheet), scrim dims profile behind (Profile header, Guest card, Settings rows visibly greyed)",
+    "City row in profile shows stored value 'Kochi' — real data consistency between profile and sheet",
+    "Row spacing between city rows ~48px apart; each row (icon + label) spans full width with generous vertical padding, consistent with >=44px touch targets",
+    "'I will choose later' link at sheet bottom, fully visible and reachable without scrolling; grey text ~14px on white — estimated contrast ~4.6-5:1, meets AA",
+    "White canvas, teal used only for selected state (Kochi pin, check, and profile sign-in link); hairline-free, restrained palette — no stray accents",
+    "No truncation/ellipsis observed: Bhopal, Nagpur, Surat, Patna, Kochi, Coimbatore, Guwahati all fully rendered; subtitle 'Search and hospitals start with your city filter.' fits one line",
+    "Left gutters consistent ~16px on both profile and sheet; internal icon-to-label gaps ~12px; sheet top corners rounded consistently"
+  ],
+  "non_blocking_notes": [
+    "Empty-state/scroll context correct: list intentionally scrolled to bottom region showing Kochi; Mumbai/Delhi above window — no dead end since 'I will choose later' is visible",
+    "Checkmark on Kochi sits ~16px from right gutter, slightly far from label but conventional for selection rows",
+    "Grab handle could be slightly wider for discoverability, cosmetic only",
+    "Subtitle 'Search and hospitals start with your city filter.' is grey (~#666 estimated, contrast ~5.5:1) — passes AA but low visual weight; acceptable for secondary text"
+  ],
+  "one_line": "Clean B13 retake: Kochi visibly checked with teal selection, sheet springs over scrimmed profile with grab handle, rows ~48px, 'I will choose later' reachable — PASS."
+}

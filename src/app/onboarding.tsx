@@ -4,11 +4,22 @@
  * location permission — that's P2 near-me). Finish/Skip both write
  * onboarding-done (never repeats). Next button = black pill; last slide
  * reads "Get started". Pure English copy (owner directive, APK-B2).
+ *
+ * APK-B13 (VLM + measurement round): the quiet city field now CARRIES
+ * its affordance — a chevron-down (the one-hint-per-control grammar) +
+ * a hairline ring so the pill reads as a control in BOTH themes (the
+ * dark #1A1A19 fill on #0C0C0C canvas alone was near-invisible — VLM
+ * flagged, geometry confirmed). A chosen city now reads ink/600 vs
+ * the grey placeholder — committed vs uncommitted are two different
+ * voices (state-feedback hierarchy). Inactive progress dots moved
+ * hairline → mute (non-text 3:1 law; hairline dots measured 1.24:1 on
+ * both canvases).
  */
 
 import { useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
+import { ChevronDown } from 'lucide-react-native'
 import { space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
 import { setOnboardingDone, setCity } from '@/lib/storage'
@@ -63,18 +74,30 @@ export default function OnboardingScreen() {
         <Text style={[styles.caption, { color: c.body }]}>{SLIDES[slide].caption}</Text>
       </View>
 
-      {/* Progress dots */}
+      {/* Progress dots — inactive = mute (B13: non-text 3:1 law) */}
       <View style={styles.dots}>
         {SLIDES.map((s, i) => (
-          <View key={s.title} style={[styles.dot, i === slide && styles.dotActive, { backgroundColor: i === slide ? c.ink : c.hairline }]} />
+          <View key={s.title} style={[styles.dot, i === slide && styles.dotActive, { backgroundColor: i === slide ? c.ink : c.mute }]} />
         ))}
       </View>
 
-      {/* City ask — slide 3 bottom, quiet (S2) */}
+      {/* City ask — slide 3 bottom, quiet (S2); affordance = chevron + ring (B13) */}
       <View style={styles.cityBlock}>
         {isLast ? (
-          <Pressable onPress={() => setCitySheetOpen(true)} style={({ pressed }) => [styles.cityField, { backgroundColor: c.canvasSoft }, pressed && { opacity: 0.7 }]} accessibilityRole="button" accessibilityLabel="Select your city">
-            <Text style={[styles.cityFieldText, { color: c.body }]}>{city ?? 'Your city — select one'}</Text>
+          <Pressable
+            onPress={() => setCitySheetOpen(true)}
+            style={({ pressed }) => [
+              styles.cityField,
+              { backgroundColor: c.canvasSoft, borderColor: c.hairline, borderWidth: StyleSheet.hairlineWidth },
+              pressed && { opacity: 0.7 },
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel="Select your city"
+          >
+            <Text style={[styles.cityFieldText, { color: city ? c.ink : c.body }, !!city && styles.cityFieldChosen]} numberOfLines={1}>
+              {city ?? 'Your city — select one'}
+            </Text>
+            <ChevronDown size={18} color={c.mute} strokeWidth={2} />
           </Pressable>
         ) : null}
       </View>
@@ -156,11 +179,16 @@ const styles = StyleSheet.create({
   cityField: {
     borderRadius: 999,
     minHeight: 48,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: space.s8,
     paddingHorizontal: space.s20,
   },
   cityFieldText: {
     ...typo.body,
+  },
+  cityFieldChosen: {
+    fontWeight: '600',
   },
 })

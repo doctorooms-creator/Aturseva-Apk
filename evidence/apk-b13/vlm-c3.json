@@ -1,0 +1,22 @@
+{
+  "overall": "FAIL",
+  "defects": [
+    {
+      "what": "No visible indication of the currently selected city. The sheet is reopened with Guwahati as the current city, but the visible rows (Delhi through Kolkata) show no check mark, teal accent, bold state, or 'Current city' label — the check mark sits on Guwahati, the 20th row, below the fold at scrollTop 0. Patient gets zero confirmation of their current choice.",
+      "severity": "blocking",
+      "where": "City picker sheet, city list rows"
+    }
+  ],
+  "measured_notes": [
+    "List height ~880px in a ~320px sheet viewport; sheet opens at scrollTop 0, so Guwahati (row 20) is below the fold — current-city check mark is not rendered on screen at open.",
+    "Rows visible: Delhi, Mumbai, Bengaluru, Hyderabad, Ahmedabad, Chennai, Kolkata — none show any selected/live state; no teal accent appears anywhere in the list.",
+    "Row touch targets look roughly 40–44px tall (row pitch ~50px including gaps); Kolkata row appears close to but possibly under the 44px minimum — needs pixel verification.",
+    "Heading 'Your city' renders largest on the sheet (~20px+), satisfying hierarchy-by-scale; subtitle in grey, no truncation observed on any visible city name.",
+    "Grab handle present at top of sheet; scrim visible behind; sheet correctly springs from bottom per law 8."
+  ],
+  "non_blocking_notes": [
+    "'I will choose later' footer action is small grey text (~13–14px); its touch target may be under 44px and its contrast is borderline against white — log but do not gate this audit since the defect-under-test is the selected-state visibility.",
+    "Sheet uses white canvas and hairline-free rows — consistent with restraint law; consider auto-scrolling to the current city on open or pinning a 'Current: Guwahati' chip in the header to fix the blocking defect."
+  ],
+  "one_line": "FAIL — reopened city sheet shows no trace of the current selection (Guwahati is below the fold), leaving the patient with zero confirmation of their choice."
+}
