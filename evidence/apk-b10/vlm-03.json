@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Verdict: PASS**\n\nAudit findings against the screenshot (390px dark canvas):\n\n**1) Text tier readability in dark mode**\n- **Ink/primary** (\"Profile\", \"Guest\", \"City\", \"Appearance\", \"Aturseva web\"): white/off-white on near-black — strong contrast (~15:1). ✔\n- **Body** (\"Booking works without an account...\"): light gray on dark card — readable, sufficient contrast (~7–8:1). ✔\n- **Secondary/captions** (\"Select\", \"Dark\", \"aturseva.com\"): medium gray, but still legible at this size against the dark rows (~4.5:1+). ✔\n- **Accent** (\"Sign in or create account ›\"): teal/green on dark card — high contrast and clear affordance. ✔\n\n**2) Row layout**\n- All three Settings rows are full-width, single-line, with left icon, title + subtitle, and right chevron. No overlap, no truncation, consistent vertical spacing. The guest card wraps text cleanly with proper padding. ✔\n\n**3) Footer/version text**\n- \"Aturseva v0.3.0 · APK-B9\" in gray on black: dimmer than body text by design (tertiary tier), but large-screen footer metadata at this size is still legible (~4.5:1). Acceptable for a version line — it's intentionally de-emphasized, not unreadable. ✔\n\n**4) Dark-mode restraint**\n- Good discipline: two surface levels only (canvas vs. card), one accent color (teal), no glows, gradients, or unnecessary color. Active nav item (\"Profile\") highlighted in white vs. gray inactive tabs — subtle and correct. ✔\n\n**Minor notes (non-blocking)**\n- Caption gray could be nudged ~5% lighter for guaranteed WCAG AA in all render conditions.\n- Large empty region between the Settings list and footer is functional whitespace, though it could host future content.\n\nOverall: clean, consistent, accessible dark-mode design. **PASS.**",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795257602,
+  "id": "20261121183953a4c4a4dc1b494c59",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261121183953a4c4a4dc1b494c59",
+  "usage": {
+    "completion_tokens": 432,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 556,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 988
+  }
+}

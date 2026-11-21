@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit — Medical history screen (390px)**\n\n**1) Header clarity** ✅\n- Back arrow + \"Medical history\" title is clear, appropriately sized, and left-aligned consistently.\n- Summary line \"1 event · newest first\" gives useful context (count + sort order) without clutter.\n\n**2) Card layout** ✅\n- Icon, zone label, title, date, detail line, and status chip are vertically stacked with consistent spacing.\n- No overlap, no clipping; text fits within 390px with comfortable side margins.\n- The status chip sits cleanly at the bottom with proper padding.\n\n**3) Readability of gray zone label and secondary text** ✅\n- \"APPOINTMENT\" (uppercase, small) is legible as an eyebrow label — gray on light-gray card is acceptable since it's a supporting label, not primary content.\n- Date \"21 Nov 2026\" has good contrast as a semi-primary line.\n- \"Seasonal fever check · 16:15 · Rajesh Clinic\" secondary line is slightly lighter but still readable and correctly uses dot separators instead of cramming.\n- Minor nit: the gray label contrast could be one shade darker for WCAG AA on the tinted card background, but it's functional.\n\n**4) Timeline design restraint** ✅\n- No decorative timelines, colors, or animations — appropriate for a healthcare context.\n- Single neutral card with a soft amber \"Pending\" chip is calm and professional; the chip color conveys status meaningfully rather than decoratively.\n- Empty space below is fine for a single-event state.\n\n**Verdict: PASS**\n\nClean, calm, readable healthcare history card with clear hierarchy, status communication, and appropriate restraint. Optional improvement: bump the zone-label gray slightly for contrast on the tinted card background.",
+        "reasoning_content": "Audit: header fine, card fine, gray labels readable enough, restrained timeline. Verdict PASS.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795257576,
+  "id": "202611211839272ef9527a85554fb0",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611211839272ef9527a85554fb0",
+  "usage": {
+    "completion_tokens": 394,
+    "completion_tokens_details": {
+      "reasoning_tokens": 20
+    },
+    "prompt_tokens": 558,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 952
+  }
+}

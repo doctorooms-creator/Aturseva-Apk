@@ -18,7 +18,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { ArrowLeft, Star } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
@@ -44,6 +44,7 @@ export default function RateScreen() {
   const [rows, setRows] = useState<FeedbackRow[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [authSheetOpen, setAuthSheetOpen] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   // RateSheet state
   const [sheetRow, setSheetRow] = useState<FeedbackRow | null>(null)
@@ -57,6 +58,15 @@ export default function RateScreen() {
       setError('Could not reach the server. Try again.')
     }
   }, [])
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await load()
+    } finally {
+      setRefreshing(false)
+    }
+  }, [load])
 
   useEffect(() => {
     void (async () => {
@@ -115,7 +125,13 @@ export default function RateScreen() {
           caption="After a visit finishes, it appears here and you can rate the experience."
         />
       ) : (
-        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.ink} />
+          }
+        >
           {rows.map((r) => (
             <View key={r.id} style={[styles.card, { backgroundColor: c.canvasSoft }]}>
               <View style={styles.cardHead}>

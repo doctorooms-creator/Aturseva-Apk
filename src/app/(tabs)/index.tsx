@@ -319,7 +319,7 @@ export default function HomeScreen() {
           <MapPin size={13} color={c.mute} strokeWidth={2} />
           <Text style={[styles.cityText, { color: c.body }]}>{city ?? 'Select city'} · change</Text>
         </Pressable>
-        <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B2</Text>
+        <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B10</Text>
         <QuietAction
           label="Privacy · Terms"
           onPress={() => {

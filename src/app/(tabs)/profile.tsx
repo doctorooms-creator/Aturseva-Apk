@@ -280,7 +280,7 @@ export default function ProfileScreen() {
         ) : null}
       </View>
 
-      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B9</Text>
+      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B10</Text>
       <View style={styles.footerPad} />
 
       <CityPickerSheet

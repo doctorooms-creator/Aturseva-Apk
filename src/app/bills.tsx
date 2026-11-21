@@ -15,7 +15,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { ArrowLeft, Receipt, Stethoscope, CreditCard } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
@@ -74,6 +74,7 @@ export default function BillsScreen() {
   const [bills, setBills] = useState<PatientBills | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [authSheetOpen, setAuthSheetOpen] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const load = useCallback(async () => {
     setError(null)
@@ -84,6 +85,15 @@ export default function BillsScreen() {
       setError('Could not reach the server. Try again.')
     }
   }, [])
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await load()
+    } finally {
+      setRefreshing(false)
+    }
+  }, [load])
 
   useEffect(() => {
     void (async () => {
@@ -141,7 +151,13 @@ export default function BillsScreen() {
           caption="Receipts appear here once the hospital records them for your visits or stays. Nothing to pay from the app today — payments happen at the hospital counter."
         />
       ) : (
-        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.ink} />
+          }
+        >
           {/* OPD zone — hide-if-empty ABSOLUTE */}
           {bills && bills.opdBills.length > 0 ? (
             <View style={styles.zone}>

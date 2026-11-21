@@ -9,11 +9,14 @@
  * live accent, doc 03 law). Tap = mark-read (PATCH fires, row settles
  * locally — optimistic is safe here: it is UI state, not money).
  * "Mark all as read" header pill only when unreadCount > 0.
+ * B10: pull-to-refresh (the error copy promised it — now it EXISTS),
+ * and "Show older" honest pagination (server contract always carried
+ * page/totalPages at 25/page; page 1 alone hid older rows forever).
  * Data: GET /api/patient/notifications (Bearer) — contract in api.ts.
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { ArrowLeft, Bell } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
@@ -47,19 +50,50 @@ export default function NotificationsScreen() {
   const [unread, setUnread] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [authSheetOpen, setAuthSheetOpen] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [loadingMore, setLoadingMore] = useState(false)
   const loaded = useRef(false)
 
   const load = useCallback(async () => {
     setError(null)
     try {
-      const page = await getNotifications()
-      setRows(page.rows)
-      setUnread(page.unreadCount)
+      const pg = await getNotifications()
+      setRows(pg.rows)
+      setUnread(pg.unreadCount)
+      setPage(pg.page)
+      setTotalPages(pg.totalPages)
     } catch {
       setRows([])
       setError('Could not reach the server. Pull down and try again.')
     }
   }, [])
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await load()
+    } finally {
+      setRefreshing(false)
+    }
+  }, [load])
+
+  const onLoadMore = async () => {
+    if (loadingMore || !rows || page >= totalPages) return
+    setLoadingMore(true)
+    try {
+      const pg = await getNotifications(page + 1)
+      setRows((prev) => [...(prev ?? []), ...pg.rows])
+      setPage(pg.page)
+      setTotalPages(pg.totalPages)
+    } catch {
+      // Honest failure: list stays exactly as it was; the pill remains
+      // so the patient can simply try again.
+    } finally {
+      setLoadingMore(false)
+    }
+  }
 
   useEffect(() => {
     void (async () => {
@@ -141,7 +175,13 @@ export default function NotificationsScreen() {
               caption="Booking confirmations and queue updates will appear here automatically."
             />
           ) : (
-            <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              contentContainerStyle={styles.list}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.ink} />
+              }
+            >
               {rows.map((n) => (
                 <Pressable
                   key={n.id}
@@ -168,6 +208,15 @@ export default function NotificationsScreen() {
                   </View>
                 </Pressable>
               ))}
+              {page < totalPages ? (
+                <View style={styles.moreRow}>
+                  <PillButton
+                    label={loadingMore ? 'Loading…' : 'Show older'}
+                    disabled={loadingMore}
+                    onPress={() => void onLoadMore()}
+                  />
+                </View>
+              ) : null}
               <View style={styles.footerPad} />
             </ScrollView>
           )}
@@ -261,6 +310,11 @@ const styles = StyleSheet.create({
   rowTime: {
     ...typo.caption,
     marginTop: 4,
+  },
+  moreRow: {
+    alignItems: 'center',
+    paddingTop: space.s4,
+    paddingBottom: space.s4,
   },
   footerPad: {
     height: space.s32,

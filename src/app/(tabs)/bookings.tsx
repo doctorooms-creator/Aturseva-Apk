@@ -13,7 +13,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { CalendarCheck2, Search } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
@@ -174,7 +174,17 @@ export default function BookingsScreen() {
           <Text style={[styles.loadingText, { color: c.mute }]}>Loading…</Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading && rows !== null && rows.length > 0}
+              onRefresh={() => { if (PHONE_RE.test(phone)) void runLookup(phone) }}
+              tintColor={c.ink}
+            />
+          }
+        >
           {shown.map((b) => (
             <BookingCard key={b.id} row={b} onPress={() => void router.push(`/booking/${b.id}`)} />
           ))}

@@ -15,7 +15,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import {
   ArrowLeft,
@@ -86,6 +86,7 @@ export default function MedicalHistoryScreen() {
   const [data, setData] = useState<MedicalHistory | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [authSheetOpen, setAuthSheetOpen] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const load = useCallback(async () => {
     setError(null)
@@ -96,6 +97,15 @@ export default function MedicalHistoryScreen() {
       setError('Could not reach the server. Try again.')
     }
   }, [])
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await load()
+    } finally {
+      setRefreshing(false)
+    }
+  }, [load])
 
   useEffect(() => {
     void (async () => {
@@ -150,7 +160,13 @@ export default function MedicalHistoryScreen() {
           caption="Your history builds itself as you visit — appointments, prescriptions, lab reports and hospital stays appear in one timeline. No events recorded for this account yet."
         />
       ) : (
-        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.ink} />
+          }
+        >
           <Text style={[styles.summaryLine, { color: c.body }]}>
             {data.summary.total} event{data.summary.total === 1 ? '' : 's'} · newest first
           </Text>

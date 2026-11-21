@@ -12,10 +12,17 @@
  * - native: expo-file-system cache write → expo-sharing sheet —
  *   device behaviour is owner-verified (honest-limit law, doc 12 §2).
  * Guest sees a sign-in doorway (never a wall).
+ *
+ * B10: pull-to-refresh (a Placed order can move to Sample-collected →
+ * Completed while the patient holds this screen — house pattern, ink
+ * spinner), and the prep-note seam (the contract always carried
+ * prepNote — fasting/before-sample instructions — the card never
+ * rendered it; shown only while the collection is still AHEAD:
+ * Placed/Confirmed, hidden once collected — hide-if-empty law).
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { File as FsFile, Paths } from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
@@ -41,6 +48,11 @@ const STATUS: Record<string, { label: string; tone: 'live' | 'done' | 'warn' | '
 
 function statusChip(s: string) {
   return STATUS[s] ?? { label: s, tone: 'mute' as const }
+}
+
+/** Prep instructions still matter only BEFORE the sample is taken. */
+function prepStillMatters(status: string): boolean {
+  return status === 'Placed' || status === 'Confirmed'
 }
 
 function dateLabel(iso: string): string {
@@ -79,6 +91,7 @@ export default function ReportsScreen() {
   const [openingId, setOpeningId] = useState<string | null>(null)
   const [openFail, setOpenFail] = useState<string | null>(null)
   const [authSheetOpen, setAuthSheetOpen] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const load = useCallback(async () => {
     setError(null)
@@ -89,6 +102,15 @@ export default function ReportsScreen() {
       setError('Could not reach the server. Try again.')
     }
   }, [])
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await load()
+    } finally {
+      setRefreshing(false)
+    }
+  }, [load])
 
   useEffect(() => {
     void (async () => {
@@ -160,7 +182,13 @@ export default function ReportsScreen() {
           caption="When you book a lab test — on aturseva.com or here — its status and report land on this screen."
         />
       ) : (
-        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.ink} />
+          }
+        >
           {openFail ? (
             <Text style={[styles.openFail, { color: c.error }]}>{openFail}</Text>
           ) : null}
@@ -198,6 +226,13 @@ export default function ReportsScreen() {
                   <Text style={[styles.note, { color: c.mute }]} numberOfLines={3}>
                     {o.statusNote}
                   </Text>
+                ) : null}
+                {o.prepNote && prepStillMatters(o.status) ? (
+                  <View style={[styles.prepBox, { backgroundColor: c.warnSoft }]}>
+                    <Text style={[styles.prepText, { color: c.warn }]} numberOfLines={4}>
+                      {`Before the sample: ${o.prepNote}`}
+                    </Text>
+                  </View>
                 ) : null}
                 {o.reportReady ? (
                   <PillButton
@@ -303,6 +338,17 @@ const styles = StyleSheet.create({
   },
   note: {
     ...typo.caption,
+  },
+  prepBox: {
+    borderRadius: radius.input,
+    paddingVertical: space.s8,
+    paddingHorizontal: space.s12,
+    marginTop: space.s4,
+  },
+  prepText: {
+    ...typo.caption,
+    fontWeight: '500',
+    lineHeight: 18,
   },
   footerPad: {
     height: space.s32,

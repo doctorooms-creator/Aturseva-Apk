@@ -15,7 +15,13 @@ export const colors = {
   canvasSoft: '#F4F4F2',
   ink: '#0A0A0A',
   body: '#5E5E5E',
-  mute: '#AFAFAF',
+  // B10 contrast fix (VLM nitpicks: gray captions + zone labels read
+  // too faint): was #AFAFAF (2.3:1 on white — under every WCAG floor).
+  // First take #757575 hit 4.6:1 on white but only 4.19:1 on the
+  // canvasSoft card (VLM fix-loop caught it); #6E6E6E = 5.1:1 on white
+  // and 4.64:1 on canvasSoft — AA everywhere gray text lands. Hierarchy
+  // stays scale+weight-led (doc 03); grey still sits BELOW body/ink.
+  mute: '#6E6E6E',
   hairline: '#E7E7E7',
 
   /** LIVE ONLY — queue pulse, selection rings, live chips. Never decorative. */
@@ -38,7 +44,9 @@ export const darkColors: Record<ColorToken, string> = {
   canvasSoft: '#1A1A19',
   ink: '#F5F5F5',
   body: '#B8B8B8',
-  mute: '#7A7A7A',
+  // B10: was #7A7A7A (4.5:1 — technically passing but visually thin next
+  // to the light-mode bump); #8C8C8C = 5.7:1 on the dark canvas.
+  mute: '#8C8C8C',
   hairline: '#262626',
   tealLive: '#2DD4BF',
   tealLiveSoft: '#0F3D38',
