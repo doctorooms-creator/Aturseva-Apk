@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Audit:**\n\n1) **Sign out row**: Fully visible — icon, title, and subtitle \"Session ends on this device\" all render, with clear gap above the bottom tab bar. No clipping or collision. ✔\n\n2) **Version line**: Visible below Sign out — but it reads **\"Aturseva v0.3.0 · APK-B9\"**, NOT the required **\"Aturseva v0.1.0 · APK-B9\"**. Copy mismatch. ✘\n\n3) **Other defects**: The bottom tab bar's \"Home\" and \"Bookings\" labels are clipped at the viewport bottom edge (only top halves of the glyphs show); \"Profile\" renders fully. ✘\n\n## Verdict: **FAIL**\n\nReasons:\n- Version string mismatch: shows v0.3.0 instead of v0.1.0.\n- Bottom tab labels \"Home\" and \"Bookings\" are partially cut off by the viewport bottom.",
+        "reasoning_content": "Check details: Sign out row appears slightly clipped at bottom? The card seems cut — subtitle \"Session ends on this device\" visible; card bottom near version line. Version line says \"Aturseva v0.3.0 · APK-B9\" not v0.1.0 — copy mismatch. Also bottom tab bar labels look clipped (\"Home\", \"Bookings\" partially cut at bottom edge; \"Bookings\" text appears cut off). The tab bar labels appear cut at viewport bottom — Home and Bookings labels are clipped. Sign out row: appears fully visible with margin above tab bar. But the tab bar itself — labels cut? \"Home\" and \"Bookings\" bottom edge — image ends right after labels; \"Profile\" fully visible. Actually Home/Bookings labels appear truncated at bottom — likely cut off. Verdict: FAIL due to version mismatch (v0.3.0 vs v0.1.0) and tab bar labels clipped.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795231044,
+  "id": "2026112111171452d908cc3baa4c72",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112111171452d908cc3baa4c72",
+  "usage": {
+    "completion_tokens": 401,
+    "completion_tokens_details": {
+      "reasoning_tokens": 198
+    },
+    "prompt_tokens": 4073,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 4474
+  }
+}

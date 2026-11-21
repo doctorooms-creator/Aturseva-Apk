@@ -21,16 +21,17 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as Linking from 'expo-linking'
 import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
-import { Bell, ChevronRight, ClipboardList, FileCheck2, Globe, LogOut, MapPin, Moon, MonitorSmartphone, Receipt, Star, Sun, UserRound } from 'lucide-react-native'
+import { Bell, ChevronRight, ClipboardList, FileCheck2, Globe, LogOut, MapPin, Moon, MonitorSmartphone, PenLine, Receipt, Star, Sun, UserRound } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors, useTheme } from '@/lib/theme'
 import type { AuthUser } from '@/lib/api'
 import { getMe, getNotifications, logoutRemote } from '@/lib/api'
-import { clearSession, getStoredToken, getStoredUser } from '@/lib/auth'
+import { clearSession, getStoredToken, getStoredUser, updateStoredUser } from '@/lib/auth'
 import { getCity, setCity, type ThemeMode } from '@/lib/storage'
 import { Avatar } from '@/components/avatar'
 import { CityPickerSheet } from '@/components/city-picker'
 import { AuthSheet } from '@/components/auth-sheet'
+import { EditProfileSheet } from '@/components/edit-profile-sheet'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 
 const WEB_URL = 'https://aturseva.com'
@@ -47,6 +48,7 @@ export default function ProfileScreen() {
 
   const [user, setUser] = useState<AuthUser | null>(null)
   const [authSheetOpen, setAuthSheetOpen] = useState(false)
+  const [editSheetOpen, setEditSheetOpen] = useState(false)
   const [city, setCityState] = useState<string | null>(null)
   const [citySheetOpen, setCitySheetOpen] = useState(false)
   const [appearanceOpen, setAppearanceOpen] = useState(false)
@@ -124,9 +126,22 @@ export default function ProfileScreen() {
       <View style={styles.safeTop} />
       <Text style={[styles.title, { color: c.ink }]}>Profile</Text>
 
-      {/* Account card — logged-in truth or the guest door (never a wall) */}
+      {/* Account card — logged-in truth or the guest door (never a wall).
+          APK-B9: the logged-in card is the edit door (tap → EditProfileSheet) —
+          the card shows exactly the fields the sheet edits, so it IS the
+          affordance; guests keep their sign-in door (no edit for what does
+          not exist yet). */}
       {user ? (
-        <View style={[styles.accountCard, { backgroundColor: c.canvasSoft }]}>
+        <Pressable
+          onPress={() => setEditSheetOpen(true)}
+          accessibilityRole="button"
+          accessibilityLabel="Edit profile"
+          style={({ pressed }) => [
+            styles.accountCard,
+            { backgroundColor: c.canvasSoft },
+            pressed && { opacity: 0.7 },
+          ]}
+        >
           <Avatar name={user.name || 'Member'} size={48} />
           <View style={styles.accountCol}>
             <Text style={[styles.accountName, { color: c.ink }]} numberOfLines={1}>
@@ -141,7 +156,16 @@ export default function ProfileScreen() {
               </Text>
             ) : null}
           </View>
-        </View>
+          <View
+            style={[
+              styles.editChip,
+              { backgroundColor: c.canvas, borderColor: c.hairline },
+            ]}
+          >
+            <PenLine size={14} color={c.tealLive} strokeWidth={2} />
+            <Text style={[styles.editChipText, { color: c.tealLive }]}>Edit</Text>
+          </View>
+        </Pressable>
       ) : (
         <View style={[styles.guestCard, { backgroundColor: c.canvasSoft }]}>
           <UserRound size={24} color={c.body} strokeWidth={1.75} />
@@ -256,7 +280,7 @@ export default function ProfileScreen() {
         ) : null}
       </View>
 
-      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B8</Text>
+      <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version} · APK-B9</Text>
       <View style={styles.footerPad} />
 
       <CityPickerSheet
@@ -288,6 +312,22 @@ export default function ProfileScreen() {
           setUser(u)
         }}
       />
+
+      {/* APK-B9 · the account card's edit door — save → card + snapshot +
+          close, one callback; the number the card masks is the number the
+          confirm sheet pre-fills next time (identity law, both ends). */}
+      {user ? (
+        <EditProfileSheet
+          visible={editSheetOpen}
+          user={user}
+          onClose={() => setEditSheetOpen(false)}
+          onSaved={(saved) => {
+            setEditSheetOpen(false)
+            setUser(saved)
+            void updateStoredUser(saved)
+          }}
+        />
+      ) : null}
     </ScrollView>
   )
 }
@@ -412,6 +452,23 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 2,
   },
+  editChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    /** VLM fix-loop: a bare text+icon reads as a link, not a control —
+     *  the chip gets a real container (outlined pill — canvas + hairline,
+     *  theme-token colors inline; readable on the canvasSoft card in
+     *  both modes) so the eye reads "tappable" before the thumb agrees. */
+    minHeight: 32,
+    paddingHorizontal: space.s12,
+    borderRadius: 999,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  editChipText: {
+    ...typo.bodyStrong,
+    fontSize: 13,
+  },
   accountName: {
     ...typo.bodyStrong,
   },
@@ -502,7 +559,12 @@ const styles = StyleSheet.create({
     marginBottom: space.s24,
   },
   footerPad: {
-    height: space.s24,
+    /** VLM-caught B9 regression guard: 24 was 4px short of the 48px
+     *  tab-bar overlay at the scroll limit — the last row's bottom edge
+     *  tucked behind the tab bar (Sign out). 72 clears it with room for
+     *  the version line + breathing space (scroll-limit law, not guesswork:
+     *  tab bar measured 48px in the web preview). */
+    height: 72,
   },
   pickerTitle: {
     ...typo.title,

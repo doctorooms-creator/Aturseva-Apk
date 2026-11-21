@@ -11,6 +11,14 @@
  * retry (money/visit law — never a silent fail); 409 duplicate offers the
  * existing booking (never a dead end); success → stack replace to S8.
  * Data: POST /api/public/book {doctorId, slot, name, phone, city}.
+ *
+ * APK-B9 · identity pre-fill: a signed-in patient's name + account
+ * mobile arrive PRE-FILLED (still editable — booking for a parent on
+ * their number must stay possible). The mobile field's caption states the
+ * identity law at the moment of decision: same-as-account → the booking
+ * joins the account's history (the monolith resolves patients BY MOBILE,
+ * B8's discovery); different number → honest "stays separate". Guests
+ * see the classic static caption — nothing changes for them.
  */
 
 import { useEffect, useState } from 'react'
@@ -22,6 +30,7 @@ import { useColors } from '@/lib/theme'
 import { ApiError, getDoctorSchedule, postPublicBooking } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { getCity, pushBookingId, setBookingPhone } from '@/lib/storage'
+import { getStoredUser } from '@/lib/auth'
 import { Avatar } from '@/components/avatar'
 import { Chip, PillButton } from '@/components/press'
 
@@ -64,6 +73,9 @@ export default function ConfirmBookingScreen() {
   const [mobile, setMobile] = useState('')
   const [reason, setReason] = useState('')
   const [city, setCity] = useState('')
+  /** The signed-in patient's account mobile (identity seam), or null —
+   *  drives the honest caption swap under the mobile field. */
+  const [accountMobile, setAccountMobile] = useState<string | null>(null)
 
   const [submitting, setSubmitting] = useState(false)
   const [fieldError, setFieldError] = useState<string>('')
@@ -77,6 +89,24 @@ export default function ConfirmBookingScreen() {
 
   useEffect(() => {
     void getCity().then((c) => setCity(c ?? ''))
+  }, [])
+
+  // APK-B9 · identity pre-fill — snapshot read once, fields fill ONLY if
+  // still untouched (a fast-fingered user who already typed keeps their
+  // text — storage never clobbers a human). Guests and accountless
+  // sessions stay exactly as before.
+  useEffect(() => {
+    void (async () => {
+      await null
+      const user = await getStoredUser()
+      if (!user) return
+      if (user.name) setPatientName((cur) => (cur === '' ? user.name : cur))
+      const m = user.mobile
+      if (m && /^[6-9]\d{9}$/.test(m)) {
+        setAccountMobile(m)
+        setMobile((cur) => (cur === '' ? m : cur))
+      }
+    })()
   }, [])
 
   if (!userId || !date || !time) {
@@ -218,7 +248,16 @@ export default function ConfirmBookingScreen() {
           accessibilityLabel="Mobile number"
           style={[styles.input, styles.numeric, { borderColor: c.hairline, backgroundColor: c.canvas, color: c.ink }]}
         />
-        <Text style={[styles.fieldCaption, { color: c.mute }]}>Your token and booking updates travel to this number.</Text>
+        <Text
+          style={[styles.fieldCaption, { color: accountMobile ? c.body : c.mute }]}
+          accessibilityLiveRegion="polite"
+        >
+          {accountMobile
+            ? mobile === accountMobile
+              ? 'From your account — this booking joins your history.'
+              : 'A different number — this booking stays separate from your account.'
+            : 'Your token and booking updates travel to this number.'}
+        </Text>
 
         <Text style={[styles.fieldTitle, { color: c.ink }]}>Reason for the visit</Text>
         <TextInput

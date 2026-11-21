@@ -104,3 +104,15 @@ export async function clearSession(): Promise<void> {
     /* fail-quiet */
   }
 }
+
+/** APK-B9: refresh the persisted /me snapshot after a profile edit —
+ *  the token is untouched (saveSession's atomic pair is login's job;
+ *  this is the edit's). Fail-quiet: the in-memory card stays the truth
+ *  for this run even if the keystore write fails. */
+export async function updateStoredUser(user: AuthUser): Promise<void> {
+  try {
+    await setItem(K_USER, JSON.stringify(user))
+  } catch {
+    /* fail-quiet */
+  }
+}

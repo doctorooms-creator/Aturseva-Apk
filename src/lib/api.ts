@@ -41,7 +41,7 @@ export class ApiError extends Error {
 async function fetchJson<T>(
   path: string,
   init: {
-    method?: 'GET' | 'POST' | 'DELETE' | 'PATCH'
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
     body?: unknown
     /** true = read the stored session JWT; a string = an explicit JWT
      *  (sign-out's captured-before-clear token — the revoke must fire
@@ -205,6 +205,37 @@ export async function logoutRemote(token: string): Promise<void> {
   } catch {
     /* best-effort — the local clear in lib/auth is the real sign-out */
   }
+}
+
+// ————— APK-B9 · Patient profile edit (doc 08 contract: /api/patient/profile) —————
+
+/** The monolith's gender vocabulary (register + public-book flow both use
+ *  exactly these three — never null-past-the-border: the route defaults a
+ *  missing gender to 'Male', so the app always sends an explicit value). */
+export type Gender = 'Male' | 'Female' | 'Other'
+
+/** PUT /api/patient/profile — the app ALWAYS sends the full triple
+ *  (name · mobileNo · gender), never a partial body:
+ *  - name required server-side (400 "Name is required" — surfaced verbatim);
+ *  - mobileNo null/omitted → stored as '' (cleared) — so an empty string is
+ *    an explicit, deliberate clear, and a valid number is the identity seam
+ *    (bookings resolve the patient BY MOBILE — the B8 identity law);
+ *  - gender null/omitted → silently stored 'Male' (the trap the full-triple
+ *    law exists to avoid).
+ *  Response: { profile: RawAuthUser } — adapted to AuthUser so the caller
+ *  can setUser + persist the snapshot in one step. */
+export async function updatePatientProfile(body: {
+  name: string
+  mobileNo: string
+  gender: Gender
+}): Promise<AuthUser> {
+  const raw = await fetchJson<{ profile: RawAuthUser }>('/api/patient/profile', {
+    method: 'PUT',
+    auth: true,
+    body,
+  })
+  if (!raw.profile) throw new ApiError('parse', 'Could not read the saved profile')
+  return adaptUser(raw.profile)
 }
 
 // ————— Adapters (the only raw-JSON touchpoints) —————
