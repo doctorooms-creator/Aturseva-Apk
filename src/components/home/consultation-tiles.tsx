@@ -9,9 +9,10 @@
  * (the labs-booking ruling: labs bookings live on the website — B14
  * pattern, external door opens honestly labeled "on aturseva.com").
  *
- * Surface: white card on the cream home canvas (the website's own
- * page-grammar: cream page, white cards) + aquaSoft icon circles with
- * tealText icons (AA family).
+ * Surface: white card on the near-white home canvas (R49 monochrome —
+ * white cards on #F7F8F8 read by hairline ring + lift, the website's own
+ * card grammar) + aquaSoft icon circles with tealText icons (AA family
+ * — the ocean secondary's soft wash).
  */
 
 import { type ReactNode } from 'react'

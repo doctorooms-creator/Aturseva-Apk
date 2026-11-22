@@ -2,7 +2,7 @@
  * S3 · HOME — the flagship screen (doc 06 S3; H3 restructure: zones
  * Z1–Z8 per doc 17 PART 4).
  *
- * Z1 hero (cream band: greeting + city chip + glass search crown + chips)
+ * Z1 hero (greeting + city chip + glass search crown + chips)
  * → Z2 ink trust billboard → Z3 consultation tiles → Z4 book-again rail
  * → Z5 doctors rail → Z6 hospitals rail → Z7 labs strip (static, dated,
  * website handoff) → Z8 quiet footer. ONE crown = search (no banner
@@ -13,9 +13,9 @@
  *
  * APK-B2: chips and suggest rows walk into the S4 listing (/search?q=)
  * and rail cards open the S5 profile (/doctor/[id]). Pure English copy
- * (owner directive). APK-H3: canvas = CREAM (the website's page grammar —
- * cream page, white cards); city promoted from footer to hero (doc 16
- * location-first law B2).
+ * (owner directive). APK-R49: canvas = MONOCHROME near-white #F7F8F8
+ * (owner directive — the website's true body background; the cream was
+ * a misread, retired); city stays in hero (doc 16 location-first law B2).
  */
 
 import { type ComponentRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -204,7 +204,7 @@ export default function HomeScreen() {
         )
       }
     >
-      {/* Z1 · HERO — cream band: greeting + city chip (promoted from the
+      {/* Z1 · HERO — greeting + city chip (promoted from the
           footer, location-first) + glass search crown + quick-chips. */}
       <View style={styles.safeTop} />
       <HomeHero

@@ -5,7 +5,7 @@
  * (the sheet-close focus-restore guard).
  *
  * APK-H3: variant="glass" = the website's G3 search-pill grammar for the
- * cream home canvas (glass v1: translucent fill + 1px edge + shine
+ * tinted home canvas (glass v1: translucent fill + 1px edge + shine
  * hairline — the same trio the nav pill uses; true blur = vc3 APK).
  * Default "soft" stays for white canvases (hospitals browse).
  */
@@ -22,7 +22,7 @@ export function SearchField({
   ...props
 }: TextInputProps & {
   ref?: Ref<ComponentRef<typeof TextInput>>
-  /** "glass" = home hero on cream; "soft" = default white canvases. */
+  /** "glass" = home hero on the tinted canvas; "soft" = white canvases. */
   variant?: 'soft' | 'glass'
 }) {
   const c = useColors()

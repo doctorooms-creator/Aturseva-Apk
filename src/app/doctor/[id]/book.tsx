@@ -61,6 +61,8 @@ export default function ConfirmBookingScreen() {
     name?: string
     spec?: string
     fee?: string
+    photo?: string
+    rep?: string
   }>()
   const userId = typeof params.id === 'string' ? params.id : ''
   const date = typeof params.date === 'string' ? params.date : ''
@@ -68,6 +70,10 @@ export default function ConfirmBookingScreen() {
   const doctorName = typeof params.name === 'string' ? params.name : ''
   const spec = typeof params.spec === 'string' ? params.spec : ''
   const fee = typeof params.fee === 'string' ? Number(params.fee) : 0
+  // R49 continuity: the face follows the patient into the confirm
+  // summary (photo travels as a route param; rep = curated-face flag).
+  const photo = typeof params.photo === 'string' && params.photo ? params.photo : null
+  const photoRepresentative = params.rep === '1'
 
   const [patientName, setPatientName] = useState('')
   const [mobile, setMobile] = useState('')
@@ -198,7 +204,12 @@ export default function ConfirmBookingScreen() {
         {/* Summary card — everything together, for the first time */}
         <View style={[styles.summaryCard, { borderColor: c.hairline }]}>
           <View style={styles.summaryHead}>
-            <Avatar name={doctorName || 'Doctor'} size={48} />
+            <Avatar
+              name={doctorName || 'Doctor'}
+              size={48}
+              source={photo}
+              representative={photoRepresentative}
+            />
             <View style={styles.summaryHeadCol}>
               <Text style={[styles.summaryName, { color: c.ink }]} numberOfLines={1}>
                 {doctorName}

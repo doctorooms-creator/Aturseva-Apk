@@ -32,6 +32,11 @@ export interface SlotSheetDoctor {
   name: string
   specialization: string
   fees: number
+  /** R49 continuity: the same curated/real photo the rails + profile
+   *  show — the sheet's mini-header must not fall back to initials when
+   *  the doctor's face is already on screen behind it (VLM catch). */
+  photo?: string | null
+  photoRepresentative?: boolean
 }
 
 const DAY_ORDER = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -281,7 +286,12 @@ export function SlotSheet({
 
       {/* Doctor mini-header — the fee reminder travels with the choice */}
       <View style={styles.header}>
-        <Avatar name={doctor.name} size={44} />
+        <Avatar
+          name={doctor.name}
+          size={44}
+          source={doctor.photo}
+          representative={doctor.photoRepresentative}
+        />
         <View style={styles.headerCol}>
           <Text style={[styles.headerName, { color: c.ink }]} numberOfLines={1}>
             {doctor.name}

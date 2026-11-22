@@ -1,28 +1,35 @@
 /**
  * ATURSEVA APP — DESIGN TOKENS (doc 03, the single source of truth in code).
  *
- * Laws this module enforces (doc 03, H1 re-alignment to the website system —
- * docs 16/17):
- * - Canvas: white + warm CREAM soft (#F4F2EC — the website's surface-2).
+ * R49 MONOCHROME DIRECTIVE (owner-set 2026-11-22, Uber laws + website palette
+ * via the awesome-design-md Uber DESIGN.md + impeccable craft-floor):
+ * - Canvas: pure white + near-white soft (#F7F8F8 — the website's own body
+ *   background, measured live ×2 CSS vars). NO cream: the site's #F4F2EC
+ *   "ivory" is a 5–50% alpha TINT in the site's CSS, never a solid surface —
+ *   H3's cream canvas was a misread, corrected here (R49).
  * - Ink is the CTA + text hierarchy; grey support below body/ink.
- * - AQUA (#14B8A6) = the website's bright accent family: fills, washes,
- *   selection, live data accents — NEVER small text (2.45:1 on white —
- *   measured) and NEVER white text on aqua.
- * - Text accents use tealText (#0F766E, 5.4:1 AA); tealLive (#0D9488) is
- *   graphics/pulse/icons only (3.7:1 — passes the 3:1 non-text floor).
+ * - Ocean teal (#00BAA7 site teal-500 family) = the website's secondary
+ *   (the owner's "ocean jesa"): fills, washes, selection, live accents —
+ *   NEVER small text and NEVER white text on ocean.
+ * - Text accents use tealText (#0F766E, 5.47:1 AA on white); tealLive
+ *   (#0D9488) is graphics/pulse/icons only (3.7:1 — passes the 3:1
+ *   non-text floor).
  * - Glass trio (H2's shell): simulated-glass v1 (OTA — expo-blur rides
  *   the vc3 APK per doc 17 D4).
- * - Pill grammar: 999 radius on everything interactive; cards 16; sheets 24.
+ * - Pill grammar (Uber signature): 999 radius on everything interactive;
+ *   cards 16; sheets 24. One ink pill per viewport = the conversion story.
  * - Dark mode P1: values dual-defined from day 1.
  */
 
-// §2 — Color tokens (website system over Uber skeleton — docs 16/17)
+// §2 — Color tokens (Uber skeleton + website palette — R49 monochrome)
 export const colors = {
   canvas: '#FFFFFF',
-  // H1: #F4F4F2 → #F4F2EC warm cream (the website's --w-surface-2,
-  // measured ×50 on live pages). Gray-text AA re-measured on cream:
-  // mute #6E6E6E = 4.55:1 (AA holds), body #5E5E5E = 5.79:1.
-  canvasSoft: '#F4F2EC',
+  // R49: #F4F2EC cream RETIRED — the website's ivory is a low-alpha tint
+  // in its CSS, never a solid page fill; the site's real body background is
+  // #F7F8F8 (measured: --background in every page's CSS). Monochrome
+  // near-white soft surface, Uber's canvas-soft grammar. Gray-text AA on
+  // #F7F8F8: mute #6E6E6E = 4.86:1 (AA holds), body #5E5E5E = 5.9:1.
+  canvasSoft: '#F7F8F8',
   ink: '#0A0A0A',
   body: '#5E5E5E',
   // B10 contrast fix (VLM nitpicks: gray captions + zone labels read
@@ -34,13 +41,14 @@ export const colors = {
   mute: '#6E6E6E',
   hairline: '#E7E7E7',
 
-  /** AQUA — the website's bright accent (teal-500 family, the owner's
-   *  "blue jesa"): fills, washes, selection, live accents ONLY. 2.45:1 on
-   *  white — never small text, never white-on-aqua text. */
-  aqua: '#14B8A6',
+  /** OCEAN — the website's secondary (teal-500 family, the owner's
+   *  "ocean jesa blue type", site-measured #00baa7 in R48 forensics):
+   *  fills, washes, selection, live accents ONLY. ~2.6:1 on white —
+   *  never small text, never white-on-ocean text. */
+  aqua: '#00BAA7',
   /** Aqua wash — selected chips, lettermark circles, soft accents. */
   aquaSoft: '#F0FDFA',
-  /** AA text accents (5.4:1 on white/cream; 5.39:1 on aquaSoft). */
+  /** AA text accents (5.47:1 on white; 5.35:1 on #F7F8F8; 5.39:1 on aquaSoft). */
   tealText: '#0F766E',
   /** LIVE GRAPHICS ONLY — pulse, rings, icons, borders, timeline fills
    *  (3.75:1 on white — passes the 3:1 non-text floor, fails text AA). */
@@ -69,7 +77,7 @@ export type ColorToken = keyof typeof colors
 // Dark set (P1 / APK-B4) — dual-defined now per doc 03 §2 note.
 export const darkColors: Record<ColorToken, string> = {
   canvas: '#0C0C0C',
-  canvasSoft: '#1A1A19',
+  canvasSoft: '#1A1A1A',
   ink: '#F5F5F5',
   body: '#B8B8B8',
   // B10: was #7A7A7A (4.5:1 — technically passing but visually thin next
@@ -82,9 +90,11 @@ export const darkColors: Record<ColorToken, string> = {
   tealText: '#5EEAD4',
   tealLive: '#2DD4BF',
   tealLiveSoft: '#0F3D38',
-  // Simulated glass v1 on dark canvas.
+  // Simulated glass v1 on dark canvas. R49: edge 0.12 → 0.18 — the
+  // floating pill was barely distinguishable from the #0C0C0C canvas
+  // (VLM dark audit catch); the edge is the definition on dark.
   glassFill: 'rgba(20,20,20,0.85)',
-  glassEdge: 'rgba(255,255,255,0.12)',
+  glassEdge: 'rgba(255,255,255,0.18)',
   glassShine: 'rgba(255,255,255,0.08)',
   success: '#4ADE80',
   successSoft: '#0B2A1B',

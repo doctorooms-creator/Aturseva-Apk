@@ -301,12 +301,12 @@ export default function DoctorProfileScreen() {
         <SlotSheet
           visible={bookSheetOpen}
           onClose={() => setBookSheetOpen(false)}
-          doctor={{ userId: doctorId, name: d.name, specialization: d.specialization, fees: d.fees }}
+          doctor={{ userId: doctorId, name: d.name, specialization: d.specialization, fees: d.fees, photo: d.photo, photoRepresentative: d.photoRepresentative }}
           onConfirm={(date, time) => {
             setBookSheetOpen(false)
             void router.push({
               pathname: '/doctor/[id]/book',
-              params: { id: doctorId, date, time, name: d.name, spec: d.specialization, fee: String(d.fees) },
+              params: { id: doctorId, date, time, name: d.name, spec: d.specialization, fee: String(d.fees), photo: d.photo ?? '', rep: d.photoRepresentative ? '1' : '' },
             })
           }}
         />

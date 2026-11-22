@@ -1,11 +1,11 @@
 /**
- * Z1 · HOME HERO (doc 17 PART 4): the cream band that opens the home —
- * greeting (real name when signed in, else "Namaste") · CITY CHIP promoted
- * here from the old footer (location-first: doc 16 usability law B2 —
- * the patient's city is the #1 context switch, it belongs at the top) ·
- * search crown in GLASS chrome (G3 search-pill grammar from the website,
- * v1 simulated) · symptom quick-chips (white surface — the hero band is
- * cream, chips need the card fill to read).
+ * Z1 · HOME HERO (doc 17 PART 4, R49 monochrome): the band that opens
+ * the home — greeting (real name when signed in, else "Namaste") · CITY
+ * CHIP promoted here from the old footer (location-first: doc 16 usability
+ * law B2 — the patient's city is the #1 context switch, it belongs at the
+ * top) · search crown in GLASS chrome (G3 search-pill grammar from the
+ * website, v1 simulated) · symptom quick-chips (white surface + hairline
+ * ring — they read on the near-white canvas by ring, not fill).
  *
  * The search field never navigates (S3 suggest-sheet law — focus raises
  * the sheet); chips walk straight into the S4 listing (zero-thinking

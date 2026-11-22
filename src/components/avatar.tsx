@@ -4,7 +4,8 @@
  * `source` renders the image (RN Image, website w-avatar grammar —
  * square-rounded r16, object-cover); curated sources carry the
  * "Representative photo" honesty label (website law, doc 16 C5).
- * Initials fallback unchanged: cream bg, ink monogram.
+ * Initials fallback unchanged: near-white bg (R49 monochrome), ink
+ * monogram.
  */
 
 import { StyleSheet, Text, View, Image } from 'react-native'

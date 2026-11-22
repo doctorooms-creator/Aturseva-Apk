@@ -83,9 +83,10 @@ interface ChipProps {
   /** Leading content (icon) inside the pill. */
   leading?: ReactNode
   /**
-   * H3: fill for the UNSELECTED state on non-white canvases (the home
-   * hero sits on cream — chips need the white card fill to read).
-   * Default = canvasSoft (white canvases).
+   * H3: fill for the UNSELECTED state on tinted canvases (the home
+   * canvas is near-white #F7F8F8 — white chips get the hairline ring
+   * to read, the cityChip's own grammar). Default = canvasSoft
+   * (white canvases).
    */
   surface?: string
   /**
@@ -122,6 +123,14 @@ export function Chip({
       style={({ pressed }) => [
         styles.chip,
         { backgroundColor: selected ? (soft ? c.aquaSoft : c.ink) : (surface ?? c.canvasSoft) },
+        // R49: custom-surface chips on the near-white canvas get the
+        // hairline ring — a borderless #FFFFFF pill on #F7F8F8 is
+        // invisible (1.5% luminance step); the ring is the definition,
+        // same grammar as the hero cityChip. Theme-aware hairline.
+        !selected && surface !== undefined && {
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: c.hairline,
+        },
         disabled && styles.disabled,
         pressed && styles.pressed,
       ]}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**1) Real face photo?**\nYes — the mini-header shows an actual photo of Dr. Rajesh (a man with glasses, beard, and a white coat), not initials or letter avatars.\n\n**2) Day chips & time slots**\n- **Day chips:** Today (grayed/disabled), **Tomorrow (selected, black pill)**, 11/24, 11/25, and a partially cut-off chip at the right edge.\n- **Time slots:**\n  - **Morning:** 09:00, 09:15, 09:30, 09:45 / 10:00–10:45 / 11:00–11:45\n  - **Afternoon:** 12:00–12:45 / 13:00–13:45 / 14:00–14:45 / 15:00–15:45\n  - **Evening:** 16:00, 16:15, 16:30, 16:45\n- **Selected slot:** Yes — **09:00** is highlighted with a teal/ocean outline and pale teal fill, with teal text. This matches the teal \"11/23 · 09:00\" in the bottom bar.\n\n**3) Canvas color**\nYes — white/neutral throughout (white sheet, white/very light gray chips, dark text). No cream tint.\n\n**4) Defects**\n- Minor: the last day chip is clipped off the right edge (could be intentional for a scrollable carousel, but it reads slightly awkwardly).\n- \"Today\" chip is grayed out with no visible slots logic for it — acceptable, but worth noting.\n- No date shown next to \"Tomorrow\" (no actual date label like 11/23 until the footer), a minor clarity issue.\n- Otherwise: no overlaps, no misalignments, footer (\"₹300 · pay at the clinic\", \"32 slots open · 0 booked today · limit 50\", Confirm slot button) all render cleanly.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795347315,
+  "id": "2026112219350741c0d4fc6c0f4cd2",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112219350741c0d4fc6c0f4cd2",
+  "usage": {
+    "completion_tokens": 422,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1802,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 2224
+  }
+}
