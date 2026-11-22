@@ -24,6 +24,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
+import * as Linking from 'expo-linking'
 import { File as FsFile, Paths } from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 import { ArrowLeft, FileCheck2, FlaskConical } from 'lucide-react-native'
@@ -46,13 +47,34 @@ const STATUS: Record<string, { label: string; tone: 'live' | 'done' | 'warn' | '
   Rejected: { label: 'Rejected', tone: 'mute' },
 }
 
-function statusChip(s: string) {
-  return STATUS[s] ?? { label: s, tone: 'mute' as const }
+/**
+ * B14 chip grammar (measured, WCAG AA on the canvasSoft card): tone text
+ * on its PROPER soft token — the `${tone}1A` alpha tint blended to
+ * 3.99–4.33:1 on the card (FAIL); the design system's soft companions
+ * measure 4.79–4.91:1 light / 6.4–9.9:1 dark. Mute-tone chips pair
+ * body text with the hairline fill (5.24:1 light / 7.6:1 dark).
+ */
+function tonePair(tone: 'live' | 'done' | 'warn' | 'mute', c: ReturnType<typeof useColors>) {
+  if (tone === 'live') return { bg: c.tealLiveSoft, fg: c.tealLive }
+  if (tone === 'done') return { bg: c.successSoft, fg: c.success }
+  if (tone === 'warn') return { bg: c.warnSoft, fg: c.warn }
+  return { bg: c.hairline, fg: c.body }
+}
+
+/** Patient-facing payment-timing words for the contract's modes. */
+function paymentLabel(mode: string): string {
+  if (mode === 'PayOnCollection') return 'Pay on collection'
+  if (mode === 'Prepaid' || mode === 'Online') return 'Paid online'
+  return ''
 }
 
 /** Prep instructions still matter only BEFORE the sample is taken. */
 function prepStillMatters(status: string): boolean {
   return status === 'Placed' || status === 'Confirmed'
+}
+
+function statusChip(s: string) {
+  return STATUS[s] ?? { label: s, tone: 'mute' as const }
 }
 
 function dateLabel(iso: string): string {
@@ -138,9 +160,6 @@ export default function ReportsScreen() {
     }
   }
 
-  const toneColor = (tone: 'live' | 'done' | 'warn' | 'mute') =>
-    tone === 'live' ? c.tealLive : tone === 'done' ? c.success : tone === 'warn' ? c.warn : c.mute
-
   return (
     <View style={[styles.screen, { backgroundColor: c.canvas }]}>
       <View style={styles.headerRow}>
@@ -179,7 +198,13 @@ export default function ReportsScreen() {
         <EmptyState
           icon={FlaskConical}
           title="No lab orders yet"
-          caption="When you book a lab test — on aturseva.com or here — its status and report land on this screen."
+          caption="Lab tests are booked on aturseva.com — once placed, the status and report land here."
+          actions={[
+            {
+              label: 'Open aturseva.com labs',
+              onPress: () => void Linking.openURL('https://aturseva.com/labs').catch(() => {}),
+            },
+          ]}
         />
       ) : (
         <ScrollView
@@ -194,6 +219,8 @@ export default function ReportsScreen() {
           ) : null}
           {rows.map((o) => {
             const chip = statusChip(o.status)
+            const chipColors = tonePair(chip.tone, c)
+            const payLabel = paymentLabel(o.paymentMode)
             const busy = openingId === o.id
             return (
               <View key={o.id} style={[styles.card, { backgroundColor: c.canvasSoft }]}>
@@ -201,7 +228,14 @@ export default function ReportsScreen() {
                   <Text style={[styles.testName, { color: c.ink }]} numberOfLines={2}>
                     {o.testName}
                   </Text>
-                  <Text style={[styles.fee, { color: c.ink }]}>₹{o.fee}</Text>
+                  <View style={styles.feeCol}>
+                    <Text style={[styles.fee, { color: c.ink }]}>₹{o.fee}</Text>
+                    {payLabel ? (
+                      <Text style={[styles.payCaption, { color: c.body }]} numberOfLines={1}>
+                        {payLabel}
+                      </Text>
+                    ) : null}
+                  </View>
                 </View>
                 <Text style={[styles.subLine, { color: c.body }]} numberOfLines={1}>
                   {o.labName ? `${o.labName} · ` : ''}
@@ -211,13 +245,13 @@ export default function ReportsScreen() {
                   {`Collection ${dateLabel(o.collectionDate)} · ${o.collectionSlot}${o.city ? ` · ${o.city}` : ''}`}
                 </Text>
                 <View style={styles.chipRow}>
-                  <View style={[styles.statusChip, { backgroundColor: `${toneColor(chip.tone)}1A` }]}>
-                    <Text style={[styles.statusChipText, { color: toneColor(chip.tone) }]} numberOfLines={1}>
+                  <View style={[styles.statusChip, { backgroundColor: chipColors.bg }]}>
+                    <Text style={[styles.statusChipText, { color: chipColors.fg }]} numberOfLines={1}>
                       {chip.label}
                     </Text>
                   </View>
                   {o.policy === 'rx' ? (
-                    <View style={[styles.statusChip, { backgroundColor: `${c.mute}1A` }]}>
+                    <View style={[styles.statusChip, { backgroundColor: c.hairline }]}>
                       <Text style={[styles.statusChipText, { color: c.body }]}>Prescription required</Text>
                     </View>
                   ) : null}
@@ -228,7 +262,7 @@ export default function ReportsScreen() {
                   </Text>
                 ) : null}
                 {o.prepNote && prepStillMatters(o.status) ? (
-                  <View style={[styles.prepBox, { backgroundColor: c.warnSoft }]}>
+                  <View style={[styles.prepBox, { backgroundColor: c.warnSoft, borderColor: c.warn }]}>
                     <Text style={[styles.prepText, { color: c.warn }]} numberOfLines={4}>
                       {`Before the sample: ${o.prepNote}`}
                     </Text>
@@ -312,9 +346,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flex: 1,
   },
+  /** B14: fee = the decision number — 18/600 tabular (the B12 listing-card
+   *  law; it previously rendered 15px, SMALLER than the test name). */
   fee: {
-    ...typo.bodyStrong,
+    fontSize: 18,
+    fontWeight: '600',
     fontVariant: ['tabular-nums'],
+  },
+  feeCol: {
+    alignItems: 'flex-end',
+    flexShrink: 1,
+  },
+  payCaption: {
+    ...typo.caption,
+    fontSize: 11,
+    marginTop: 2,
   },
   subLine: {
     ...typo.caption,
@@ -341,6 +387,7 @@ const styles = StyleSheet.create({
   },
   prepBox: {
     borderRadius: radius.input,
+    borderWidth: 1,
     paddingVertical: space.s8,
     paddingHorizontal: space.s12,
     marginTop: space.s4,

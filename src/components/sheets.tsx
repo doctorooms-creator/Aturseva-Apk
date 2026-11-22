@@ -33,7 +33,10 @@ export function BottomSheet({
 
 export function GrabHandle() {
   const c = useColors()
-  return <View style={[styles.handle, { backgroundColor: c.hairline }]} />
+  // B14: hairline read ~1.4:1 vs the sheet (non-text 3:1 bar — the same
+  // defect class B13 fixed on the onboarding dots); mute clears it in
+  // both themes (5.1:1 light sheet / 5.0:1 dark sheet).
+  return <View style={[styles.handle, { backgroundColor: c.mute }]} />
 }
 
 const styles = StyleSheet.create({

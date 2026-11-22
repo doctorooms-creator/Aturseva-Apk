@@ -171,10 +171,12 @@ export function AuthSheet({
               : 'Booking also works as a guest — an account keeps your history in one place.'}
           </Text>
 
-          {/* Mode toggle — two chips, the selected one is ink */}
+          {/* Mode toggle — two chips, selected is SOFT teal (B14: the ink
+              fill read as a second primary next to the submit pill — one
+              primary per surface, doc 03) */}
           <View style={styles.modeRow}>
-            <Chip label="Sign in" selected={mode === 'signin'} onPress={() => switchMode('signin')} />
-            <Chip label="Create account" selected={mode === 'register'} onPress={() => switchMode('register')} />
+            <Chip label="Sign in" selected={mode === 'signin'} soft onPress={() => switchMode('signin')} />
+            <Chip label="Create account" selected={mode === 'register'} soft onPress={() => switchMode('register')} />
           </View>
 
           {mode === 'register' ? (

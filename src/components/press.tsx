@@ -76,9 +76,18 @@ interface ChipProps {
   disabled?: boolean
   /** Leading content (icon) inside the pill. */
   leading?: ReactNode
+  /**
+   * B14: SOFT selection tone for chips that toggle MODE/STATE (not the
+   * patient's decision). Selected+soft = tealLiveSoft bg + tealLive text
+   * (measured 4.86:1 light / 6.47:1 dark) — reads clearly selected
+   * WITHOUT competing with a same-surface ink primary (the auth sheet's
+   * mode toggle vs its submit pill — the B14 dual-primary fix). The
+   * default ink-fill selection stays for decision chips.
+   */
+  soft?: boolean
 }
 
-export function Chip({ label, onPress, selected = false, disabled = false, leading }: ChipProps) {
+export function Chip({ label, onPress, selected = false, disabled = false, leading, soft = false }: ChipProps) {
   const c = useColors()
   return (
     <Pressable
@@ -90,14 +99,18 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
       hitSlop={6}
       style={({ pressed }) => [
         styles.chip,
-        { backgroundColor: selected ? c.ink : c.canvasSoft },
+        { backgroundColor: selected ? (soft ? c.tealLiveSoft : c.ink) : c.canvasSoft },
         disabled && styles.disabled,
         pressed && styles.pressed,
       ]}
     >
       {leading}
       <Text
-        style={[typo.body, styles.chipText, { color: selected ? c.canvas : c.ink }]}
+        style={[
+          typo.body,
+          styles.chipText,
+          { color: selected ? (soft ? c.tealLive : c.canvas) : c.ink },
+        ]}
         numberOfLines={1}
       >
         {label}

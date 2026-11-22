@@ -1,0 +1,27 @@
+{
+  "spec": {
+    "id": "r-r04",
+    "file": "r07-fixed-dark.png",
+    "context": "RETAKE of the dark-mode reports card after fixes. Card #1A1A19, ink #F5F5F5, fee 18px bold + \"Pay on collection\" grey caption, status chip amber #FBBF24 on dark amber #2A1D05 (9.9:1), prep box dark amber bg + 1px bright amber border (new — separation) + amber text. Judge: all greys read on the dark card, amber chip and prep box crisp and separable from the card, hierarchy preserved, any illegibility or crowding."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Card bg reads #1A1A19 with #F5F5F5 title 'Blood Sugar (Fasting)' — contrast ~15:1, well above AA",
+      "Fee '₹80' is bold and the largest secondary element (~18px), title ~17-18px; hierarchy reads title → fee → details, acceptable since title is the surface's subject",
+      "'Pay on collection' grey caption (~12-13px) on dark card reads legible, estimated ~7:1 against #1A1A19",
+      "Status chip 'Placed — awaiting confirmation' amber text on dark amber chip; amber ~#FBBF24 on #2A1D05 stated 9.9:1 — AA met, chip visually separable from card",
+      "Prep box: dark amber fill with a visible 1px bright amber border and amber text — border clearly separates it from card and from chip above; text wraps fully ('Overnight fasting of 8-12 hours required'), no truncation",
+      "Body detail lines (lab name, order id, collection slot, Pune) in grey ~#B0B0AE on #1A1A19, estimated ~8:1 — AA met; order id wraps to a second line rather than truncating — honest handling",
+      "Screen gutters ~16px both sides, card internal spacing ~12px rhythm, card radius consistent ~12px",
+      "Back arrow touch target appears ~40px height — borderline, flagged as non-blocking since it is the only control and button row spacing is generous"
+    ],
+    "non_blocking_notes": [
+      "Back arrow target marginally under 44px; pad hit area to be safe",
+      "Large empty area below the single card is expected for one report but an empty-region caption (e.g. no further reports) would avoid a perceived dead end if more reports are expected",
+      "Prep box and chip amber are close in hue; separation now relies on the border — working, but keep chip fill slightly darker if more amber surfaces are added"
+    ],
+    "one_line": "Dark reports card passes: greys legible, amber chip and bordered prep box crisp and separable, hierarchy and gutters hold; only the back-arrow hit area is marginally under 44px."
+  }
+}

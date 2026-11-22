@@ -774,6 +774,8 @@ export interface LabOrderRow {
   reportReady: boolean
   labName: string
   labCity: string
+  /** B14 seam: when the fee is collected (contract serves it; always rendered honestly). */
+  paymentMode: string
 }
 
 export async function getLabOrders(): Promise<LabOrderRow[]> {
@@ -791,6 +793,7 @@ export async function getLabOrders(): Promise<LabOrderRow[]> {
       status: string
       statusNote: string | null
       reportUrl: string
+      paymentMode: string
       labPartner: { labName: string; city: string } | null
     }[]
   }>('/api/patient/lab-orders', { auth: true })
@@ -807,6 +810,7 @@ export async function getLabOrders(): Promise<LabOrderRow[]> {
     status: o.status,
     statusNote: o.statusNote ?? '',
     reportReady: Boolean(o.reportUrl) && o.status === 'Completed',
+    paymentMode: o.paymentMode ?? '',
     labName: o.labPartner?.labName ?? '',
     labCity: o.labPartner?.city ?? '',
   }))

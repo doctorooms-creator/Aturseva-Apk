@@ -1,0 +1,26 @@
+{
+  "spec": {
+    "id": "r-r05",
+    "file": "r09-fixed-empty.png",
+    "context": "RETAKE of the empty state after the honesty fix. Contract NOW: flask icon, title \"No lab orders yet\", grey caption \"Lab tests are booked on aturseva.com — once placed, the status and report land here.\" (HONEST: the app tracks only; booking happens on the website), and a quiet grey chip action \"Open aturseva.com labs\" (44px touch) that opens the website. Judge: is the caption now truthful (no promise of in-app booking), is the chip a clear honest next step (not a dead end), icon/title/caption/chip rhythm, contrast, overall calm."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Caption reads 'Lab tests are booked on aturseva.com — once placed, the status and report land here.' — truthful: booking is attributed to the website, app only tracks; no promise of in-app booking.",
+      "Chip 'Open aturseva.com labs' is present, quiet grey tint with dark text; not a dead end — names its destination honestly.",
+      "Touch target: chip spans roughly x=100–290 (~190px wide) and appears ~44–48px tall — meets the 44px minimum.",
+      "Title 'No lab orders yet' ~17–18px bold, reads first after icon; caption grey but legible, estimated ≥4.5:1 on white; chip text near-black on light grey tint, comfortably above AA.",
+      "Rhythm: flask icon in tinted circle, then title, caption, chip — 12px-ish gaps, no truncation on any text; caption wraps cleanly at '— once placed'.",
+      "Back arrow at top-left appears ~24–28px glyph — borderline but header rows are typically padded to 44px; not visibly under-sized.",
+      "White canvas, hairline-free, single grey scale; no teal misuse, no semantic color clutter."
+    ],
+    "non_blocking_notes": [
+      "Icon circle tint and chip tint look like slightly different grey/eggshell tones — could unify to one #F4F4F2 token.",
+      "No grab-handle/sheet concerns here; screen uses no sheet, acceptable.",
+      "Large empty lower area is fine for an empty state; vertical centering slightly above middle is calm and appropriate."
+    ],
+    "one_line": "Retake passes: caption is honest about website-only booking, the chip is a real 44px next step, hierarchy and greyscale rhythm are calm and compliant."
+  }
+}

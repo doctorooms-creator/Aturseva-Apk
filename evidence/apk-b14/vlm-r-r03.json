@@ -1,0 +1,37 @@
+{
+  "spec": {
+    "id": "r-r03",
+    "file": "r06-fixed-list.png",
+    "context": "RETAKE of the reports tracker card after fixes (light). Card contract NOW: test name \"Blood Sugar (Fasting)\" 16px semibold; fee \"₹80\" 18px semibold tabular right-aligned (the decision number reads strongest) with 11px grey \"Pay on collection\" caption under it; caption lines; status chip \"Placed — awaiting confirmation\" = amber text on soft amber chip bg (#B45309 on #FFFBEB, 4.8:1); prep box = soft amber bg + 1px amber border + amber 12px text \"Before the sample: Overnight fasting of 8-12 hours required\". Judge: hierarchy (fee reads first-strength), chip legibility on the tinted card, prep box crispness, card rhythm, truncation, honesty of the payment caption."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [
+      {
+        "what": "Prep text is 12px amber on soft amber — legible but the smallest body-critical text on the card; the fasting instruction is decision-relevant and deserves the card's caption size or larger for safety copy",
+        "severity": "minor",
+        "where": "Prep box, 'Before the sample: Overnight fasting of 8-12 hours required'"
+      },
+      {
+        "what": "'Pay on collection' caption grey reads close to the AA floor on the #F4F4F2 tinted card; estimate ~4.5:1 — passes but with no margin to spare",
+        "severity": "minor",
+        "where": "Under the ₹80 fee, right-aligned caption"
+      }
+    ],
+    "measured_notes": [
+      "Hierarchy holds: '₹80' at ~18px semibold is visually the strongest element after the title, fee reads first-strength as contracted",
+      "'Blood Sugar (Fasting)' title ~16px semibold, contract met",
+      "Status chip: amber text on soft amber chip, estimated contrast ~4.8:1 — AA pass, chip reads as a semantic status only, not a live/teal accent — accent law respected",
+      "Prep box: soft amber bg with a visible 1px amber border, crisp; text wraps to two lines, no truncation",
+      "No ellipsis anywhere; full order ID 'cmwre9fcw0007jt08f14rzaax' and full collection slot 'Mon, 23 Nov · 07:00 - 09:00 · Pune' render untruncated",
+      "Card sits inside a ~16px screen gutter; internal spacing rhythm ~12px between title/lab/slot lines — consistent",
+      "Card radius uniform across the outer card and prep box"
+    ],
+    "non_blocking_notes": [
+      "'Pay on collection' caption sits right-aligned under the fee but above the lab line — reads slightly detached from the fee it describes; nudging it directly under ₹80's baseline group would tighten grouping",
+      "Large empty canvas below the single card is fine but an empty-state affordance (e.g., 'No other reports yet') would prevent the blank area reading as a loading stall",
+      "No tap targets present on this card — nothing to measure against the 44px law on this surface"
+    ],
+    "one_line": "Retake passes: fee hierarchy, honest payment caption, untruncated data, and amber-only semantic status all hold; only log the 12px prep copy size and the tight caption contrast as minors."
+  }
+}

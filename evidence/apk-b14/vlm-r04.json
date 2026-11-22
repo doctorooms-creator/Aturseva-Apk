@@ -1,0 +1,26 @@
+{
+  "spec": {
+    "id": "r04",
+    "file": "r04-list-dark.png",
+    "context": "Screen: same REPORTS tracker card in DARK mode (canvas #0C0C0C, card #1A1A19, ink #F5F5F5). Contract: identical card anatomy, amber warn chip and amber-on-dark prep box (#FBBF24 on #2A1D05). Judge: do all greys read on the dark card, does the amber chip/prep hold up, any contrast you estimate below 4.5:1, hierarchy preserved, any illegibility."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Amber status text #FBBF24 on dark chip (#2A1D05-ish) ≈ 8–9:1, comfortably above 4.5:1",
+      "Amber prep text on amber-on-dark prep box (#FBBF24 on #2A1D05) ≈ 8:1, passes AA",
+      "Primary title 'Blood Sugar (Fasting)' and ₹80 read near-white on #1A1A19, well above 4.5:1; title is the largest element and reads first — hierarchy preserved",
+      "Secondary lines ('Aarav Path Laboratory · Order cmwre9fcw...', 'Collection Mon, 23 Nov · 07:00 - 09:00 · Pune') appear ~13–14px mid-grey (~#A3A3A3) on #1A1A19, estimated ≥ 5:1 — passes",
+      "No truncation/ellipsis observed on order ID, address, or prep text; prep copy wraps to two full lines",
+      "Card radius consistent; 16px gutters visible left/right; 12px internal gaps between title/secondary/status/prep rows look consistent",
+      "Back arrow icon ~24px glyph; hit area not measurable from screenshot but header row height looks ≥ 44px"
+    ],
+    "non_blocking_notes": [
+      "Prep box background (#2A1D05) sits very close to card #1A1A19 in value; separation relies almost entirely on the amber text — a hairline border would help match the light-mode card anatomy",
+      "Large empty canvas below the single card is expected for a tracker, but confirm a scroll-end state exists elsewhere; not judgeable from this shot",
+      "Status chip and prep box use the same amber; consider whether 'awaiting confirmation' chip could stay amber while prep guidance uses slightly dimmed amber to separate live status from static advice"
+    ],
+    "one_line": "Dark-mode reports card holds AA contrast on greys and amber, preserves hierarchy and full-text honesty; only cosmetic nit is the prep box's near-invisible background separation from the card."
+  }
+}

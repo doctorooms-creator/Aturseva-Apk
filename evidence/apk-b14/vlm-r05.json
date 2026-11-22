@@ -1,0 +1,39 @@
+{
+  "spec": {
+    "id": "r05",
+    "file": "r05-empty-state.png",
+    "context": "Screen: REPORTS tracker, signed in, ZERO orders (light mode). Contract: flask icon, title \"No lab orders yet\", grey caption \"When you book a lab test — on aturseva.com or here — its status and report land on this screen.\" HONESTY JUDGMENT (critical): the app itself has NO lab-test booking flow (lab tests are bookable only on the aturseva.com website; the app only TRACKS orders). Does the caption promise something the app cannot do? Judge: caption honesty against that fact, emptiness framing (not a dead end, not a wall), icon + title + caption rhythm."
+  },
+  "verdict": {
+    "overall": "FAIL",
+    "defects": [
+      {
+        "what": "Honesty violation: caption says 'When you book a lab test — on aturseva.com or here' — 'or here' implies the app itself can book lab tests, but the app has NO booking flow (tracking only). This promises an action the app cannot perform.",
+        "severity": "blocking",
+        "where": "Empty-state caption, center of screen"
+      },
+      {
+        "what": "Dead end: with the only route to lab tests being aturseva.com, the empty state offers no link, button, or instruction to get there — patient is left with no next step.",
+        "severity": "blocking",
+        "where": "Empty-state body below caption"
+      },
+      {
+        "what": "Grey caption appears to be a mid-grey (~#8a8a8a) on white, estimating ~3.3–3.7:1 contrast — below the 4.5:1 AA bar required for this supporting text.",
+        "severity": "minor",
+        "where": "Caption text under 'No lab orders yet'"
+      }
+    ],
+    "measured_notes": [
+      "Caption text 'When you book a lab test — on aturseva.com or here — its status and report land on this screen.' fully visible, wraps to 2 lines, no truncation/ellipsis.",
+      "Title 'No lab orders yet' reads first after the icon — correct scale hierarchy for an empty state.",
+      "Back arrow appears roughly 44px-wide region in the top-left gutter; header uses ~16px gutter consistent with spec.",
+      "Caption grey on white estimates below 4.5:1 (roughly 3.5:1).",
+      "Flask icon sits in a light circular tint (~#F4F4F2 feel); no teal accent misused — accent restraint holds on this surface."
+    ],
+    "non_blocking_notes": [
+      "Large blank region below the empty-state block is acceptable for a zero-order tracker but the block could sit slightly higher visually balanced; cosmetic.",
+      "Icon + title + caption rhythm is correct (icon, bold title, smaller caption); only the copy content fails, not the structure."
+    ],
+    "one_line": "Structure and hierarchy are right, but the caption's 'or here' promises in-app booking the app cannot do and leaves the patient at a dead end — rewrite to point honestly to aturseva.com and fix caption contrast."
+  }
+}

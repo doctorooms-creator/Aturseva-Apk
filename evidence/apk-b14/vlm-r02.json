@@ -1,0 +1,45 @@
+{
+  "spec": {
+    "id": "r02",
+    "file": "r02-auth-sheet.png",
+    "context": "Screen: the auth bottom sheet over the reports EmptyState (scrim behind). Contract: grab handle, \"Welcome back\" heading, email + password fields (quiet grey fills, 48px), \"Sign in\" black pill 44px+, \"Create account\" quiet link. Judge: sheet chrome (radius, scrim), field affordance, spacing rhythm, single clear primary, contrast of labels and link text."
+  },
+  "verdict": {
+    "overall": "FAIL",
+    "defects": [
+      {
+        "what": "Two competing black primary elements: the 'Sign in' segmented tab and the 'Sign in' pill button are both solid black, violating 'one clear primary'. The segmented control reads as a second primary action.",
+        "severity": "blocking",
+        "where": "Auth sheet, tab row (~y=507) vs 'Sign in' button (~y=765)"
+      },
+      {
+        "what": "Contract mismatch: 'Create account' is rendered as a filled grey segmented tab, not the specified quiet text link. It visually competes with the primary rather than reading as a quiet alternative.",
+        "severity": "minor",
+        "where": "Auth sheet, tab row"
+      },
+      {
+        "what": "Email and password fields appear as white fills with hairline borders, not the specified quiet grey fills (#F4F4F2-family). Field affordance deviates from the sheet contract.",
+        "severity": "minor",
+        "where": "Email field (~y=600) and password field (~y=695)"
+      }
+    ],
+    "measured_notes": [
+      "Sheet occupies bottom ~46% of screen with rounded top corners (est. 24-28px radius) and a small grey grab handle centered at top of sheet — handle present but low-contrast (light grey on white, est. ~1.8:1).",
+      "Scrim over the Reports empty state appears as a light-to-mid grey wash (~#B8B8B8 over white), visibly dimming the underlying content.",
+      "Input fields measure ~54-56px tall (>=48px spec met); 'Sign in' pill is ~52-56px tall with full-width black fill, >=44px met.",
+      "Segmented tabs measure ~46-50px tall — touch targets pass.",
+      "Labels 'Email' and 'Password' are bold dark grey/near-black on white, estimated contrast >7:1; placeholder text is mid-grey (~#9A9A9A) on white, estimated ~2.8:1 — below 4.5:1 but placeholders; labels carry the info so logged as non-blocking unless placeholders are load-bearing.",
+      "Body copy 'Your bookings and tokens sync to your account.' dark grey on white, est. ~7:1; footer line 'Sessions are 7-day and revocable...' appears slightly lighter grey, est. ~5:1 — passes AA but is the lowest-contrast text on the sheet.",
+      "No truncation/ellipsis observed; email placeholder fits on one line with room.",
+      "Sheet side gutters est. 16px, consistent with spec; internal vertical rhythm roughly 12px between fields and labels.",
+      "Underlying empty state: 'Sign in to see your reports' heading + 'Sign in' button visible behind scrim — no false promise, honestly names the signed-out situation."
+    ],
+    "non_blocking_notes": [
+      "Grab handle contrast is very low; consider darkening to grey-scale AA-adjacent for discoverability.",
+      "Triple repetition of the words 'Sign in' (heading, tab, button) is redundant; the tab row could read 'Sign in / Create account' with only the button as the action, which it does — but the heading 'Sign in' plus black tab still crowds the hierarchy.",
+      "Footer disclosure about 7-day sessions is good honesty practice; keep it on the final screen.",
+      "Placeholder 'you@example.com' and 'Your password' are appropriate; consider a password visibility toggle as a follow-up."
+    ],
+    "one_line": "Sheet chrome, spacing, and touch targets largely comply, but the dual black 'Sign in' tab + button breaks the single-primary rule and the 'Create account' quiet-link and grey-fill field contracts are not honored."
+  }
+}

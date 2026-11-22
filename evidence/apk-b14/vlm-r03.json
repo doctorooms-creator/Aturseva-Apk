@@ -1,0 +1,27 @@
+{
+  "spec": {
+    "id": "r03",
+    "file": "r03-signed-in-list.png",
+    "context": "Screen: REPORTS tracker, signed in, ONE real order (light mode). Card contract: test name \"Blood Sugar (Fasting)\" bold, fee \"₹80\" right-aligned bold tabular, caption \"Aarav Path Laboratory · Order cmwre9…\", caption \"Collection Mon, 23 Nov · 07:00 - 09:00 · Pune\", status chip \"Placed — awaiting confirmation\" amber-tinted pill, amber prep box \"Before the sample: Overnight fasting of 8-12 hours required\". Judge: hierarchy (does the status read first or last for a returning patient?), fee prominence vs test name, chip contrast on the card, prep-box readability, card rhythm, truncation anywhere."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Test name 'Blood Sugar (Fasting)' is bold ~17-18px and reads first; fee '₹80' right-aligned, matching weight — hierarchy acceptable for a tracker surface",
+      "Status chip 'Placed — awaiting confirmation' is amber text on pale amber pill on a #F4F4F2-tinted card; amber-on-tint contrast is borderline, estimated ~3.5-4:1 — likely below 4.5:1 AA but the message is duplicated in plain text context, logged as minor risk",
+      "Prep box 'Before the sample: Overnight fasting of 8-12 hours required' uses amber/brown text on cream background; contrast estimated ~4.5-5:1, passes but low margin",
+      "Card sits inside ~16px screen gutters; single card, consistent radius, ~12px internal spacing",
+      "No ellipsis/truncation seen: full order id 'cmwre9fcw0007j08f14rzaax' and full collection line 'Mon, 23 Nov · 07:00 - 09:00 · Pune' render untruncated",
+      "No dead end: prep instruction gives actionable info; nothing promises unprovided functionality",
+      "Back arrow in header appears ~44px tap region; no undersized targets visible"
+    ],
+    "non_blocking_notes": [
+      "Status reads third (after name and meta lines); for a returning patient the status could read first, but on a single-card surface this is a judgment call, not a gate",
+      "Large empty area below the single card — a truthful empty-state caption ('No other reports yet') would strengthen honesty law, but absence is not a defect",
+      "Prep box text wraps to two lines cleanly; wrapping is fine, not truncation",
+      "Status chip could carry a small status dot to reinforce 'live' semantics without adding color"
+    ],
+    "one_line": "Single-order tracker is restrained, untruncated, and honest; the only real risk is the amber chip's contrast on the tinted card, logged as a watch item rather than a gate."
+  }
+}

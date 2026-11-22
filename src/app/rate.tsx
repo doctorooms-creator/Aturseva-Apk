@@ -147,7 +147,7 @@ export default function RateScreen() {
                   </Text>
                 </View>
                 {r.alreadyRated ? (
-                  <View style={[styles.ratedChip, { backgroundColor: `${c.success}1A` }]}>
+                  <View style={[styles.ratedChip, { backgroundColor: c.successSoft }]}>
                     <Star size={13} color={c.success} strokeWidth={2} />
                     <Text style={[styles.ratedChipText, { color: c.success }]}>Rated</Text>
                   </View>

@@ -1,0 +1,26 @@
+{
+  "spec": {
+    "id": "r01",
+    "file": "r01-guest-doorway.png",
+    "context": "Screen: REPORTS route opened signed-out (stack screen, back arrow top-left, title \"Reports\" 18px). Contract: EmptyState with file icon, title \"Sign in to see your reports\", grey caption \"Your lab-test orders and their reports live here, tied to your account.\", ONE black \"Sign in\" pill (ink PillButton 44px) that opens an auth bottom sheet. Judge: is the doorway calm and honest, one clear action, caption contrast on white, any truncation, alignment rhythm."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Title 'Sign in to see your reports' is the largest text on the surface (~17-18px bold, near-black on white) and reads first — hierarchy correct.",
+      "Caption 'Your lab-test orders and their reports live here, tied to your account.' is mid-grey (~#6B6B6B estimated) on white, contrast roughly 4.6-5:1, passes AA at ~14px.",
+      "Sign in pill is approximately 76x44-48px — height looks at or near the 44px minimum; width generous but it is the only action.",
+      "No truncation or ellipsis on any text; caption wraps cleanly across two lines.",
+      "Back arrow (~44px target) and 18px 'Reports' header title present top-left; content block is horizontally centered with consistent rhythm between icon, title, caption, button.",
+      "White canvas, no stray accent color, icon is grey in a light-grey circle — restraint law respected.",
+      "Empty state names the situation truthfully and gives exactly one next step (no dead end)."
+    ],
+    "non_blocking_notes": [
+      "Sign in pill appears near-black/ink rather than the dark ink described in contract — could verify it's the intended ink token, not a lighter grey.",
+      "Empty-state block sits in upper third; consider slightly more vertical centering for balance — cosmetic.",
+      "Sheet behavior (spring, grab handle, scrim tap) cannot be judged from a static screenshot; verify interactively."
+    ],
+    "one_line": "Calm, honest signed-out empty state with one clear action, clean hierarchy, and AA-contrast caption; only interactive sheet behavior remains unverifiable from this frame."
+  }
+}

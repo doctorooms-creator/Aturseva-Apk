@@ -116,8 +116,18 @@ export default function MedicalHistoryScreen() {
     })()
   }, [load])
 
-  const toneColor = (tone: Tone) =>
-    tone === 'live' ? c.tealLive : tone === 'done' ? c.success : tone === 'warn' ? c.warn : c.mute
+  // B14 (measured AA on canvasSoft): tone text on its PROPER soft token —
+  // the `${color}1A` alpha tint read 3.99–4.33:1 on the card (FAIL);
+  // the soft companions measure 4.79+ light / 6.4+ dark. Mute chips pair
+  // body text with the hairline fill (5.24:1 light / 7.6:1 dark).
+  const tonePair = (tone: Tone) =>
+    tone === 'live'
+      ? { bg: c.tealLiveSoft, fg: c.tealLive }
+      : tone === 'done'
+        ? { bg: c.successSoft, fg: c.success }
+        : tone === 'warn'
+          ? { bg: c.warnSoft, fg: c.warn }
+          : { bg: c.hairline, fg: c.body }
 
   return (
     <View style={[styles.screen, { backgroundColor: c.canvas }]}>
@@ -171,7 +181,7 @@ export default function MedicalHistoryScreen() {
             {data.summary.total} event{data.summary.total === 1 ? '' : 's'} · newest first
           </Text>
           {data.events.map((e) => (
-            <EventCard key={e.id} e={e} toneColor={toneColor} />
+            <EventCard key={e.id} e={e} tonePair={tonePair} />
           ))}
           <View style={styles.footerPad} />
         </ScrollView>
@@ -190,7 +200,7 @@ export default function MedicalHistoryScreen() {
   )
 }
 
-function EventCard({ e, toneColor }: { e: MedicalEventRow; toneColor: (t: Tone) => string }) {
+function EventCard({ e, tonePair }: { e: MedicalEventRow; tonePair: (t: Tone) => { bg: string; fg: string } }) {
   const c = useColors()
   const meta = EVENT_META[e.type] ?? EVENT_META.appointment
   const Icon = meta.icon
@@ -222,8 +232,8 @@ function EventCard({ e, toneColor }: { e: MedicalEventRow; toneColor: (t: Tone) 
           {bits.join(' · ')}
         </Text>
       ) : null}
-      <View style={[styles.statusChip, { backgroundColor: `${toneColor(chip.tone)}1A` }]}>
-        <Text style={[styles.statusChipText, { color: toneColor(chip.tone) }]} numberOfLines={1}>
+      <View style={[styles.statusChip, { backgroundColor: tonePair(chip.tone).bg }]}>
+        <Text style={[styles.statusChipText, { color: tonePair(chip.tone).fg }]} numberOfLines={1}>
           {chip.label}
         </Text>
       </View>

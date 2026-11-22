@@ -1,0 +1,31 @@
+{
+  "spec": {
+    "id": "r-r02",
+    "file": "r08-fixed-auth-sheet.png",
+    "context": "RETAKE of the auth sheet after fixes. Screen: auth bottom sheet over the reports EmptyState. Contract NOW: grab handle (grey, visible), heading \"Sign in\", grey caption, mode toggle = TWO chips where the SELECTED one is SOFT TEAL (tealLiveSoft bg #CCFBF1 + tealLive text — reads as a state, NOT a primary), unselected chip quiet grey, email + password fields = white fill + 1px hairline border (the app-wide input grammar), ONE black \"Sign in\" pill submit (the only strong primary on the sheet), quiet footer disclosure. Judge: is there now exactly ONE strong primary, does the teal tab read clearly as selected-state, fields consistent, spacing rhythm, contrast."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Sheet: grab handle visible at top, grey, ~32x4px — contract met",
+      "One strong primary only: black 'Sign in' pill (~44-48px tall) at sheet bottom; the background 'Sign in' chip on the EmptyState is grey/quiet, not a competing strong primary",
+      "Selected chip 'Sign in' uses soft teal bg (~#CCFBF1) with teal text (~#0F766E est.) — estimated contrast ~4.6:1, reads as selected state, not primary",
+      "Unselected chip 'Create account' is quiet grey (~#F4F4F2 bg, ~#1A1A19 text) — clearly secondary to the teal tab",
+      "Email + password fields: white fill, 1px hairline grey border, consistent height (~52px), consistent radius — matches app input grammar",
+      "Field labels 'Email'/'Password' dark grey on white, estimated ≥7:1 — AA pass",
+      "Placeholder text (you@example.com / Your password) estimated ~#9CA3AF on white ≈ 2.8:1 — placeholders are exempt-ish but noted",
+      "Footer disclosure 'Sessions are 7-day and revocable…' grey small text, est ~#6B7280 ≈ 4.6:1 — AA pass",
+      "Gutters: sheet content edges ~16px; internal gaps ~12px between chips, label→field, field→field — rhythm consistent",
+      "Touch targets: chips ~44px tall, inputs ~52px, submit ~48px — all ≥44px",
+      "No truncation observed; captions wrap cleanly on two lines in EmptyState body"
+    ],
+    "non_blocking_notes": [
+      "Scrim over EmptyState is uniform grey — fine, but the EmptyState's own grey 'Sign in' chip duplicates the sheet heading text; consider differentiating copy",
+      "Caption 'Your bookings and tokens sync to your account.' could state what happens if the user has no account yet (never a dead end); minor copy polish",
+      "Placeholder grey on white is the lightest text on the sheet; consider one step darker for low-vision users",
+      "Radius of chips vs submit pill vs inputs is consistent enough; confirm the token in the system"
+    ],
+    "one_line": "Retake passes: exactly one strong primary, teal reads as selected-state, fields consistent, spacing and contrast on-contract."
+  }
+}

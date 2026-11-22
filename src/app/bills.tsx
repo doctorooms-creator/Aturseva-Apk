@@ -104,8 +104,18 @@ export default function BillsScreen() {
     })()
   }, [load])
 
-  const toneColor = (tone: Tone) =>
-    tone === 'done' ? c.success : tone === 'warn' ? c.warn : tone === 'error' ? c.error : c.mute
+  // B14 (measured AA on canvasSoft): tone text on its PROPER soft token —
+  // the `${color}1A` alpha tint read 3.99–4.09:1 on the card (FAIL);
+  // the soft companions measure 4.79+ light / 6.4+ dark. Mute chips pair
+  // body text with the hairline fill (5.24:1 light / 7.6:1 dark).
+  const tonePair = (tone: Tone) =>
+    tone === 'done'
+      ? { bg: c.successSoft, fg: c.success }
+      : tone === 'warn'
+        ? { bg: c.warnSoft, fg: c.warn }
+        : tone === 'error'
+          ? { bg: c.errorSoft, fg: c.error }
+          : { bg: c.hairline, fg: c.body }
 
   const anything =
     bills !== null && bills.opdBills.length + bills.ipdBills.length + bills.gatewayTransactions.length > 0
@@ -168,7 +178,7 @@ export default function BillsScreen() {
                 </Text>
               </View>
               {bills.opdBills.map((b) => (
-                <OpdCard key={b.id} b={b} toneColor={toneColor} />
+                <OpdCard key={b.id} b={b} tonePair={tonePair} />
               ))}
             </View>
           ) : null}
@@ -183,7 +193,7 @@ export default function BillsScreen() {
                 </Text>
               </View>
               {bills.ipdBills.map((b) => (
-                <IpdCard key={b.id} b={b} toneColor={toneColor} />
+                <IpdCard key={b.id} b={b} tonePair={tonePair} />
               ))}
             </View>
           ) : null}
@@ -198,7 +208,7 @@ export default function BillsScreen() {
                 </Text>
               </View>
               {bills.gatewayTransactions.map((t) => (
-                <GatewayCard key={t.id} t={t} toneColor={toneColor} />
+                <GatewayCard key={t.id} t={t} tonePair={tonePair} />
               ))}
             </View>
           ) : null}
@@ -220,18 +230,19 @@ export default function BillsScreen() {
   )
 }
 
-/** Status chip (soft bg + tone text) — same grammar as reports.tsx. */
-function StatusChipView({ label, tone, toneColor }: { label: string; tone: Tone; toneColor: (t: Tone) => string }) {
+/** Status chip (soft-token bg + tone text) — same grammar as reports.tsx. */
+function StatusChipView({ label, tone, tonePair }: { label: string; tone: Tone; tonePair: (t: Tone) => { bg: string; fg: string } }) {
+  const p = tonePair(tone)
   return (
-    <View style={[styles.statusChip, { backgroundColor: `${toneColor(tone)}1A` }]}>
-      <Text style={[styles.statusChipText, { color: toneColor(tone) }]} numberOfLines={1}>
+    <View style={[styles.statusChip, { backgroundColor: p.bg }]}>
+      <Text style={[styles.statusChipText, { color: p.fg }]} numberOfLines={1}>
         {label}
       </Text>
     </View>
   )
 }
 
-function OpdCard({ b, toneColor }: { b: OpdBillRow; toneColor: (t: Tone) => string }) {
+function OpdCard({ b, tonePair }: { b: OpdBillRow; tonePair: (t: Tone) => { bg: string; fg: string } }) {
   const c = useColors()
   const chip = statusChip(b.status)
   return (
@@ -249,7 +260,7 @@ function OpdCard({ b, toneColor }: { b: OpdBillRow; toneColor: (t: Tone) => stri
         {[b.hospitalName, b.receiptNo ? `Receipt ${shortRef(b.receiptNo)}` : ''].filter(Boolean).join(' · ')}
       </Text>
       <View style={styles.chipRow}>
-        <StatusChipView label={chip.label} tone={chip.tone} toneColor={toneColor} />
+        <StatusChipView label={chip.label} tone={chip.tone} tonePair={tonePair} />
         <Text style={[styles.metaLine, { color: c.mute }]} numberOfLines={1}>
           {[b.paymentMethod, dateLabel(b.paymentDate || b.createdAt)].filter(Boolean).join(' · ')}
         </Text>
@@ -258,7 +269,7 @@ function OpdCard({ b, toneColor }: { b: OpdBillRow; toneColor: (t: Tone) => stri
   )
 }
 
-function IpdCard({ b, toneColor }: { b: IpdBillRow; toneColor: (t: Tone) => string }) {
+function IpdCard({ b, tonePair }: { b: IpdBillRow; tonePair: (t: Tone) => { bg: string; fg: string } }) {
   const c = useColors()
   const chip = statusChip(b.status)
   return (
@@ -294,7 +305,7 @@ function IpdCard({ b, toneColor }: { b: IpdBillRow; toneColor: (t: Tone) => stri
         ) : null}
       </View>
       <View style={styles.chipRow}>
-        <StatusChipView label={chip.label} tone={chip.tone} toneColor={toneColor} />
+        <StatusChipView label={chip.label} tone={chip.tone} tonePair={tonePair} />
         {chip.tone === 'warn' && b.balance > 0 ? (
           <Text style={[styles.metaLine, { color: c.body }]} numberOfLines={2}>
             Balance is settled at the hospital counter.
@@ -337,7 +348,7 @@ function MoneyRow({ label, value, strong }: { label: string; value: string; stro
   )
 }
 
-function GatewayCard({ t, toneColor }: { t: GatewayTxnRow; toneColor: (t: Tone) => string }) {
+function GatewayCard({ t, tonePair }: { t: GatewayTxnRow; tonePair: (t: Tone) => { bg: string; fg: string } }) {
   const c = useColors()
   const chip = statusChip(t.status)
   return (
@@ -357,7 +368,7 @@ function GatewayCard({ t, toneColor }: { t: GatewayTxnRow; toneColor: (t: Tone) 
           .join(' · ')}
       </Text>
       <View style={styles.chipRow}>
-        <StatusChipView label={chip.label} tone={chip.tone} toneColor={toneColor} />
+        <StatusChipView label={chip.label} tone={chip.tone} tonePair={tonePair} />
       </View>
       {t.errorMessage ? (
         <Text style={[styles.note, { color: c.mute }]} numberOfLines={3}>
