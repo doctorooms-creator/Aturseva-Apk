@@ -88,3 +88,24 @@ Gates: tsc 0 · eslint 0/0 · dist re-exported · no new routes · zero web-repo
 Honest limits: EXPO_TOKEN still pending (6-for-one: febe3a99 link + B9/B10/B11/B12 OTA
 + tunnel). Prod QA-named test data still visible in patient lists (owner data-side).
 Home rail remains global-by-design (honest caption now says what adapts).
+
+## EAS delivery (Round 45, 2026-11-22 — owner-supplied EXPO_TOKEN unlocked)
+
+The B13 bundle (this round's code, commit `fda04bb`) is now OTA-delivered to every
+installed v0.3.0 APK:
+
+- **OTA update PUBLISHED**: branch `preview`, runtime 0.3.0, android+ios, group
+  `16564890-2676-4289-b6be-1a1e2232fdc7` (android update `01a2018a-8b1f-7dbe-9577-89330d83c277`).
+  checkAutomatically ON_LOAD — installed v0.3.0 APKs pull B7→B13 (all batches in
+  one update) on next app open. Dashboard:
+  https://expo.dev/accounts/aturseva-team/projects/aturseva-app/updates/16564890-2676-4289-b6be-1a1e2232fdc7
+- **febe3a99 (B7-P2 versionCode-2 APK) link VERIFIED** in evidence/apk-b7-p2 (the
+  5-round-pending artifact): finished 2026-11-20 23:20 UTC · PK magic `50 4b 03 04` ·
+  98,985,715 bytes —
+  https://expo.dev/artifacts/eas/kKDu5YDabmIPSeWc_IX9FcplcvXLL3ytVIrVidyV_O8.apk
+- **Dev tunnel RESTORED** (was auth-blocked since reset #4): Metro :8081 + signed
+  tunnel live and verified (public URL 200 · `/status` packager-running · full
+  entry bundle served 200 / 6 MB through the tunnel). Sandbox-reaper risk honestly
+  noted — the durable owner path is the OTA (cloud-delivered, sandbox-independent).
+- dist re-exported after the update (the Round-34 gotcha law: `eas update` clobbers
+  ./dist; :8090 re-verified 200 web-HTML after re-export).

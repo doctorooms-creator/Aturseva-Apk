@@ -22,3 +22,5 @@ e2e-retake-b13.sh
 e2e-retake2-b13.sh
 e2e-diag-b13.sh
 e2e-shots-b13/
+.deploy-tokens
+e2e-boot*.mjs

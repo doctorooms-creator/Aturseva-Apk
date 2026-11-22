@@ -71,24 +71,29 @@ doctor-photo honesty law).
   versionCode → vc 1 would have blocked upgrade installs. Fix:
   `autoIncrement: true` added to the preview profile (eas.json) →
   this and all future preview builds auto-increment.
-- **ARTIFACT LINK PENDING (honest status, followup fired 2026-11-20
-  21:20 UTC)**: the sandbox was reset for a FOURTH time right before
-  the followup — `/home/z/.deploy-tokens` (EXPO_TOKEN + VERCEL) was
-  wiped, and `eas-cli build:view febe3a99` requires an authenticated
-  token, so the build status and the permanent
-  `https://expo.dev/artifacts/eas/….apk` link could NOT be verified
-  or fetched this round. GITHUB token survived (embedded in the
-  my-project git remote) → repo re-cloned at `9e7f556`, zero lost
-  commits. Owner action (one time): create a fresh access token at
-  expo.dev → Settings → Access Tokens; the next followup then fetches
-  + verifies (PK magic bytes + size) + commits the link here and in
-  the walkthrough. NOTHING about the build itself was changed by the
-  reset — febe3a99 kept building on EAS infra.
-- **Meanwhile the owner CAN already test B7**: the OTA update (group
-  `4d6aa392…`) is LIVE on the preview branch — the already-installed
-  B6 v0.3.0 APK (link in evidence/apk-b6/01-owner-install-walkthrough.md)
-  pulls hospitals browse + doctor depth on its next load. The
-  walkthrough doc below is written around that path.
+- **ARTIFACT LINK VERIFIED (Round 45, 2026-11-22 — owner-supplied
+  EXPO_TOKEN unblocked)**: `eas build:view febe3a99` → **finished**
+  (2026-11-20 23:20 UTC; started 19:59) · runtime 0.3.0 ·
+  versionCode 2 · channel preview · SDK 58. Permanent APK link:
+  `https://expo.dev/artifacts/eas/kKDu5YDabmIPSeWc_IX9FcplcvXLL3ytVIrVidyV_O8.apk`
+  — verified per the standing law (curl 307 → EAS CDN 200 ·
+  PK magic bytes `50 4b 03 04` · size **98,985,715 bytes ≈ 94 MB**).
+  Build page:
+  https://expo.dev/accounts/aturseva-team/projects/aturseva-app/builds/febe3a99-317a-4e43-b4d4-851e0fd4abe3
+  (History: the Round-37 followup was auth-blocked by sandbox reset
+  #4 wiping `.deploy-tokens`; the link stayed honestly PENDING for
+  five rounds — nothing fabricated — until the owner's token landed
+  and this verification ran.)
+- **Meanwhile the owner CAN already test everything (Round 45
+  state)**: the LATEST OTA on the preview branch is group
+  `16564890-2676-4289-b6be-1a1e2232fdc7` (published 2026-11-22, commit
+  `fda04bb` — carries ALL B7→B13 features: hospitals + doctor depth
+  + records viewers + identity payoff + profile edit + refresh +
+  booking-journey/discovery/first-five-minutes polish). The
+  already-installed B6 v0.3.0/vc1 APK — or the febe3a99 versionCode-2
+  APK above — pulls it on next load (checkAutomatically ON_LOAD,
+  runtime 0.3.0 match). The earlier B7-only group `4d6aa392…` is
+  superseded by it on the same branch.
 
 ## Gates
 

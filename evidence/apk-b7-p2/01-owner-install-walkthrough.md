@@ -1,30 +1,36 @@
-# Aturseva APK — Owner Install + Smoke (B7-P2: Hospitals Browse + Doctor Trust Depth)
+# Aturseva APK — Owner Install + Smoke (B7-P2 base + B13 OTA latest)
 
 > Hinglish owner doc. App version 0.3.0 (runtime 0.3.0) · B7-P2 build
-> `febe3a99-317a-4e43-b4d4-851e0fd4abe3` versionCode 2. Poora B7 set
-> (Part 1 hospitals browse + Part 2 doctor depth) is round me APK
-> tak pahuncha hai — OTA pehle se LIVE hai, naya APK link niche
-> honestly marked hai.
+> `febe3a99-317a-4e43-b4d4-851e0fd4abe3` versionCode 2. **UPDATE
+> (Round 45, 2026-11-22)**: owner ka EXPO_TOKEN aa gaya — febe3a99
+> ka artifact link niche VERIFIED hai, aur preview branch pe ab **B13
+> ka OTA LIVE hai** (group `16564890…`) — installed APK kholte hi
+> B7→B13 saare features apne aap aa jayenge.
 
-## APK link — STATUS: PENDING (1 owner step)
+## APK link — STATUS: LIVE (verified, Round 45)
 
-- **Naya versionCode-2 APK ka direct link is write ke time block hai**:
-  sandbox 4th bar reset hua to `EXPO_TOKEN` (expo.dev access token)
-  sab ke saath wipe ho gaya, aur EAS se build status/artifact link
-  bina token fetch nahi ho sakta. **Jhooth bol ke koi link nahi likha.**
-- **Owner ek-baar action (2 min)**: expo.dev → Settings → Access
-  Tokens → Create token → mujhe bhej do. Uske turant baad next
-  followup link yahan + summary me commit kar dega (PK magic bytes +
-  size verify karke).
-- **Tab tak B7 test kaise karein — LINK PEHLE SE KAAM KARTA HAI**:
-  B6 ka v0.3.0 APK already installed hai ya install kar lo
+- **versionCode-2 APK direct link (PK magic + size 94 MB verified)**:
+  `https://expo.dev/artifacts/eas/kKDu5YDabmIPSeWc_IX9FcplcvXLL3ytVIrVidyV_O8.apk`
+  — B7-era native shell (runtime 0.3.0, channel preview) jo pehli
+  launch pe B13 OTA apne aap khinch lega.
+- **Sabse aasan path (koi install bhi nahi karna ho toh)**: jo B6
+  v0.3.0 APK pehle se installed hai use bas dobara kholo — preview
+  branch ka LATEST OTA (group `16564890-2676-4289-b6be-1a1e2232fdc7`,
+  commit `fda04bb`, checkAutomatically ON_LOAD) apply hoga aur
+  **poora B7→B13 feature set** aa jayega: hospitals + doctor depth,
+  records viewers (bills + medical history), identity payoff
+  (booking se auto notification + history event), profile edit,
+  pull-to-refresh (native app me), booking-journey polish (44px slot
+  pills, teal selected state), discovery polish, city-sheet
+  auto-scroll, home rail no-truncation.
+- Purana B6-v0.3.0 fresh-install link (agar device pe kuch nahi hai):
   `https://expo.dev/artifacts/eas/ky5ngpvVlDRv1wM3mjAqyLuS61qchwOu31xbuwzGCnI.apk`
-  — app ko dobara kholo, OTA update (group `4d6aa392…`,
-  checkAutomatically ON_LOAD) apne aap apply hoga aur hospitals
-  browse + doctor depth features aa jayenge. Yaani **B7 smoke aaj hi
-  ho sakta hai** — naya APK sirf versionCode-2 freshness ke liye hai.
+  — isko bhi kholte hi wahi B13 OTA milega.
+- (History, honesty note: 5 rounds tak link yahan PENDING pada tha
+  kyunki sandbox reset #4 ne EXPO_TOKEN wipe kar diya tha — jab tak
+  token nahi aata, jhooth bol ke link nahi likha gaya.)
 
-## Upgrade note (jab versionCode-2 APK link aaye)
+## Upgrade note (versionCode-2 APK)
 
 - Direct install v0.3.0 / versionCode-1 APK ke **UPAR** — koi
   uninstall nahi karna. Login session, cached data sab preserved.
@@ -60,6 +66,31 @@
    booked today · limit 50") → slot pick karne tak Confirm disabled
    rahe. Yaani B6 booking flow B7 changes se toota nahi.
 
+## B13 OTA ke saath naya kya test karein (Round 45 ke baad)
+
+Upar wala B7 checklist aaj bhi valid hai — uske UPAR ye naye surface
+test karo (OTA ke saath apne aap aate hain):
+
+1. **Pull-to-refresh (native app me)** — notifications / bills /
+   medical history / bookings screens ko neeche kheencho (swipe down)
+   → spinner + fresh data.
+2. **Booking journey polish** — doctor profile → slot sheet: time
+   pills ab 44px (aalas se tap honge), available = white pill,
+   selected = teal ring + fill, closed = grey + line-through.
+   Confirm button fee echo karta hai ("Confirm booking · ₹300").
+   Token screen pe ek hi primary action + quiet cancel.
+3. **Identity payoff** — booking karo → Notifications me auto entry
+   ("Request sent") + Medical History me event. Naam-mismatch ho to
+   app server-side resolved naam honestly dikhata hai.
+4. **City sheet auto-scroll** — profile → City row → sheet khulti
+   hai to current city apne aap scroll ho ke check-mark ke saath
+   dikhta hai (Guwahati/Kochi jaisi last rows ke liye).
+5. **Discovery polish** — search me "fever" → doctor list (fee ab
+   bold 18px); zero-result pe "Browse all doctors" primary button;
+   hospitals list city-filter se shuru.
+6. **Dark mode** — system dark karke dekho: city field, sheet
+   rows, inactive dots sab readable.
+
 ## Honest limits (ab ke liye)
 
 - Ratings sub-score rows aaj kisi doctor pe render nahi hongi (prod
@@ -68,9 +99,11 @@
 - Health tips aaj sirf QA account ("Dr. QA ProdOnco") ke posts
   dikhati hai — web team prod QA data cleanup ka owner hai (B7-P1 me
   noted).
-- Labs hub / push / OTP / maps / iOS — owner-blocked (Vercel token +
-  Firebase/Twilio + Maps key + Apple account pending). Naya APK link
-  bhi isi list me hai jab tak token nahi milta.
+- Labs hub / push / OTP / maps / iOS / Play console — owner-blocked
+  (Vercel token + Firebase/Twilio + Maps key + Apple account +
+  Play console pending). EXPO_TOKEN ab aa chuka hai (Round 45) — uska
+  unlock poora ho gaya (febe3a99 link + B13 OTA + dev tunnel teeno
+  live).
 
 ## Dev-side contact points
 
