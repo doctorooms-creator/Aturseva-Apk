@@ -37,6 +37,11 @@ export function PillButton({
       : variant === 'secondary'
         ? { backgroundColor: c.canvasSoft, height }
         : { backgroundColor: 'transparent', height: TOUCH }
+  // H1 CTA grammar (website .w-bookbtn): the ink primary floats — soft
+  // lift shadow at rest, pressed scale .98 (below). The website's own
+  // hover recipe (0 4px 18px rgba(21,21,21,.16)) translated RN-native.
+  const ctaShadow: ViewStyle =
+    variant === 'primary' ? styles.primaryLift : ({} as ViewStyle)
   return (
     <Pressable
       onPress={onPress}
@@ -47,6 +52,7 @@ export function PillButton({
       style={({ pressed }) => [
         styles.base,
         base,
+        ctaShadow,
         variant === 'quiet' && styles.quiet,
         pressed && styles.pressed,
         disabled && styles.disabled,
@@ -78,11 +84,13 @@ interface ChipProps {
   leading?: ReactNode
   /**
    * B14: SOFT selection tone for chips that toggle MODE/STATE (not the
-   * patient's decision). Selected+soft = tealLiveSoft bg + tealLive text
-   * (measured 4.86:1 light / 6.47:1 dark) — reads clearly selected
-   * WITHOUT competing with a same-surface ink primary (the auth sheet's
-   * mode toggle vs its submit pill — the B14 dual-primary fix). The
-   * default ink-fill selection stays for decision chips.
+   * patient's decision). Selected+soft = aquaSoft wash + tealText
+   * (H1 re-measured: 5.39:1 light / 8.1:1 dark — tealLive is now
+   * graphics-only #0D9488 at 3.68:1 on the wash, fails text AA) — reads
+   * clearly selected WITHOUT competing with a same-surface ink primary
+   * (the auth sheet's mode toggle vs its submit pill — the B14
+   * dual-primary fix). The default ink-fill selection stays for decision
+   * chips.
    */
   soft?: boolean
 }
@@ -99,7 +107,7 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
       hitSlop={6}
       style={({ pressed }) => [
         styles.chip,
-        { backgroundColor: selected ? (soft ? c.tealLiveSoft : c.ink) : c.canvasSoft },
+        { backgroundColor: selected ? (soft ? c.aquaSoft : c.ink) : c.canvasSoft },
         disabled && styles.disabled,
         pressed && styles.pressed,
       ]}
@@ -109,7 +117,7 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
         style={[
           typo.body,
           styles.chipText,
-          { color: selected ? (soft ? c.tealLive : c.canvas) : c.ink },
+          { color: selected ? (soft ? c.tealText : c.canvas) : c.ink },
         ]}
         numberOfLines={1}
       >
@@ -149,6 +157,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: space.s24,
     minHeight: TOUCH,
+  },
+  primaryLift: {
+    shadowColor: '#0A0A0A',
+    shadowOpacity: 0.16,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
   pressed: {
     transform: [{ scale: 0.98 }],

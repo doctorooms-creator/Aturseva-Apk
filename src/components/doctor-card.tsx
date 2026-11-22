@@ -41,7 +41,12 @@ export function DoctorRailCard({ doctor, onPress }: { doctor: DoctorCard; onPres
       ]}
     >
       <View style={styles.top}>
-        <Avatar name={doctor.name} size={56} />
+        <Avatar
+          name={doctor.name}
+          size={56}
+          source={doctor.photo}
+          representative={doctor.photoRepresentative}
+        />
         <View style={styles.headCol}>
           <Text style={[styles.name, { color: c.ink }]} numberOfLines={1}>
             {doctor.name}

@@ -163,7 +163,7 @@ export default function ProfileScreen() {
             ]}
           >
             <PenLine size={14} color={c.tealLive} strokeWidth={2} />
-            <Text style={[styles.editChipText, { color: c.tealLive }]}>Edit</Text>
+            <Text style={[styles.editChipText, { color: c.tealText }]}>Edit</Text>
           </View>
         </Pressable>
       ) : (
@@ -180,7 +180,7 @@ export default function ProfileScreen() {
               accessibilityLabel="Sign in"
               style={({ pressed }) => [styles.signInRow, pressed && { opacity: 0.7 }]}
             >
-              <Text style={[styles.signInText, { color: c.tealLive }]}>Sign in or create account</Text>
+              <Text style={[styles.signInText, { color: c.tealText }]}>Sign in or create account</Text>
               <ChevronRight size={16} color={c.tealLive} strokeWidth={2} />
             </Pressable>
           </View>

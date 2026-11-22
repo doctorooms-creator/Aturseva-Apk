@@ -246,7 +246,9 @@ export function RelatedDoctorsZone({
               <Image
                 source={{ uri: d.photo }}
                 style={[styles.relatedPhoto, { backgroundColor: c.canvasSoft }]}
-                accessibilityLabel={`${d.name} photo`}
+                accessibilityLabel={
+                  d.photoRepresentative ? `${d.name} — representative photo` : `${d.name} photo`
+                }
               />
             ) : (
               <Avatar name={d.name} size={44} />

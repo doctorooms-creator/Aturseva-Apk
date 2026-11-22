@@ -162,7 +162,7 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Waiting for confirmation</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Waiting for confirmation</Text>
                   </View>
                   <Text style={[styles.positionBigTitle, { color: c.ink }]}>Not in the line yet</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>
@@ -172,7 +172,7 @@ export default function QueueScreen() {
               ) : t.status === 'Visited' || t.status === 'Finish' ? (
                 <>
                   <View style={styles.liveRow}>
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Visit complete</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Visit complete</Text>
                   </View>
                   <Text style={[styles.positionBigTitle, { color: c.ink }]}>Your visit is done</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>
@@ -182,7 +182,7 @@ export default function QueueScreen() {
               ) : t.status === 'Canceled' ? (
                 <>
                   <View style={styles.liveRow}>
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Cancelled</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Cancelled</Text>
                   </View>
                   <Text style={[styles.positionBigTitle, { color: c.ink }]}>This booking was cancelled</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>Book again any time — the doctor page is one tap away.</Text>
@@ -191,7 +191,7 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Confirmed</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Confirmed</Text>
                   </View>
                   <Text style={[styles.positionBig, { color: c.ink }]}>—</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>
@@ -202,7 +202,7 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Confirmed · token {t.tokenNumber || '—'}</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Confirmed · token {t.tokenNumber || '—'}</Text>
                   </View>
                   <Text style={[styles.positionBigTitle, { color: c.ink }]}>The queue hasn’t started</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>
@@ -213,7 +213,7 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Live · doctor on a short break</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Live · doctor on a short break</Text>
                   </View>
                   <Text style={[styles.positionBig, { color: c.ink }]}>#{t.queuePosition || '—'}</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>
@@ -225,7 +225,7 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Live · you are next</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Live · you are next</Text>
                   </View>
                   <Text style={[styles.positionBig, { color: c.ink }]}>NEXT</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>Please be at the clinic now — your turn is next.</Text>
@@ -234,7 +234,7 @@ export default function QueueScreen() {
                 <>
                   <View style={styles.liveRow}>
                     <PulseDot size={10} />
-                    <Text style={[styles.liveLabel, { color: c.tealLive }]}>Live · token {t.tokenNumber || '—'}</Text>
+                    <Text style={[styles.liveLabel, { color: c.tealText }]}>Live · token {t.tokenNumber || '—'}</Text>
                   </View>
                   <Text style={[styles.positionBig, { color: c.ink }]}>#{t.queuePosition || '—'}</Text>
                   <Text style={[styles.positionCaption, { color: c.body }]}>

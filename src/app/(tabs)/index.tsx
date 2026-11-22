@@ -255,6 +255,8 @@ export default function HomeScreen() {
                   isEmergency: false,
                   rating: 0,
                   ratingCount: 0,
+                  photo: d.photo,
+                  photoRepresentative: d.photoRepresentative,
                 }}
                 onPress={() => void router.push({ pathname: '/doctor/[id]', params: { id: d.id } })}
               />
@@ -268,7 +270,7 @@ export default function HomeScreen() {
         <Text style={[styles.sectionTitle, { color: c.ink }]}>Doctors</Text>
         <View style={[styles.liveChip, { backgroundColor: c.tealLiveSoft }]}>
           <PulseDot size={6} />
-          <Text style={[styles.liveText, { color: c.tealLive }]}>live</Text>
+          <Text style={[styles.liveText, { color: c.tealText }]}>live</Text>
         </View>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>

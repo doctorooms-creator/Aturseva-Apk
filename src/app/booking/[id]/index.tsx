@@ -214,7 +214,7 @@ export default function TokenScreen() {
               <View style={[styles.tokenCard, { backgroundColor: c.canvasSoft }]}>
                 <View style={styles.tokenLiveRow}>
                   <PulseDot size={10} />
-                  <Text style={[styles.tokenLiveLabel, { color: c.tealLive }]}>Turn confirmed</Text>
+                  <Text style={[styles.tokenLiveLabel, { color: c.tealText }]}>Turn confirmed</Text>
                 </View>
                 <Text style={[styles.tokenNumber, { color: c.ink }]} adjustsFontSizeToFit minimumFontScale={0.6}>
                   {t.tokenNumber}
@@ -227,7 +227,7 @@ export default function TokenScreen() {
               <View style={[styles.tokenCard, { backgroundColor: c.canvasSoft }]}>
                 <View style={styles.tokenLiveRow}>
                   <PulseDot size={10} />
-                  <Text style={[styles.tokenLiveLabel, { color: c.tealLive }]}>Request sent</Text>
+                  <Text style={[styles.tokenLiveLabel, { color: c.tealText }]}>Request sent</Text>
                 </View>
                 <Text style={[styles.tokenPendingTitle, { color: c.ink }]}>Token being assigned</Text>
                 <Text style={[styles.tokenPendingCaption, { color: c.body }]}>

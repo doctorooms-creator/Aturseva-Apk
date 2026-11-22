@@ -14,10 +14,34 @@
 // Session JWT home (secure-store). auth.ts imports api.ts TYPES only —
 // no runtime cycle (this direction is the runtime one, and it is one-way).
 import { getStoredToken } from '@/lib/auth'
+import { doctorPhoto } from '@/lib/website/doctor-photo'
 
 const rawBase = process.env.EXPO_PUBLIC_API_BASE
 export const API_BASE =
   rawBase === '' ? '' : (rawBase ?? 'https://aturseva.com').replace(/\/+$/, '')
+
+/** Resolve a doctorPhoto src (site-relative or the doctor's absolute URL)
+ *  against the API origin — the ONE place photo paths become absolute
+ *  (H1, docs 16/17: curated faces serve from the site's own public dir). */
+function photoUrl(src: string): string {
+  return src.startsWith('http') ? src : `${API_BASE}${src}`
+}
+
+/** H1 photo-pipeline adapter shape: real-photo-wins, else deterministic
+ *  curated face (gender-aware), else null (initials fallback). */
+interface ResolvedPhoto {
+  photo: string | null
+  photoRepresentative: boolean
+}
+function resolvePhoto(args: {
+  id: string
+  name: string
+  profileImg?: string | null
+  gender?: string | null
+}): ResolvedPhoto {
+  const p = doctorPhoto(args)
+  return p ? { photo: photoUrl(p.src), photoRepresentative: p.curated } : { photo: null, photoRepresentative: false }
+}
 
 const TIMEOUT_MS = 8000
 const RETRY_DELAY_MS = 500
@@ -273,6 +297,10 @@ export interface DoctorCard {
   isEmergency: boolean
   rating: number
   ratingCount: number
+  /** H1: resolved photo (curated-or-real, absolute) — null = initials. */
+  photo: string | null
+  /** Honesty flag: true = curated face ("Representative photo" label). */
+  photoRepresentative: boolean
 }
 
 export interface DoctorsPage {
@@ -295,6 +323,7 @@ export async function getDoctors(params: {
     data: {
       id: string
       name: string
+      profileImg: string | null
       doctor: {
         specialization: string | null
         city: string | null
@@ -320,6 +349,7 @@ export async function getDoctors(params: {
       isEmergency: d.doctor?.isEmergency ?? false,
       rating: d._avgRating?.star ?? 0,
       ratingCount: d._ratingCount?.star ?? 0,
+      ...resolvePhoto({ id: d.id, name: d.name, profileImg: d.profileImg }),
     })),
     total: raw.total,
   }
@@ -363,11 +393,13 @@ export interface DoctorProcedure {
 }
 
 /** Same-specialization doctor (the contract's relatedDoctors) —
- *  cross-navigation depth, photo honesty-gated http(s) only. */
+ *  cross-navigation depth, H1 photo pipeline (curated-or-real resolved). */
 export interface RelatedDoctor {
   id: string
   name: string
   photo: string | null
+  /** Honesty flag: true = curated face ("Representative photo" label). */
+  photoRepresentative: boolean
   specialization: string
   city: string
   fees: number
@@ -376,10 +408,13 @@ export interface RelatedDoctor {
 export interface DoctorProfile {
   id: string
   name: string
-  /** Full http(s) image URL — null when the doctor has no real photo
-   *  ("default.png" and empty are honesty-gated to null at the adapter,
-   *  never rendered as a broken image). */
+  /** Resolved photo (H1 pipeline: real HMS photo wins — http OR the
+   *  site-relative uploads shape — else the deterministic curated face).
+   *  Null never happens for a real id (curated always resolves); initials
+   *  fallback remains for the degenerate case. */
   photo: string | null
+  /** Honesty flag: true = curated face ("Representative photo" label). */
+  photoRepresentative: boolean
   specialization: string
   education: string
   /** Years, normalized to the bare number ("7"; the "7 years" storage
@@ -455,6 +490,7 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
       id: string
       name: string
       profileImg: string | null
+      gender: string | null
       doctor: {
         specialization: string | null
         education: string | null
@@ -501,10 +537,17 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
   }>(`/api/doctors/${encodeURIComponent(id)}`)
   const d = raw.doctor
   const img = d.profileImg
+  const resolved = resolvePhoto({
+    id: d.id,
+    name: d.name,
+    profileImg: img,
+    gender: d.gender,
+  })
   return {
     id: d.id,
     name: displayName(d.name),
-    photo: img && /^https?:\/\//.test(img) ? img : null,
+    photo: resolved.photo,
+    photoRepresentative: resolved.photoRepresentative,
     specialization: d.doctor?.specialization ?? '',
     education: d.doctor?.education ?? '',
     experience: normalizeYears(d.doctor?.experience ?? ''),
@@ -545,7 +588,7 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
     related: (d.relatedDoctors ?? []).map((r) => ({
       id: r.id,
       name: displayName(r.name),
-      photo: r.profileImg && /^https?:\/\//.test(r.profileImg) ? r.profileImg : null,
+      ...resolvePhoto({ id: r.id, name: r.name, profileImg: r.profileImg }),
       specialization: r.doctor?.specialization ?? '',
       city: r.doctor?.city ?? '',
       fees: r.doctor?.fees ?? 0,
@@ -857,6 +900,8 @@ export interface BookAgainDoctor {
   id: string
   name: string
   photo: string | null
+  /** Honesty flag (H1 pipeline): true = curated face. */
+  photoRepresentative: boolean
   specialization: string
   city: string
   state: string
@@ -883,7 +928,7 @@ export async function getBookAgain(): Promise<BookAgainDoctor[]> {
   return raw.doctors.map((d) => ({
     id: d.id,
     name: d.name,
-    photo: d.profileImg && /^https?:\/\//.test(d.profileImg) ? d.profileImg : null,
+    ...resolvePhoto({ id: d.id, name: d.name, profileImg: d.profileImg }),
     specialization: d.doctor?.specialization ?? '',
     city: d.doctor?.city ?? '',
     state: d.doctor?.state ?? '',

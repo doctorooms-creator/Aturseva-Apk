@@ -122,7 +122,7 @@ export default function MedicalHistoryScreen() {
   // body text with the hairline fill (5.24:1 light / 7.6:1 dark).
   const tonePair = (tone: Tone) =>
     tone === 'live'
-      ? { bg: c.tealLiveSoft, fg: c.tealLive }
+      ? { bg: c.aquaSoft, fg: c.tealText }
       : tone === 'done'
         ? { bg: c.successSoft, fg: c.success }
         : tone === 'warn'

@@ -55,7 +55,7 @@ const STATUS: Record<string, { label: string; tone: 'live' | 'done' | 'warn' | '
  * body text with the hairline fill (5.24:1 light / 7.6:1 dark).
  */
 function tonePair(tone: 'live' | 'done' | 'warn' | 'mute', c: ReturnType<typeof useColors>) {
-  if (tone === 'live') return { bg: c.tealLiveSoft, fg: c.tealLive }
+  if (tone === 'live') return { bg: c.aquaSoft, fg: c.tealText }
   if (tone === 'done') return { bg: c.successSoft, fg: c.success }
   if (tone === 'warn') return { bg: c.warnSoft, fg: c.warn }
   return { bg: c.hairline, fg: c.body }

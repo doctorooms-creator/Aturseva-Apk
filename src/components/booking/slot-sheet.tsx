@@ -118,7 +118,7 @@ function SlotChip({
           styles.slotChipText,
           { color: c.ink },
           !free && { textDecorationLine: 'line-through', color: c.mute },
-          selected && { color: c.tealLive, fontWeight: '600' },
+          selected && { color: c.tealText, fontWeight: '600' },
         ]}
       >
         {time}
@@ -382,7 +382,7 @@ export function SlotSheet({
         <View style={styles.feeLine}>
           <Text style={[styles.feeText, { color: c.ink }]}>₹{doctor.fees.toLocaleString('en-IN')} · pay at the clinic</Text>
           {selectedTime ? (
-            <Text style={[styles.feeTime, { color: c.tealLive }]}>
+            <Text style={[styles.feeTime, { color: c.tealText }]}>
               {selectedDate === ymd(today) ? 'Today' : shortDate(selectedDate)} · {selectedTime}
             </Text>
           ) : (

@@ -270,7 +270,7 @@ function StatusBadge({ label, tone }: { label: string; tone: 'live' | 'done' | '
   const c = useColors()
   const toneStyle =
     tone === 'live'
-      ? { bg: c.tealLiveSoft, fg: c.tealLive }
+      ? { bg: c.aquaSoft, fg: c.tealText }
       : tone === 'done'
         ? { bg: c.successSoft, fg: c.success }
         : tone === 'warn'

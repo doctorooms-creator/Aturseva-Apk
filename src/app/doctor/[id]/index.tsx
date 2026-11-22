@@ -126,15 +126,19 @@ export default function DoctorProfileScreen() {
                   <Image
                     source={{ uri: d.photo }}
                     style={[styles.photo, { backgroundColor: c.canvasSoft }]}
-                    accessibilityLabel={`${d.name} photo`}
+                    accessibilityLabel={
+                      d.photoRepresentative
+                        ? `${d.name} — representative photo`
+                        : `${d.name} photo`
+                    }
                   />
                 ) : (
                   <Avatar name={d.name} size={72} />
                 )}
                 {d.registration ? (
-                  <View style={[styles.regChip, { backgroundColor: c.tealLiveSoft }]}>
+                  <View style={[styles.regChip, { backgroundColor: c.aquaSoft }]}>
                     <BadgeCheck size={13} color={c.tealLive} strokeWidth={2.2} />
-                    <Text style={[styles.regChipText, { color: c.tealLive }]} numberOfLines={1}>
+                    <Text style={[styles.regChipText, { color: c.tealText }]} numberOfLines={1}>
                       Reg. {d.registration}
                     </Text>
                   </View>
