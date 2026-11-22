@@ -1,0 +1,41 @@
+{
+  "spec": {
+    "id": "p03",
+    "file": "p03-rajesh-dark-full.png",
+    "context": "Screen: same zero-optional-data profile in DARK mode. Contract: identity, fee, clinic hours, quiet stats, similar doctors (real rows), share, sticky CTA — nothing else. Judge: dark greys legible, cards separable from canvas, fee block strong, similar rows readable, no murk, no orphan gaps."
+  },
+  "verdict": {
+    "overall": "FAIL",
+    "defects": [
+      {
+        "what": "\"Similar doctors\" section heading is occluded/cut off by the sticky CTA — the bottom half of the text is visibly clipped where the sticky bar overlaps it",
+        "severity": "blocking",
+        "where": "Bottom of screen, heading immediately above the sticky 'Book appointment — ₹300' bar"
+      },
+      {
+        "what": "No scroll padding for the sticky CTA: the last section collides with the sticky bar instead of reserving clearance, creating the murk/overlap the dark-mode contract forbids",
+        "severity": "blocking",
+        "where": "Sticky CTA zone / bottom of scroll"
+      }
+    ],
+    "measured_notes": [
+      "Identity block: avatar ~60px circle with 'R' fallback, name 'Rajesh' large (~20-22px bold), subtitle and meta in grey — reads first, hierarchy correct",
+      "Fee block: dark card (#242422-ish on #1A1A19 canvas), '₹300' ~32px bold white with 'first visit' label and grey reassurance line — fee is the strongest element after name, contract satisfied",
+      "Clinic hours: 7 rows in a dark card, day names white/left, times right-aligned, 'Sunday — Closed' in dimmer grey; row height ~32px but rows are not interactive, so 44px target rule not violated",
+      "Grey meta text ('2 yrs · MD · Gandhinagar, Gujarat', 'Pay at the clinic — no advance payment.', '17 visits · 4 patients on Aturseva') estimated ~#8A8A8A on #1A1A19 → roughly 5.5-6.5:1, passes AA; 'Closed'/'Sunday' grey estimated ~4.5-5:1, marginal but likely passing",
+      "Cards (#242422 vs #1A1A19 canvas) are separable but low-contrast; hairline borders appear absent on dark cards — separable enough to read, logged as cosmetic",
+      "Practices at: two real rows (Rajesh Clinic / CIIMS Hospital) with right-aligned city, no truncation observed",
+      "Screen gutters ~16px consistent, card radius consistent (~12-14px), 12px internal gaps held in hours list",
+      "Zero-optional-data contract respected: no ratings card, awards, services, surgeries, health tips, or fabricated stats — only identity, fee, hours, quiet stats, practices, similar doctors, share omitted, share row not visible in frame",
+      "Sticky CTA ~56px tall, full-width minus 16px gutters, 'Book appointment — ₹300' — exceeds 44px target"
+    ],
+    "non_blocking_notes": [
+      "'Back' pill and 'Doctor' title share the top row; 'Doctor' title is lowercase-importance compared to page identity — acceptable",
+      "No teal accent visible anywhere on this surface; nothing is live/selected, so absence is arguably correct, but a live-state indicator on hours (e.g., today) would strengthen hierarchy",
+      "Quiet stats line '17 visits · 4 patients on Aturseva' sits loose between cards with no card grouping — fine, matches 'quiet stats' law",
+      "Dark card fill is very close to canvas; a 1px #2E2E2C hairline would improve card separation without breaking restraint",
+      "Sunday row grey-on-dark is the dimmest text on screen; verify it holds 4.5:1 with a contrast pass"
+    ],
+    "one_line": "Dark-mode profile honors the zero-data contract and reads cleanly, but the 'Similar doctors' section is physically clipped under the sticky CTA — reserve clearance and it passes."
+  }
+}

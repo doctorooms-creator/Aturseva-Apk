@@ -9,6 +9,20 @@
  * average law, mirrored client-side). Rows are LABELED (VLM law:
  * never a bare number).
  *
+ * B15 · CONTENT DEPTH ZONES (the six served-but-dropped contract
+ * fields, now rendered — every zone hide-if-empty ABSOLUTE):
+ * StarDistributionRows: 1–5★ histogram, only when ≥2 distinct stars
+ * have real counts (a single-star histogram just echoes the summary
+ * line — redundant noise, suppressed).
+ * ReviewRows: the latest patient reviews — star row, text (server caps
+ * 240 chars, rendered in full), name honoring the patient's anonymity
+ * choice, date. Rendered inside the ratings card.
+ * ServicesZone: the doctor's curated services as quiet tags.
+ * ProceduresZone: curated surgeries/procedures — name + note + where.
+ * AwardsZone: parsed awards (adapter mirrors the website's semantics).
+ * RelatedDoctorsZone: same-specialization doctors — cross-navigation
+ * to another profile (44px rows, fee right-aligned tabular).
+ *
  * DoctorPostsZone: the doctor's published posts — hide-if-empty
  * ABSOLUTE (no posts / fetch error = not even a heading renders).
  * Row = cover thumb (honesty-gated http(s) or none) + title +
@@ -22,14 +36,15 @@
  */
 
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { ChevronRight } from 'lucide-react-native'
+import { Award, ChevronRight, Star } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
-import { getBlogPost, type DoctorPost, type DoctorRatingTexture } from '@/lib/api'
+import { getBlogPost, type DoctorPost, type DoctorRatingTexture, type RelatedDoctor, type DoctorProcedure, type DoctorReview } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { Chip } from '@/components/press'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { SkeletonBlock } from '@/components/skeleton'
+import { Avatar } from '@/components/avatar'
 
 // ————— Ratings sub-texture —————
 
@@ -57,6 +72,198 @@ export function RatingTextureRows({ texture }: { texture: DoctorRatingTexture })
       <Text style={[styles.textureCaption, { color: c.mute }]}>
         Rated by {texture.ratedCount} {texture.ratedCount === 1 ? 'patient' : 'patients'} after their visits
       </Text>
+    </View>
+  )
+}
+
+// ————— B15 · Star histogram —————
+
+/** Only ≥2 distinct nonzero stars render — a single-star histogram
+ * echoes the summary line ("4.0 · 1 review") and would be noise. */
+export function StarDistributionRows({ dist }: { dist: { star: number; count: number }[] }) {
+  const c = useColors()
+  if (dist.length < 2) return null
+  return (
+    <View style={styles.textureCol}>
+      <View style={[styles.textureDivider, { backgroundColor: c.hairline }]} />
+      {dist.map((row) => (
+        <View key={row.star} style={styles.textureRow}>
+          <Text style={[styles.textureLabel, { color: c.body }]}>{row.star}★</Text>
+          <Text style={[styles.textureScore, { color: c.ink }]}>
+            {row.count} {row.count === 1 ? 'rating' : 'ratings'}
+          </Text>
+        </View>
+      ))}
+    </View>
+  )
+}
+
+// ————— B15 · Patient reviews —————
+
+function StarRow({ star }: { star: number }) {
+  const c = useColors()
+  return (
+    <View style={styles.starRow} accessibilityLabel={`${star} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Star
+          key={i}
+          size={13}
+          color={i <= star ? c.ink : c.mute}
+          fill={i <= star ? c.ink : 'transparent'}
+          strokeWidth={2}
+        />
+      ))}
+    </View>
+  )
+}
+
+function reviewMeta(r: DoctorReview): string {
+  const date = r.createdAt
+    ? new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    : ''
+  return [r.patientName, date].filter(Boolean).join(' · ')
+}
+
+export function ReviewRows({ reviews }: { reviews: DoctorReview[] }) {
+  const c = useColors()
+  if (reviews.length === 0) return null
+  return (
+    <View style={styles.reviewCol}>
+      <View style={[styles.textureDivider, { backgroundColor: c.hairline }]} />
+      {reviews.map((r) => (
+        <View
+          key={r.id}
+          style={styles.reviewRow}
+          accessibilityLabel={`Review by ${r.isAnonymous ? 'an anonymous patient' : r.patientName}: ${r.star} out of 5`}
+        >
+          <StarRow star={r.star} />
+          {r.review ? <Text style={[styles.reviewText, { color: c.body }]}>{r.review}</Text> : null}
+          <Text style={[styles.reviewMeta, { color: c.mute }]} numberOfLines={1}>
+            {reviewMeta(r)}
+          </Text>
+        </View>
+      ))}
+    </View>
+  )
+}
+
+// ————— B15 · Curated services —————
+
+export function ServicesZone({ services }: { services: string[] }) {
+  const c = useColors()
+  if (services.length === 0) return null
+  return (
+    <View>
+      <Text style={[styles.zoneTitle, { color: c.ink }]}>Services</Text>
+      <View style={styles.tagsWrap}>
+        {services.map((s) => (
+          <View key={s} style={[styles.tag, { backgroundColor: c.canvasSoft }]}>
+            <Text style={[styles.tagText, { color: c.body }]} numberOfLines={1}>
+              {s}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  )
+}
+
+// ————— B15 · Surgeries & procedures —————
+
+export function ProceduresZone({ procedures }: { procedures: DoctorProcedure[] }) {
+  const c = useColors()
+  if (procedures.length === 0) return null
+  return (
+    <View>
+      <Text style={[styles.zoneTitle, { color: c.ink }]}>Surgeries & procedures</Text>
+      <View style={[styles.postsCard, { borderColor: c.hairline }]}>
+        {procedures.map((p, i) => (
+          <View
+            key={`${p.name}-${i}`}
+            style={[styles.procedureRow, i < procedures.length - 1 ? { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.hairline } : null]}
+          >
+            <View style={styles.procedureCol}>
+              <Text style={[styles.procedureName, { color: c.ink }]} numberOfLines={2}>
+                {p.name}
+              </Text>
+              {[p.note, p.at ? `at ${p.at}` : ''].filter(Boolean).length > 0 ? (
+                <Text style={[styles.procedureMeta, { color: c.mute }]} numberOfLines={2}>
+                  {[p.note, p.at ? `at ${p.at}` : ''].filter(Boolean).join(' · ')}
+                </Text>
+              ) : null}
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  )
+}
+
+// ————— B15 · Awards & recognition —————
+
+export function AwardsZone({ awards }: { awards: string[] }) {
+  const c = useColors()
+  if (awards.length === 0) return null
+  return (
+    <View>
+      <Text style={[styles.zoneTitle, { color: c.ink }]}>Awards & recognition</Text>
+      <View style={[styles.postsCard, { borderColor: c.hairline }]}>
+        {awards.map((a, i) => (
+          <View key={`${a.slice(0, 40)}-${i}`} style={styles.awardRow}>
+            <Award size={16} color={c.ink} strokeWidth={2} />
+            <Text style={[styles.awardText, { color: c.body }]}>{a}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  )
+}
+
+// ————— B15 · Similar doctors —————
+
+export function RelatedDoctorsZone({
+  doctors,
+  onOpen,
+}: {
+  doctors: RelatedDoctor[]
+  onOpen: (id: string) => void
+}) {
+  const c = useColors()
+  if (doctors.length === 0) return null
+  return (
+    <View>
+      <Text style={[styles.zoneTitle, { color: c.ink }]}>Similar doctors</Text>
+      <View style={[styles.postsCard, { borderColor: c.hairline }]}>
+        {doctors.map((d) => (
+          <Pressable
+            key={d.id}
+            onPress={() => onOpen(d.id)}
+            accessibilityRole="button"
+            accessibilityLabel={`View ${d.name}, ${d.specialization}`}
+            style={({ pressed }) => [styles.relatedRow, pressed && { opacity: 0.85 }]}
+          >
+            {d.photo ? (
+              <Image
+                source={{ uri: d.photo }}
+                style={[styles.relatedPhoto, { backgroundColor: c.canvasSoft }]}
+                accessibilityLabel={`${d.name} photo`}
+              />
+            ) : (
+              <Avatar name={d.name} size={44} />
+            )}
+            <View style={styles.relatedCol}>
+              <Text style={[styles.relatedName, { color: c.ink }]} numberOfLines={1}>
+                {d.name}
+              </Text>
+              <Text style={[styles.relatedMeta, { color: c.mute }]} numberOfLines={1}>
+                {[d.specialization, d.city].filter(Boolean).join(' · ')}
+              </Text>
+            </View>
+            <Text style={[styles.relatedFee, { color: c.ink }]}>₹{d.fees.toLocaleString('en-IN')}</Text>
+            <ChevronRight size={18} color={c.mute} strokeWidth={2} />
+          </Pressable>
+        ))}
+      </View>
     </View>
   )
 }
@@ -205,6 +412,92 @@ const styles = StyleSheet.create({
   },
   textureCaption: {
     ...typo.caption,
+  },
+  starRow: {
+    flexDirection: 'row',
+    gap: 2,
+  },
+  reviewCol: {
+    marginTop: space.s8,
+    gap: space.s12,
+  },
+  reviewRow: {
+    gap: 4,
+  },
+  reviewText: {
+    ...typo.body,
+  },
+  reviewMeta: {
+    ...typo.caption,
+  },
+  tagsWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: space.s8,
+    marginHorizontal: space.s16,
+  },
+  tag: {
+    borderRadius: radius.pill,
+    paddingHorizontal: space.s12,
+    paddingVertical: 6,
+    alignSelf: 'flex-start',
+    maxWidth: '100%',
+  },
+  tagText: {
+    ...typo.caption,
+  },
+  procedureRow: {
+    padding: space.s8,
+    paddingVertical: space.s12,
+  },
+  procedureCol: {
+    gap: 3,
+  },
+  procedureName: {
+    ...typo.body,
+    fontWeight: '600',
+  },
+  procedureMeta: {
+    ...typo.caption,
+  },
+  awardRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: space.s8,
+    padding: space.s8,
+    paddingVertical: space.s12,
+  },
+  awardText: {
+    ...typo.body,
+    flex: 1,
+  },
+  relatedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.s12,
+    padding: space.s8,
+    minHeight: TOUCH,
+    borderRadius: radius.input,
+  },
+  relatedPhoto: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+  },
+  relatedCol: {
+    flex: 1,
+    gap: 3,
+  },
+  relatedName: {
+    ...typo.body,
+    fontWeight: '600',
+  },
+  relatedMeta: {
+    ...typo.caption,
+  },
+  relatedFee: {
+    ...typo.bodyStrong,
+    fontVariant: ['tabular-nums'],
   },
   zoneTitle: {
     ...typo.bodyStrong,

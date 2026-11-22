@@ -1,15 +1,19 @@
 /**
- * S5 · DOCTOR PROFILE (doc 06 S5) — APK-B2 (+B3 wiring, +B7-P2 depth).
+ * S5 · DOCTOR PROFILE (doc 06 S5) — APK-B2 (+B3 wiring, +B7-P2 depth,
+ * +B15 full-contract content depth).
  *
  * Layout: back bar → identity block (avatar/photo, name, spec, Reg
  * chip, experience, education) → FEE block (big, tabular, first-visit
  * caption — honesty through scale) → 7-day timing table → ratings
- * summary + sub-rating texture (only when real) → quiet stats →
- * practices-at → description → health tips (published posts —
- * hide-if-empty ABSOLUTE) → share row → sticky bottom CTA "Book
- * appointment — ₹300". B3: the CTA opens the S6 slot sheet (live
- * inventory); Confirm slot pushes S7 (the confirm step) — the golden
- * journey starts here.
+ * summary + sub-rating texture + star histogram + patient reviews
+ * (only when real) → quiet stats → practices-at → description →
+ * services (curated tags) → surgeries & procedures → awards → health
+ * tips (published posts) → similar doctors → share row → sticky
+ * bottom CTA "Book appointment — ₹300". B3: the CTA opens the S6
+ * slot sheet (live inventory); Confirm slot pushes S7 (the confirm
+ * step) — the golden journey starts here. B15: every new zone
+ * hide-if-empty — the profile only ever shows what this doctor
+ * actually has (90-of-90 honest: no fabricated sections).
  * Data: /api/doctors/[id] (doc 08 #2, SWR 10min via useQuery cache)
  * + B7-P2 secondary zones: /api/public/doctor/[id]/ratings (consultation/
  * wait/staff texture — the OUTPUT side of the B6 rate flow) and
@@ -32,7 +36,7 @@ import { SkeletonBlock } from '@/components/skeleton'
 import { OfflineBanner } from '@/components/offline-banner'
 import { buildShareCard, openWhatsApp } from '@/lib/share'
 import { SlotSheet } from '@/components/booking/slot-sheet'
-import { DoctorPostsZone, PostSheet, RatingTextureRows } from '@/components/doctor-depth'
+import { DoctorPostsZone, PostSheet, RatingTextureRows, RelatedDoctorsZone, ReviewRows, StarDistributionRows, AwardsZone, ProceduresZone, ServicesZone } from '@/components/doctor-depth'
 
 const WEEK_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -180,8 +184,9 @@ export default function DoctorProfileScreen() {
               })}
             </View>
 
-            {/* Ratings summary + sub-rating texture — only when real
-                (honesty law; unrated dimensions never render) */}
+            {/* Ratings summary + sub-rating texture + patient reviews
+                + star histogram — only when real (honesty law; unrated
+                dimensions never render) */}
             {d.ratingCount > 0 ? (
               <>
                 <Text style={[styles.sectionTitle, { color: c.ink }]}>Ratings</Text>
@@ -193,13 +198,17 @@ export default function DoctorProfileScreen() {
                     </Text>
                   </View>
                   {rq.data ? <RatingTextureRows texture={rq.data} /> : null}
+                  <StarDistributionRows dist={d.starDistribution} />
+                  <ReviewRows reviews={d.reviews} />
                 </View>
               </>
             ) : null}
 
-            {/* Quiet stats — real API numbers only */}
+            {/* Quiet stats — real API numbers only (B15: singular/plural
+                honored — "1 visit", never "1 visits"). */}
             <Text style={[styles.quietStat, { color: c.mute }]}>
-              {d.totalAppointments} visits · {d.totalPatients} patients on Aturseva
+              {d.totalAppointments} {d.totalAppointments === 1 ? 'visit' : 'visits'} ·{' '}
+              {d.totalPatients} {d.totalPatients === 1 ? 'patient' : 'patients'} on Aturseva
             </Text>
 
             {/* Practices-at */}
@@ -231,9 +240,19 @@ export default function DoctorProfileScreen() {
               </>
             ) : null}
 
+            {/* B15 depth zones — every one hide-if-empty ABSOLUTE (a
+                zero-data profile renders none of these headings). */}
+            <ServicesZone services={d.services} />
+            <ProceduresZone procedures={d.procedures} />
+            <AwardsZone awards={d.awards} />
+
             {/* Health tips — the doctor's published posts (hide-if-empty
                 ABSOLUTE: guest/error/empty renders NOTHING) */}
             <DoctorPostsZone posts={pq.data ?? []} onOpen={(p) => setOpenPost(p)} />
+
+            {/* Similar doctors — same specialization, cross-navigation
+                (hide-if-empty ABSOLUTE). */}
+            <RelatedDoctorsZone doctors={d.related} onOpen={(id) => void router.push(`/doctor/${id}`)} />
 
             {/* Share row — WhatsApp text card, zero login */}
             <View style={styles.shareRow}>

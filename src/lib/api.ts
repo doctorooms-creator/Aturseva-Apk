@@ -340,6 +340,39 @@ export interface PracticeHospital {
   city: string
 }
 
+/** Latest-5 patient review (the /api/doctors/[id] contract's reviews
+ *  array) — anonymity honored at the adapter ('Anonymous' when chosen).
+ *  Unnamed non-anonymous accounts fall back to 'Patient', never a
+ *  fabricated name. */
+export interface DoctorReview {
+  id: string
+  star: number
+  review: string
+  isAnonymous: boolean
+  patientName: string
+  createdAt: string | null
+}
+
+/** Doctor-curated procedure ("surgeries" zone) — name + optional note
+ *  and where-it-happens. Server already filters to real {name} rows;
+ *  the adapter re-defends. */
+export interface DoctorProcedure {
+  name: string
+  note: string
+  at: string
+}
+
+/** Same-specialization doctor (the contract's relatedDoctors) —
+ *  cross-navigation depth, photo honesty-gated http(s) only. */
+export interface RelatedDoctor {
+  id: string
+  name: string
+  photo: string | null
+  specialization: string
+  city: string
+  fees: number
+}
+
 export interface DoctorProfile {
   id: string
   name: string
@@ -349,7 +382,8 @@ export interface DoctorProfile {
   photo: string | null
   specialization: string
   education: string
-  /** Years, as stored ("12"). */
+  /** Years, normalized to the bare number ("7"; the "7 years" storage
+   *  shape collapses to "7" — 71/90 prod rows carried the suffix). */
   experience: string
   city: string
   state: string
@@ -364,6 +398,55 @@ export interface DoctorProfile {
   ratingCount: number
   totalPatients: number
   totalAppointments: number
+  /** B15 depth — the six served-but-dropped contract fields, now
+   *  adapted (all zones hide-if-empty at the screen). */
+  reviews: DoctorReview[]
+  /** Nonzero star-histogram rows only (adapter-normalized). */
+  starDistribution: { star: number; count: number }[]
+  awards: string[]
+  procedures: DoctorProcedure[]
+  related: RelatedDoctor[]
+}
+
+/** awardAndRecognition arrives as a JSON array OR newline/;/comma text —
+ *  the website's parseAwards semantics, mirrored at the adapter so the
+ *  app and the web render the same rows. */
+function parseAwards(raw: string): string[] {
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) return parsed.filter(Boolean).map(String)
+  } catch {
+    // not JSON — newline/semicolon/comma-separated (v1 shape)
+  }
+  return raw
+    .split(/[\n;,]/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
+/** experience arrives as "7", "7 years", "12 Years" — normalize to the
+ *  bare number. 71/90 prod rows carry a suffix and the profile line
+ * (which appends " yrs") rendered "7 years yrs" — a real measured-on-
+ * prod bug, fixed at the adapter (contract normalization, doc 08 §4).
+ * No digits = keep the raw text verbatim. */
+function normalizeYears(raw: string): string {
+  const t = (raw ?? '').trim()
+  if (!t) return ''
+  const n = parseInt(t.replace(/[^0-9]/g, ''), 10)
+  return Number.isFinite(n) && n > 0 ? String(n) : t
+}
+
+/** Profile-page display name — the website's displayName() semantics
+ *  mirrored at the adapter (B15 audit catch: prod stores some names bare
+ *  ("Rajesh") and some prefixed ("Dr. Pooja Iyer"), which read as
+ *  inconsistent identity + monograms; the website renders "Dr. X" on the
+ *  profile page, so the app does too — display convention, not
+ *  fabrication). */
+function displayName(raw: string): string {
+  const n = (raw ?? '').trim()
+  if (!n) return 'Doctor'
+  return /^dr\.?\s/i.test(n) ? n : `Dr. ${n}`
 }
 
 export async function getDoctor(id: string): Promise<DoctorProfile> {
@@ -382,6 +465,8 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
         description: string | null
         registrationDetail: string | null
         services: string[] | null
+        awardAndRecognition: string | null
+        procedures: { name: string; note?: string; at?: string }[] | null
       }
       schedules: {
         day: string
@@ -391,19 +476,38 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
       hospitals: { id: string; hospitalName: string; city: string }[] | null
       avgRating: number | null
       ratingCount: number | null
+      starDistribution: Record<string, number> | null
       totalPatients: number | null
       totalAppointments: number | null
+      reviews:
+        | {
+            id: string
+            star: number
+            review: string | null
+            isAnonymous: boolean
+            patientName: string | null
+            createdAt: string | null
+          }[]
+        | null
+      relatedDoctors:
+        | {
+            id: string
+            name: string
+            profileImg: string | null
+            doctor: { specialization: string | null; city: string | null; fees: number | null } | null
+          }[]
+        | null
     }
   }>(`/api/doctors/${encodeURIComponent(id)}`)
   const d = raw.doctor
   const img = d.profileImg
   return {
     id: d.id,
-    name: d.name,
+    name: displayName(d.name),
     photo: img && /^https?:\/\//.test(img) ? img : null,
     specialization: d.doctor?.specialization ?? '',
     education: d.doctor?.education ?? '',
-    experience: d.doctor?.experience ?? '',
+    experience: normalizeYears(d.doctor?.experience ?? ''),
     city: d.doctor?.city ?? '',
     state: d.doctor?.state ?? '',
     fees: d.doctor?.fees ?? 0,
@@ -416,6 +520,36 @@ export async function getDoctor(id: string): Promise<DoctorProfile> {
     ratingCount: d.ratingCount ?? 0,
     totalPatients: d.totalPatients ?? 0,
     totalAppointments: d.totalAppointments ?? 0,
+    // B15 depth — every zone hide-if-empty at the screen (honesty law):
+    // zero-count stars collapse to no histogram, no reviews, no tags,
+    // no procedure rows, no awards, no similar-doctor card.
+    reviews: (d.reviews ?? []).map((r) => ({
+      id: r.id,
+      star: r.star,
+      review: (r.review ?? '').trim(),
+      isAnonymous: r.isAnonymous,
+      patientName: r.isAnonymous ? 'Anonymous' : r.patientName?.trim() || 'Patient',
+      createdAt: r.createdAt,
+    })),
+    starDistribution: [1, 2, 3, 4, 5]
+      .map((star) => ({ star, count: d.starDistribution?.[String(star)] ?? 0 }))
+      .filter((row) => row.count > 0),
+    awards: parseAwards(d.doctor?.awardAndRecognition ?? ''),
+    procedures: (d.doctor?.procedures ?? [])
+      .map((p) => ({
+        name: (p.name ?? '').trim(),
+        note: (p.note ?? '').trim(),
+        at: (p.at ?? '').trim(),
+      }))
+      .filter((p) => p.name.length > 0),
+    related: (d.relatedDoctors ?? []).map((r) => ({
+      id: r.id,
+      name: displayName(r.name),
+      photo: r.profileImg && /^https?:\/\//.test(r.profileImg) ? r.profileImg : null,
+      specialization: r.doctor?.specialization ?? '',
+      city: r.doctor?.city ?? '',
+      fees: r.doctor?.fees ?? 0,
+    })),
   }
 }
 

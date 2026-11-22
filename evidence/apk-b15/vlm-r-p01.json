@@ -1,0 +1,37 @@
+{
+  "spec": {
+    "id": "r-p01",
+    "files": [
+      "r01-varun-light-1-top.png",
+      "r01-varun-light-2-mid.png",
+      "r01-varun-light-3-bottom.png"
+    ],
+    "context": "RETAKE of the light-mode doctor profile (Dr. Varun Malik, Pediatrician) — THREE frames scroll the ENTIRE page top→middle→bottom; judge the page as the UNION of the three. Page anatomy: identity (\"7 yrs · MBBS, DCH, MD (Pediatrics) · Ahmedabad, Gujarat\"), fee block \"₹350 first visit\" on tinted card + \"Pay at the clinic\" note, Clinic hours 7-day table, Ratings card (\"4.0 · 1 review\" + one review: 4-of-5 filled stars, text \"QA updated\", meta \"QA Mobile Patient · 18 Oct 2026\"), quiet stats, Practices at (Shalby Hospital, CIIMS Hospital), NO services/procedures/awards/posts headings (this doctor has none — hiding empty sections is the honesty law), Similar doctors (three rows: Dr. Pooja Iyer / Dr. Rajiv Nair / Dr. Neha Khanna, each \"Pediatrics · Ahmedabad\" + the fee of EACH listed doctor (₹400/₹350/₹450) right-aligned + chevron — these are the visit fees of OTHER doctors, deliberately shown for comparison, NOT a mismatch with the ₹350 of this profile), Share on WhatsApp, sticky \"Book appointment — ₹350\". Judge the union: review rhythm, similar rows, truncation anywhere (education line, hospital names, review text, similar meta), grey contrast, fee-echo consistency (₹350 everywhere for THIS doctor), calm rhythm."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Fee echo consistent: ₹350 appears in fee card, sticky CTA, and similar-doctor row for Dr. Rajiv Nair (₹350) — no mismatch for THIS doctor.",
+      "Honesty law honored: no services/procedures/awards/posts sections anywhere in the union; only populated sections render.",
+      "7-day clinic hours table complete (Mon–Sun), no truncation; closed days greyed, open days dark with full '10:00 – 13:00' ranges visible.",
+      "Review card: 4 of 5 stars filled (matches 4.0), review text 'QA updated' and meta 'QA Mobile Patient · 18 Oct 2026' fully visible, no ellipsis.",
+      "Similar doctors: three rows with full names, 'Pediatrics · Ahmedabad' meta untruncated, fees ₹400/₹350/₹450 right-aligned with chevrons.",
+      "Sticky CTA spans full width minus gutters, appears ~56–60px tall — comfortably ≥44px touch target.",
+      "Screen gutters look consistent ~16px on left/right across all three frames; internal card padding ~12–16px.",
+      "Grey meta text (e.g. 'Pediatrics', 'Ahmedabad', 'QA Mobile Patient · 18 Oct 2026') estimated mid-grey ~#6B6B6B on white/#F4F4F2 — roughly 4.6–5:1, passes AA.",
+      "'1 visits · 0 patients on Aturseva' stats line present, quiet grey, small but legible; grammatical nit only.",
+      "Identity line '7 yrs · MBBS, DCH, MD (Pediatrics) · Ahmedabad, Gujarat' wraps cleanly across two lines, no clipping.",
+      "Hierarchy reads correctly: '₹350' is the largest element on screen (~34–38px), name next, then section headers.",
+      "No teal accent visible; page is grey-scale + black CTA — consistent with restraint law (no live/selected state present)."
+    ],
+    "non_blocking_notes": [
+      "'1 visits' should read '1 visit' (pluralization nit in quiet stats).",
+      "Frame 2 top shows the tinted fee card cut mid-sentence ('Pay at the clinic — no advance payment.') — expected scroll seam, not a defect.",
+      "Black sticky CTA rather than teal accent — the accent law allows teal for live/selected; the black CTA is consistent with the grey-scale system but worth confirming CTA color is intentional.",
+      "Share on WhatsApp row is a light grey pill (~52px tall) — target size OK; icon-less text-only share row is slightly plain but on-system.",
+      "Avatar initials DV/DN in similar rows use the same tinted circle style — rhythm is calm and consistent."
+    ],
+    "one_line": "A disciplined, honest long-scroll profile: fee echo is consistent, empty sections are correctly hidden, no truncation or contrast failures sighted — pass, with only cosmetic pluralization and CTA-color notes."
+  }
+}

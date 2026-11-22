@@ -1,0 +1,44 @@
+{
+  "spec": {
+    "id": "r-p04",
+    "files": [
+      "r04-rajesh-light-1-top.png",
+      "r04-rajesh-light-2-bottom.png"
+    ],
+    "context": "RETAKE of the same zero-data profile in LIGHT mode — top + fully-scrolled-bottom frames. Judge the union: honest-empty calm (no orphan headings, no phantom gaps), similar doctors rows readable with fees, share row, sticky \"Book appointment — ₹300\", education line \"2 yrs · MD · Gandhinagar, Gujarat\" untruncated, grey captions AA on white."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [
+      {
+        "what": "Back chevron button appears smaller than 44px square (approx 56x36 pill; vertical height under 44px)",
+        "severity": "minor",
+        "where": "Top frame, top-left 'Back' control"
+      },
+      {
+        "what": "Sticky CTA is near-black (#1A1A19) on white canvas — reads as the strongest element, acceptable as CTA, but teal accent law has no live/selected usage anywhere; not a violation, just noting no accent present",
+        "severity": "minor",
+        "where": "Whole page"
+      }
+    ],
+    "measured_notes": [
+      "Education line '2 yrs · MD · Gandhinagar, Gujarat' fully rendered, no ellipsis",
+      "Fee '₹300' is largest text on screen (~36-40px) after name; hierarchy law (3) satisfied on surface 1",
+      "7-day clinic hours rendered; Sunday shown greyed 'Closed' — estimated grey ~#6b6b6b on white, ~4.9:1, passes AA",
+      "Stats line '17 visits · 4 patients on Aturseva' is quiet grey caption, AA-compliant grey on white (~4.5:1+)",
+      "Similar doctors rows show readable fees (₹500/₹400/₹400) with chevrons; row height ~64-72px, touch targets >= 44px",
+      "Empty profile renders no orphan headings: no ratings card, services, surgeries, awards, health tips, or About section present — hide-if-empty honored",
+      "Screen gutters approx 16px consistent; card radius consistent (~12px) across fee card, hours card, practices card, similar-doctors card",
+      "Sticky CTA 'Book appointment — ₹300' matches fee ₹300 exactly — honest",
+      "Share row 'Share on WhatsApp' present, approx 44-48px tall",
+      "No truncation/ellipsis seen on any patient-decision content: names, localities, fees, hours all fully rendered"
+    ],
+    "non_blocking_notes": [
+      "Avatar initials 'R' use grey letterform; fine on quiet canvas",
+      "'Similar doctors' heading overlaps the sticky CTA in the top frame — expected mid-scroll artifact of frame stitching, not a layout defect",
+      "Back button pill width could grow slightly for a more comfortable target",
+      "Duplicate initials 'DP' for two different doctors (Prod Final, Pack Test) — cosmetic, correct initials logic but repetitive"
+    ],
+    "one_line": "An honest, calm zero-data profile: fee-first hierarchy, complete untruncated hours and education, real fees on similar-doctor rows, hide-if-empty fully honored — only a sub-44px Back button and a missing accent state keep it from flawless."
+  }
+}

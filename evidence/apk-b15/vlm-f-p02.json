@@ -1,0 +1,29 @@
+{
+  "spec": {
+    "id": "f-p02",
+    "files": [
+      "r06-fixed-varun-dark-bottom.png"
+    ],
+    "context": "FINAL-BUNDLE retake (dark, FULLY-SCROLLED bottom of the same profile). Verify: the page end is clean — Similar doctors rows (initials avatars, \"Pediatrics · Ahmedabad\" meta, fees ₹400/₹350/₹450, chevrons) fully visible ABOVE the sticky \"Book appointment — ₹350\" bar, Share on WhatsApp row visible, no content clipped under the CTA, dark greys readable. Judge as the page-ending rhythm shot."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Similar doctors rows fully visible: initials avatars (DP/DR/DN) in dark grey circles ~48px, names Dr. Pooja Iyer / Dr. Rajiv Nair / Dr. Neha Khanna, meta 'Pediatrics · Ahmedabad' all untruncated, fees ₹400/₹350/₹450 right-aligned with chevrons — no clipping above CTA",
+      "Fees in light grey on near-black estimate ~5.5–6:1 contrast; row meta grey ~4.5–5:1 — AA-compliant estimates",
+      "Share on WhatsApp row: full-width, ~56px tall, above the CTA bar — target exceeds 44px",
+      "Sticky 'Book appointment — ₹350' CTA ~56px tall, dark-on-white pill, clear largest element; no content visibly clipped underneath it (clear whitespace gap above CTA)",
+      "Ratings card: 4.0 · 1 review, 4 filled + 1 empty star, review text 'QA updated' with 'QA Mobile Patient · 18 Oct 2026' — all readable, no ellipsis",
+      "Quiet stat line '1 visit · 0 patients on Aturseva' present; Practices at lists Shalby Hospital / CIIMS Hospital with 'Ahmedabad' right-aligned",
+      "12px internal gaps and 16px gutters appear consistent; card radius uniform across ratings, practices, and similar-doctors cards"
+    ],
+    "non_blocking_notes": [
+      "Review body text 'QA updated' reads like a stub/test string — verify it is genuine patient-entered data, not placeholder leakage (honesty law, content unverifiable from image alone)",
+      "Only 1 review shown while ratings card carries a full 5-star strip — visually fine but sparse; acceptable since hide-if-empty is respected",
+      "Top edge shows 'Sunday — Closed' partially cropped by the viewport, which is expected scroll-position cropping, not layout clipping",
+      "Chevrons on similar-doctor rows are thin grey; row itself is likely the touch target so this is cosmetic"
+    ],
+    "one_line": "Clean page-ending rhythm: similar doctors, share row and sticky ₹350 CTA all fully visible and legible on dark greys — no blocking defects."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "spec": {
+    "id": "r-p03",
+    "files": [
+      "r03-rajesh-dark-1-top.png",
+      "r03-rajesh-dark-2-bottom.png"
+    ],
+    "context": "RETAKE of the zero-optional-data profile (Dr. Rajesh, General Physician) in DARK mode — top + FULLY-SCROLLED-bottom frames (the bottom frame proves the page end: similar doctors rows + Share row fully visible ABOVE the sticky CTA — measured 48px clearance; the earlier \"clipped under sticky CTA\" was the capture fold, not the app). Judge the union: identity, fee ₹300, clinic hours, quiet stats, honest ABSENCE of ratings/services/awards headings (no data — the law), \"Similar doctors\" with real rows (other General Physicians), Share, sticky CTA. Any phantom whitespace where hidden sections sat? Rhythm intact to the end?"
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [
+      {
+        "what": "'first visit' caption and 'Pay at the clinic — no advance payment.' line on the fee card render in a mid-grey on the dark elevated card; measured contrast estimates ~4.0–4.3:1, marginally under AA 4.5:1",
+        "severity": "minor",
+        "where": "Fee card (₹300), top frame"
+      }
+    ],
+    "measured_notes": [
+      "Fee hierarchy correct: '₹300' renders ~40px+ headline scale, reads first on the surface; 'first visit' sits as small secondary label",
+      "Clinic hours list: 7 rows, all full days present, Sunday shown as 'Closed' in dimmer grey — semantic state via grey, no fabricated status color; row heights approx 40–44px with text fully untruncated",
+      "Honest absence confirmed: no ratings card, no services tags, no surgeries, no awards, no health tips headings anywhere in the union of frames — no phantom gaps where they were removed; spacing between 'Practices at' card and 'Similar doctors' (~24–28px) matches section rhythm",
+      "Stats line '17 visits · 4 patients on Aturseva' present as quiet single line under clinic hours, small grey, no chips or color",
+      "'Similar doctors' contains 3 real-looking rows (Dr. Ref One ₹500, Dr. Prod Final ₹400, Dr. Pack Test ₹400) with name, specialty, city, fee, chevron — no ellipsis sighted on any row text",
+      "Bottom frame shows page end correctly: Similar doctors card, 'Share on WhatsApp' full-width button, then sticky 'Book appointment — ₹300' CTA with visible clearance (~48px) — no clipping; earlier capture-fold issue not reproducible in union",
+      "Sticky CTA pill approx 48–56px tall, full width with 16px gutters — meets 44px minimum; 'Back' pill also approx 44px tall",
+      "Screen gutters consistently ~16px left/right; internal card padding ~16px; card radius consistent (~16px) across fee, hours, practices, similar doctors cards",
+      "Grey scale discipline holds: no stray teal or status colors in dark mode; CTA is the only light/primary surface"
+    ],
+    "non_blocking_notes": [
+      "'Back' label and 'Doctor' title sit side by side with the avatar-title block directly below — header hierarchy is slightly loose but readable",
+      "Avatar initials 'R' differ from the 'DR'/'DP' monograms used in similar-doctor rows — minor inconsistency in monogram convention",
+      "Sunday 'Closed' grey is dimmer than body text; visually correct intent, worth confirming it clears 4.5:1 at its exact token",
+      "Doctor name 'Rajesh' lacks an honorific ('Dr.') while similar-doctor rows use 'Dr.' prefix — inconsistent identity formatting",
+      "No 'About' section visible; acceptable under hide-if-empty if the doctor truly has no bio, but worth verifying against source data"
+    ],
+    "one_line": "Dark-mode retake honors the design laws end-to-end — honest absences, intact rhythm to the sticky CTA, no truncation or clipping — with only the fee-card secondary grey marginally under AA contrast."
+  }
+}

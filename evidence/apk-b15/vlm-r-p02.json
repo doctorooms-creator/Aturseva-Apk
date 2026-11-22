@@ -1,0 +1,33 @@
+{
+  "spec": {
+    "id": "r-p02",
+    "files": [
+      "r02-varun-dark-1-top.png",
+      "r02-varun-dark-2-mid.png",
+      "r02-varun-dark-3-bottom.png"
+    ],
+    "context": "RETAKE of the same dark-mode profile — three scrolled frames, judge the union. Canvas #0C0C0C, cards #1A1A19, ink #F5F5F5, greys #B8B8B8 (body) / #8C8C8C (captions, 5.7:1). Judge: greys readable on dark cards, star glyphs and dividers visible, fee block strong, practices-at + similar rows + share readable, fee ₹350 consistent with CTA, no murk."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Canvas ~#0C0C0C with #1A1A19 cards; body greys estimated ~#B8B8B8 on #1A1A19 ≈ 8:1, captions ~#8C8C8C ≈ 5.7:1 — both clear AA",
+      "Closed day rows and times render in grey vs. ink for open days (Thursday–Saturday in #F5F5F5) — visible differentiation, not murk",
+      "Fee block '₹350 first visit' is the largest element on frame 1 (~34–38px numeral) and matches the sticky CTA 'Book appointment — ₹350' across all three frames — hierarchy law and consistency hold",
+      "Star row (4 filled + 1 outline) in ratings card is legible at roughly 18–20px glyphs; divider hairline under '4.0 · 1 review' visible",
+      "Practices at rows (Shalby Hospital / CIIMS Hospital, Ahmedabad right-aligned) fully readable, no truncation",
+      "Similar doctors rows ~56–60px tall with 44px+ avatar circles and chevrons — targets look compliant",
+      "Share on WhatsApp button spans full width, height estimated ~52–56px — above 44px",
+      "Left gutters consistent ~16px across all frames; card radius consistent (~12–14px) on fee, hours, ratings, practices, similar, share",
+      "No ellipsis/truncation seen on any decision-critical text"
+    ],
+    "non_blocking_notes": [
+      "'1 visits · 0 patients on Aturseva' — grammar: should be '1 visit'; also '0 patients' is honest-but-odd quiet-stat phrasing worth review",
+      "'QA updated' as a review title and reviewer 'QA Mobile Patient · 18 Oct 2026' reads like test data shipped to a patient-facing surface — flag for content honesty, though it is plausibly real review data",
+      "Optional zones (services, surgeries, awards, health tips) and About are absent — permissible under hide-if-empty, but confirm the doctor truly has no About copy before shipping",
+      "Back pill and 'Doctor' title sit slightly tight vertically at top of frame 1; cosmetic"
+    ],
+    "one_line": "Dark-mode retake passes: readable greys, strong fee hierarchy, consistent ₹350, honest hide-if-empty sections, compliant targets — only grammar/test-data nits remain."
+  }
+}

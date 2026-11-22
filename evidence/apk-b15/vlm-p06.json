@@ -1,0 +1,28 @@
+{
+  "spec": {
+    "id": "p06",
+    "file": "p06-booking-token.png",
+    "context": "Screen: TOKEN screen after a REAL booking POST (light mode, guest flow). Contract: \"Booking #DRHSNR\" title, honest PENDING state (\"Request sent\", token being assigned messaging), one primary action (Track queue), quiet cancel door, timeline. REGRESSION shot — judge: honest pending communication (no fake token number), action hierarchy (ONE primary), timeline rhythm, contrast, any truncation."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [],
+    "measured_notes": [
+      "Honest pending state verified: 'Request sent' chip with teal dot, headline 'Token being assigned', no fabricated token number anywhere.",
+      "Action hierarchy: exactly one filled primary ('Track queue', ~52px tall), 'Share token' (~52px) secondary tinted, 'Book again with this doctor' (~52px) tertiary outlined, 'Cancel booking' (~20px text-only but appears to be a red-text quiet door — likely a ≥44px tappable row, cannot confirm height).",
+      "Timeline: 3 nodes (Booked ✓ teal, Confirmed ○, Completed ○) with connecting rules — correct rhythm for pending state.",
+      "Detail card on #F4F4F2: labels appear mid-grey (~#7x) on light tint; label grey estimated contrast ~3.5–4.2:1 — borderline, needs verification. Values read dark/black, comfortably AA.",
+      "Reason value 'Fever and body pain since two days' wraps to a second line — no truncation/ellipsis sighted anywhere on the surface.",
+      "Booking ref 'Booking #DRHSNR' matches contract; 'Back' pill and title 'Booked' present at top.",
+      "Screen gutters look consistent at ~16px both sides; internal card padding ~16px; consistent radius across cards and buttons.",
+      "Timeline step labels (~12px 'Confirmed'/'Completed') estimated ~4.0–4.5:1 on white — borderline AA for small text."
+    ],
+    "non_blocking_notes": [
+      "'Back' pill height looks slightly under 44px (~36–40px) — verify tap target has invisible 44px hit area.",
+      "Status red of 'Cancel booking' is a semantic color used outside a chip; acceptable as a destructive quiet door but worth logging against law 1.",
+      "'₹300 · pay at clinic' is a nice honest touch; ensure '·' renders consistently across devices.",
+      "Empty vertical whitespace below 'Cancel booking' is fine for scroll length but could host the timeline status auto-update timestamp."
+    ],
+    "one_line": "Honest pending confirmation with correct single-primary hierarchy and no truncation; only borderline-grey label contrast and possibly-short Back pill to verify."
+  }
+}

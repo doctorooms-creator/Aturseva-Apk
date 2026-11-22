@@ -1,0 +1,43 @@
+{
+  "spec": {
+    "id": "p01",
+    "file": "p01-varun-light-full.png",
+    "context": "Screen: DOCTOR PROFILE (light mode, full page, real prod data — Dr. Varun Malik, Pediatrician, Ahmedabad). Contract: back bar, identity block (initials avatar, name, \"Pediatrics\" spec, quiet line \"7 yrs · MBBS, DCH, MD (Pediatrics) · Ahmedabad, Gujarat\"), fee block on tinted card (\"₹400\" big tabular, \"first visit\" caption, \"Pay at the clinic — no advance payment.\" note), \"Clinic hours\" 7-day table (Thursday/Friday/Saturday 10:00–13:00 open, others Closed), \"Ratings\" card (star + \"4.0 · 1 review\", hairline divider, ONE patient review: 5-star glyph row with 4 filled, review text \"QA updated\", grey meta \"QA Mobile Patient · 18 Oct 2026\"), quiet stats, \"Practices at\" (Shalby Hospital, CIIMS Hospital rows), then (this doctor has NO services/procedures/awards/posts — those headings must NOT render; hiding empty sections is the law), \"Similar doctors\" card (three 60px rows: initials avatar, name, \"Pediatrics · Ahmedabad\" meta, fee right-aligned, chevron), share row, sticky black \"Book appointment — ₹400\" CTA bar. Judge: does the review read as a real patient voice (stars-then-text-then-meta rhythm), do similar-doctor rows read as tappable with clear fee, any truncation (esp. education line, hospital names, review text), contrast of grey meta on white, hierarchy of fee vs identity, honest absence of empty sections."
+  },
+  "verdict": {
+    "overall": "FAIL",
+    "defects": [
+      {
+        "what": "Fee shows ₹350 in both the fee card and the sticky CTA, but the contract/spec states ₹400 for this doctor. Either the spec or the rendered data is wrong — for a money figure on a medical booking surface this is a data-honesty failure, not a styling one.",
+        "severity": "blocking",
+        "where": "Fee card ('₹350 first visit') and sticky CTA ('Book appointment — ₹350')"
+      },
+      {
+        "what": "Required sections from the profile contract are missing from the long scroll: quiet stats, 'Practices at' (Shalby Hospital / CIIMS Hospital rows), 'Similar doctors' card, and the share row. Unlike services/procedures/awards/posts (correctly hidden — this doctor has none), Practices-at and similar doctors are known to exist for this doctor, so their absence is a rendering failure, not hide-if-empty.",
+        "severity": "blocking",
+        "where": "Between the Ratings card and the sticky CTA — the page jumps straight from review meta to the black CTA bar"
+      },
+      {
+        "what": "Review meta date reads '18 Oct 2026', a future date. A patient-facing timestamp in the future breaks the 'real data only' law and undermines trust in the review.",
+        "severity": "minor",
+        "where": "Ratings card, grey meta line 'QA Mobile Patient · 18 Oct 2026'"
+      }
+    ],
+    "measured_notes": [
+      "Fee card: '₹350' renders at roughly 34–38px bold tabular — it reads before the name block only mildly; hierarchy of fee vs identity is acceptable but the identity name (~22px) competes closely; fee is on the #F4F4F2 tinted card as specified.",
+      "Clinic hours table: 7 rows present, Thursday/Friday/Saturday show '10:00 – 13:00' in near-black, Mon/Tue/Wed/Sun show 'Closed' in a mid-grey on white — estimated contrast ~4.6–5:1, passes AA but with little headroom. Row spacing looks ≥44px per row.",
+      "Review rhythm is correct: black '4.0 · 1 review' summary, hairline divider, star glyph row (4 filled + 1 outline, matches 4.0), review text 'QA updated', then grey meta line. Grey meta on white estimated ~4.5:1 — borderline AA pass.",
+      "No truncation/ellipsis sighted: education line '7 yrs · MBBS, DCH, MD (Pediatrics) · Ahmedabad, Gujarat' wraps to two full lines rather than clipping; review text 'QA updated' fully visible; no truncated strings detected.",
+      "Sticky CTA is a full-width black pill, estimated height ~56–60px — comfortably above the 44px target. Back chip is a small pill (~70×36px estimated) — the 'Back' tap target looks slightly under 44px in height.",
+      "Screen gutters look consistent at ~16px left/right; internal card padding consistent; card radius appears uniform (~16px) across fee card, hours card, ratings card, and CTA pill.",
+      "Hide-if-empty law respected for services, surgeries & procedures, awards, and health tips — none of those headings render."
+    ],
+    "non_blocking_notes": [
+      "The single review text 'QA updated' is clearly QA/staging data that leaked into prod — not fabricated by the UI, but it reads as non-patient voice; worth flagging to content ops rather than gating the layout.",
+      "Teal accent is correctly absent except where live/selected states would apply; page stays white canvas + hairline borders + grey scale + black CTA — restraint law holds.",
+      "Star glyph row in the review appears slightly tighter than the 4.0 summary would suggest at a glance; purely cosmetic glyph spacing.",
+      "Identity block initials avatar 'DV' on light grey circle is quiet and consistent with the scale system."
+    ],
+    "one_line": "Layout discipline, hide-if-empty for optional zones, and review rhythm are solid, but the ₹350/₹400 fee mismatch and missing Practices-at / Similar doctors / share sections make this a data-honesty and completeness FAIL."
+  }
+}

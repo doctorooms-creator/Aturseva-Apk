@@ -1,0 +1,39 @@
+{
+  "spec": {
+    "id": "f-p01",
+    "files": [
+      "r05-fixed-varun-light-top.png"
+    ],
+    "context": "FINAL-BUNDLE retake (light, top of page). Fixes to verify: identity name now renders \"Dr. Varun Malik\" (the honorific parity fix — the website renders \"Dr. X\" on profile pages; bare names read as inconsistent next to prefixed similar-doctor rows); quiet stats now read \"1 visit · 0 patients on Aturseva\" (singular/plural grammar fix — was \"1 visits\"). Judge: name treatment, stats grammar, rest of the top frame (fee block ₹350 first visit, clinic hours) unchanged and clean."
+  },
+  "verdict": {
+    "overall": "FAIL",
+    "defects": [
+      {
+        "what": "Honesty violation: review card shows apparent QA/test data on a patient-facing surface — review title 'QA updated' by 'QA Mobile Patient · 18 Oct 2026'. This reads as internal test content, not real patient feedback.",
+        "severity": "blocking",
+        "where": "Ratings card, review row under the 4-star strip"
+      },
+      {
+        "what": "Back pill button appears under 44px tall (~36–40px estimated height).",
+        "severity": "minor",
+        "where": "Top-left header, '< Back' chip"
+      }
+    ],
+    "measured_notes": [
+      "Name fix verified: identity block renders 'Dr. Varun Malik' with the Dr. honorific, matching prefixed similar-doctor convention.",
+      "Quiet stats row ('1 visit · 0 patients on Aturseva') is NOT visible in this capture — top frame shows identity → fee → clinic hours → ratings → CTA, so the singular/plural fix cannot be verified from this screenshot.",
+      "Fee block: '₹350' renders very large (~40px+), 'first visit' secondary, 'Pay at the clinic — no advance payment.' grey on #F4F4F2 — hierarchy by scale is correct; grey-on-tint contrast estimated ~4.6–5:1, passes AA.",
+      "Clinic hours: 7 rows, Monday–Wednesday and Sunday greyed 'Closed' (~#666 on white, est. ~5.5:1, passes), Thu–Sat bold with '10:00 – 13:00' — no truncation.",
+      "Ratings: '4.0 · 1 review' bold, 4 filled stars + 1 empty star consistent with 4.0.",
+      "Sticky CTA 'Book appointment — ₹350' spans full width minus 16px gutters, ~56–60px tall, well above 44px.",
+      "16px screen gutters and consistent card radius (roughly 12–16px) appear consistent across fee, hours, and ratings cards."
+    ],
+    "non_blocking_notes": [
+      "Review row title 'QA updated' vs reviewer line uses two greys of slightly different weight — fine once real review data replaces test data.",
+      "Avatar 'DV' initial chip is quiet and on-palette; no fabricated accent colors observed.",
+      "No teal accent visible in this frame — acceptable since nothing here is live/selected."
+    ],
+    "one_line": "Name fix and layout are clean, but QA test review data ('QA updated' / 'QA Mobile Patient') leaking into the patient-facing ratings card is a blocking honesty violation, and the quiet-stats fix is unverifiable from this capture."
+  }
+}

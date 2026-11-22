@@ -1,0 +1,35 @@
+{
+  "spec": {
+    "id": "p02",
+    "file": "p02-varun-dark-full.png",
+    "context": "Screen: same DOCTOR PROFILE in DARK mode (canvas #0C0C0C, cards #1A1A19, ink #F5F5F5, greys #B8B8B8/#8C8C8C). Contract: identical anatomy — identity, fee block on dark tinted card, clinic hours table, ratings card with the one review (stars, \"QA updated\", meta), practices-at, similar doctors rows (avatars on dark), share row, sticky CTA. Judge: do ALL greys read on the dark cards (meta at least 4.5:1), star glyphs visible, dividers visible, fee block hierarchy preserved, any illegibility or murk, similar rows still readable with fees."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [
+      {
+        "what": "Ratings card header reads '4.0 · 1 review' but the meta line says 'QA updated' as the review snippet — the review body/summary text is the least legible grey on the card and is the content the patient needs to judge; it sits close to the contrast floor (~4.5–5:1 by eye).",
+        "severity": "minor",
+        "where": "Ratings card, 'QA updated' line"
+      }
+    ],
+    "measured_notes": [
+      "Fee block: '₹350' reads first at roughly 40–44px on a dark tinted card (#1A1A19 vs canvas #0C0C0C) — hierarchy by scale is preserved and the tinted card is distinguishable but subtle.",
+      "Clinic hours: days and times rendered in mid-grey (~#8C8C8C) on card #1A1A19; estimated contrast ~5:1, passes AA but with little headroom. Closed days (Mon, Tue, Wed, Sun) are greyed to roughly the same grey as labels — 'Closed' chips could be slightly dimmer, currently about the same value.",
+      "Thursday/Friday/Saturday rows are full-contrast white vs grey for closed days — a good honest active/inactive differentiation.",
+      "Ratings: 4 filled white stars + 1 outlined star; outlined star glyph is grey (~#8C8C8C) and legible but the faintest glyph on the card, roughly 4.5–5:1.",
+      "'QA Mobile Patient · 18 Oct 2026' meta line estimated ~5:1 on card — passes AA, borderline.",
+      "Sticky CTA 'Book appointment — ₹350' is a light pill with near-black text; estimated contrast well above 12:1, full-width, height looks ~52–56px, comfortably above the 44px floor.",
+      "'Back' pill and header row: Back pill height looks ~44–48px; no truncation observed on 'Dr. Varun Malik', '7 yrs · MBBS, DCH, MD (Pediatrics)', or 'Ahmedabad, Gujarat'.",
+      "Dividers between hours rows and inside the ratings card are hairline greys on dark — visible but very low contrast (~1.5–2:1); they read as separators, not content.",
+      "Screen gutters look consistent ~16px; card radius consistent (~16px) across fee block, hours, ratings, CTA."
+    ],
+    "non_blocking_notes": [
+      "Contract mentions practices-at, similar doctors rows, and share row; none are visible in this screenshot. The sticky CTA at the bottom implies the scroll continues above/below the crop, so absence cannot be judged from this image — flagging only as unverifiable, not a defect.",
+      "'QA updated' as a review title is odd copy for a patient-facing review; verify it is real data and not placeholder (honesty law) — cannot confirm from the image alone.",
+      "Closed rows could drop to a dimmer grey than open-day labels to make the open days pop harder; currently the two greys are close.",
+      "The 4.0 numeric rating with 4 filled stars + 1 outline is honest rendering (no half-star fabrication) — good."
+    ],
+    "one_line": "Dark-mode doctor profile holds the contract — fee-first hierarchy, honest hours, AA-passing greys — with only borderline-contrast review meta and unverifiable lower anatomy from the crop."
+  }
+}

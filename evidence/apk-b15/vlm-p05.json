@@ -1,0 +1,42 @@
+{
+  "spec": {
+    "id": "p05",
+    "file": "p05-book-regression-confirm.png",
+    "context": "Screen: BOOKING CONFIRM step reached FROM the profile (light mode, real flow). Contract: back bar, doctor recap, form fields (name, 10-digit mobile, required reason), ONE black \"Confirm booking · ₹300\" pill echoing the fee (fee-echo law), selected slot recap. This is a REGRESSION shot — the profile changes must not have disturbed the booking step. Judge: single clear primary, field affordance, fee echo, spacing rhythm, any truncation."
+  },
+  "verdict": {
+    "overall": "PASS",
+    "defects": [
+      {
+        "what": "Back pill in the top bar appears roughly 36-40px tall, slightly under the 44px touch-target law",
+        "severity": "minor",
+        "where": "top-left navigation bar"
+      },
+      {
+        "what": "Grey helper/caption text (e.g. 'Your token and booking updates travel to this number.') appears to sit around 3.5-4:1 contrast on the white canvas — borderline against AA for body-adjacent copy",
+        "severity": "minor",
+        "where": "under the Mobile number field"
+      },
+      {
+        "what": "Doctor recap shows only 'Rajesh' — a single name — which reads more like a truncated identity block than intentional data",
+        "severity": "minor",
+        "where": "doctor recap card, identity row"
+      }
+    ],
+    "measured_notes": [
+      "Screen gutter measures ~16px left/right consistently; field-to-label rhythm is ~12px internal gap — spacing law respected",
+      "Primary CTA 'Confirm booking · ₹300' is a black pill, full-width, ~48-52px tall — clearly the single dominant element and it echoes the fee per the fee-echo law",
+      "Fee appears three times coherently: recap row '₹300' (bold, right-aligned), tinted summary card '₹300 · pay at the clinic', and CTA echo — no contradiction between any of them",
+      "Slot recap 'Tomorrow · 09:00' and mode 'In person at the clinic' are fully visible, right-aligned, no ellipsis on any visible text",
+      "Input fields measure ~56-60px tall — comfortably above 44px touch targets; white canvas with hairline borders, no stray accent color, greyscale discipline holds",
+      "Tinted summary card background reads close to the #F4F4F2 spec; '₹300' on it is near-black and passes AA; the grey trailing copy on the tint is the weakest contrast on the surface (~4:1)"
+    ],
+    "non_blocking_notes": [
+      "Avatar monogram 'R' is the only non-greyscale-adjacent visual weight and stays quiet — acceptable",
+      "The '· pay at the clinic' and 'No advance payment' copy in the summary card is small (~12-13px); legible but could gain a size step",
+      "Reason field placeholder 'One line — e.g. fever since 2 days' is a good affordance; placeholder grey is light but placeholders are conventionally exempt",
+      "Regression check: nothing from the profile redesign leaked here — no teal, no optional zones, single black pill; the booking contract is intact"
+    ],
+    "one_line": "Regression holds — clean, restrained booking step with a correct fee echo and one clear primary; only sub-44px back pill and borderline grey helper contrast to log."
+  }
+}

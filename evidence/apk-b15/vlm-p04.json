@@ -1,0 +1,45 @@
+{
+  "spec": {
+    "id": "p04",
+    "file": "p04-rajesh-light-full.png",
+    "context": "Screen: DOCTOR PROFILE with ZERO optional data (light mode, real prod — Dr. Rajesh, General Physician, Gandhinagar; no ratings, no reviews, no services, no procedures, no awards, no posts). HONESTY LAW (critical): none of those headings may render — the page must flow identity → fee → clinic hours → quiet stats → (no ratings card at all) → practices-at (if any) → similar doctors (this specialization HAS peers, so \"Similar doctors\" DOES render with real rows) → share → CTA, with no awkward gaps where hidden sections sat. Judge: does the honest-empty profile still look complete and calm (no phantom whitespace, no orphan headings), does \"Similar doctors\" give the page a natural ending before share, any layout holes or rhythm breaks."
+  },
+  "verdict": {
+    "overall": "FAIL",
+    "defects": [
+      {
+        "what": "\"Similar doctors\" section heading is clipped at the bottom edge of the screen — the heading text is cut horizontally mid-glyph, and no doctor rows are visible, so the section that must give the page a natural ending is truncated and unreadable",
+        "severity": "blocking",
+        "where": "bottom of scroll, just above the sticky CTA"
+      },
+      {
+        "what": "Sticky 'Book appointment — ₹300' CTA overlaps/collides with the clipped 'Similar doctors' heading — there is effectively no spacing between content and CTA, breaking the 12px rhythm and creating a layout hole instead of a calm ending",
+        "severity": "blocking",
+        "where": "footer area of the screen"
+      },
+      {
+        "what": "CTA is black, not the single teal accent — per design law (1) the primary live/selected action should be teal; black reads as off-palette for the one accent color system",
+        "severity": "minor",
+        "where": "sticky bottom CTA"
+      }
+    ],
+    "measured_notes": [
+      "Screen gutters measure approximately 16px left/right — compliant",
+      "Fee block: '₹300' renders very large (~40px+), reads first after identity — hierarchy law respected",
+      "Clinic hours rows: each row height looks comfortably above 44px (roughly 44–48px)",
+      "'Back' pill and 'R' avatar are visible; back pill height looks ~44px — roughly compliant",
+      "Sunday 'Closed' uses greyed text — estimate ~#9x grey on white, appears to meet 4.5:1 only marginally; worth verifying",
+      "Fee card uses a light tint (#F4F4F2-ish) with dark text — contrast estimate passes AA",
+      "Stats line '17 visits · 4 patients on Aturseva' renders as quiet grey text — present, honest",
+      "No phantom ratings/services/awards/health-tips headings rendered — hide-if-empty law upheld up to the truncation point",
+      "Sticky CTA height looks well above 44px (~56px)"
+    ],
+    "non_blocking_notes": [
+      "Identity block uses a plain letter avatar 'R' — acceptable but a photo placeholder consistency check is worth logging",
+      "'Doctor' title in the top bar next to Back is generic; consider the doctor's name or 'Profile' for clarity",
+      "Practices-at card rows show city right-aligned — spacing between rows is tight but consistent",
+      "Overall page above the fold is calm and rhythm-consistent; the failure is confined to the ending of the scroll"
+    ],
+    "one_line": "The honest-empty profile is calm and correctly hides all empty sections, but 'Similar doctors' is clipped mid-heading with no rows visible before the sticky CTA — a blocking truncation and rhythm break at the page's natural ending."
+  }
+}
