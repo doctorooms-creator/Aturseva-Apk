@@ -1,31 +1,23 @@
 /**
  * BOTTOM TABS (doc 05 §1): exactly 3 in P0 — Home · Bookings · Profile.
- * Active = ink icon+label; inactive = mute. No color explosion. Labels
- * always (icons-without-labels is a doc 03 don't).
+ * Labels always (icons-without-labels is a doc 03 don't). No color
+ * explosion.
  *
- * APK-B4: bar chrome (background · hairline · tints) consumes the live
- * theme — dark flips with the rest of the app, no light-only surface.
+ * APK-H2 (doc 17 PART 3): the bordered bottom bar is RETIRED — the
+ * shell is now the floating GLASS PILL (NavPill): website glass grammar
+ * v1 + ink filled-circle active tabs. The pill floats OVER content
+ * (absolute), so the three tab hosts hand-pad their scroll ends with
+ * NAV_PILL_FOOTPRINT + safe inset (B9 scroll-limit law). Stack screens
+ * keep their own headers — only these 3 hosts get the pill.
  */
 
 import { Tabs } from 'expo-router'
 import { CalendarCheck2, Home, UserRound } from 'lucide-react-native'
-import { useColors } from '@/lib/theme'
+import { NavPill } from '@/components/nav-pill'
 
 export default function TabsLayout() {
-  const c = useColors()
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: c.ink,
-        tabBarInactiveTintColor: c.mute,
-        tabBarStyle: {
-          backgroundColor: c.canvas,
-          borderTopColor: c.hairline,
-        },
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
-      }}
-    >
+    <Tabs screenOptions={{ headerShown: false }} tabBar={(props) => <NavPill {...props} />}>
       <Tabs.Screen
         name="index"
         options={{

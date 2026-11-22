@@ -18,6 +18,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import * as Linking from 'expo-linking'
 import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
@@ -30,6 +31,7 @@ import { clearSession, getStoredToken, getStoredUser, updateStoredUser } from '@
 import { getCity, setCity, type ThemeMode } from '@/lib/storage'
 import { Avatar } from '@/components/avatar'
 import { CityPickerSheet } from '@/components/city-picker'
+import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
 import { AuthSheet } from '@/components/auth-sheet'
 import { EditProfileSheet } from '@/components/edit-profile-sheet'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
@@ -43,6 +45,9 @@ function maskMobile(m: string | null): string {
 
 export default function ProfileScreen() {
   const c = useColors()
+  // H2 shell: floating-pill clearance (B9 scroll-limit law — the
+  // successor of the old fixed footerPad 72).
+  const insets = useSafeAreaInsets()
   const router = useRouter()
   const { mode, setMode } = useTheme()
 
@@ -281,7 +286,7 @@ export default function ProfileScreen() {
       </View>
 
       <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version}</Text>
-      <View style={styles.footerPad} />
+      <View style={{ height: insets.bottom + NAV_PILL_FOOTPRINT }} />
 
       <CityPickerSheet
         visible={citySheetOpen}
@@ -557,14 +562,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 'auto',
     marginBottom: space.s24,
-  },
-  footerPad: {
-    /** VLM-caught B9 regression guard: 24 was 4px short of the 48px
-     *  tab-bar overlay at the scroll limit — the last row's bottom edge
-     *  tucked behind the tab bar (Sign out). 72 clears it with room for
-     *  the version line + breathing space (scroll-limit law, not guesswork:
-     *  tab bar measured 48px in the web preview). */
-    height: 72,
   },
   pickerTitle: {
     ...typo.title,

@@ -14,6 +14,7 @@
 
 import { type ComponentRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
 import { ChevronRight, MapPin } from 'lucide-react-native'
@@ -33,6 +34,7 @@ import { HospitalRailCard } from '@/components/hospital-card'
 import { DoctorRailSkeleton, TrustStripSkeleton } from '@/components/skeleton'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { CityPickerSheet } from '@/components/city-picker'
+import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
 
 /** Home quick-chips (S3 list — the doorway words, pure English). */
 const CHIPS = ['fever', 'knee pain', 'skin', 'child', 'acidity', 'headache'] as const
@@ -62,6 +64,9 @@ function symptomRowsFor(query: string): SymptomRow[] {
 
 export default function HomeScreen() {
   const c = useColors()
+  // H2 shell: floating-pill clearance (B9 scroll-limit law — the last
+  // row must clear the pill at scroll end, on every inset).
+  const insets = useSafeAreaInsets()
   const router = useRouter()
 
   // Live data (doc 08 #1/#8): stats 5-min SWR · doctors rail SWR.
@@ -179,7 +184,7 @@ export default function HomeScreen() {
     <>
     <ScrollView
       style={[styles.screen, { backgroundColor: c.canvas }]}
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}
       showsVerticalScrollIndicator={false}
       refreshControl={
         Platform.OS === 'web' ? undefined : (
@@ -396,7 +401,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingBottom: space.s24,
+    // Bottom clear is DYNAMIC (inset + NAV_PILL_FOOTPRINT) — the pill
+    // floats OVER content (H2 shell); static padding would tuck the
+    // quiet footer behind it.
   },
   safeTop: {
     height: 12,

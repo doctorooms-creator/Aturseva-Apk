@@ -14,6 +14,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import { CalendarCheck2, Search } from 'lucide-react-native'
 import { radius, space, TOUCH, type as typo } from '@/lib/tokens'
@@ -23,6 +24,7 @@ import { getBookingPhone, setBookingPhone } from '@/lib/storage'
 import { Chip, PillButton } from '@/components/press'
 import { EmptyState } from '@/components/empty-state'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
+import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
 
 const PHONE_RE = /^[6-9]\d{9}$/
 
@@ -53,6 +55,8 @@ const STATUS_LABELS: Record<string, { label: string; tone: 'live' | 'done' | 'wa
 
 export default function BookingsScreen() {
   const c = useColors()
+  // H2 shell: floating-pill clearance (B9 scroll-limit law).
+  const insets = useSafeAreaInsets()
   const router = useRouter()
 
   const [phone, setPhone] = useState('')
@@ -130,7 +134,7 @@ export default function BookingsScreen() {
 
       {/* States — honest at every step */}
       {error && rows === null ? (
-        <View style={styles.listWrap}>
+        <View style={[styles.listWrap, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}>
           <EmptyState
             icon={CalendarCheck2}
             title="Could not load bookings"
@@ -139,7 +143,7 @@ export default function BookingsScreen() {
           />
         </View>
       ) : rows === null ? (
-        <View style={styles.listWrap}>
+        <View style={[styles.listWrap, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}>
           <EmptyState
             icon={CalendarCheck2}
             title="Find your bookings"
@@ -148,7 +152,7 @@ export default function BookingsScreen() {
           />
         </View>
       ) : rows.length === 0 ? (
-        <View style={styles.listWrap}>
+        <View style={[styles.listWrap, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}>
           <EmptyState
             icon={CalendarCheck2}
             title="No bookings found"
@@ -157,7 +161,7 @@ export default function BookingsScreen() {
           />
         </View>
       ) : shown.length === 0 ? (
-        <View style={styles.listWrap}>
+        <View style={[styles.listWrap, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}>
           <EmptyState
             icon={CalendarCheck2}
             title={tab === 'upcoming' ? 'No upcoming bookings' : 'No past bookings'}
@@ -188,7 +192,7 @@ export default function BookingsScreen() {
           {shown.map((b) => (
             <BookingCard key={b.id} row={b} onPress={() => void router.push(`/booking/${b.id}`)} />
           ))}
-          <View style={styles.scrollBottomPad} />
+          <View style={{ height: insets.bottom + NAV_PILL_FOOTPRINT }} />
         </ScrollView>
       )}
 
@@ -327,7 +331,8 @@ const styles = StyleSheet.create({
   listWrap: {
     flex: 1,
     justifyContent: 'center',
-    paddingBottom: space.s32,
+    // Bottom clear is DYNAMIC (inset + NAV_PILL_FOOTPRINT) — the pill
+    // floats OVER content (H2 shell).
   },
   listContent: {
     paddingHorizontal: space.s16,
@@ -340,9 +345,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typo.body,
-  },
-  scrollBottomPad: {
-    height: space.s24,
   },
   card: {
     borderRadius: radius.card,
