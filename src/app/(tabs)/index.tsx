@@ -1,15 +1,21 @@
 /**
- * S3 · HOME — the flagship screen (doc 06 S3).
+ * S3 · HOME — the flagship screen (doc 06 S3; H3 restructure: zones
+ * Z1–Z8 per doc 17 PART 4).
  *
- * Layout: search crown (no top bar) → symptom chips → live trust strip →
- * live doctor rail → quiet footer. ONE crown = search (no banner fights
- * it). Live data: /api/public/stats + /api/doctors (prod monolith — doc 08
- * contract). Cross-cutting: skeletons mirror layout; network fail =
- * cached cards + amber strip + retry; pull-to-refresh (native).
+ * Z1 hero (cream band: greeting + city chip + glass search crown + chips)
+ * → Z2 ink trust billboard → Z3 consultation tiles → Z4 book-again rail
+ * → Z5 doctors rail → Z6 hospitals rail → Z7 labs strip (static, dated,
+ * website handoff) → Z8 quiet footer. ONE crown = search (no banner
+ * fights it). Live data: /api/public/stats + /api/doctors + /api/hospitals
+ * (prod monolith — doc 08 contract). Cross-cutting: skeletons mirror
+ * layout; network fail = cached cards + amber strip + retry;
+ * pull-to-refresh (native).
  *
  * APK-B2: chips and suggest rows walk into the S4 listing (/search?q=)
- * and rail cards open the S5 profile (/doctor/[id]) — the B1 recap
- * sheet retired. Pure English copy (owner directive).
+ * and rail cards open the S5 profile (/doctor/[id]). Pure English copy
+ * (owner directive). APK-H3: canvas = CREAM (the website's page grammar —
+ * cream page, white cards); city promoted from footer to hero (doc 16
+ * location-first law B2).
  */
 
 import { type ComponentRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -17,24 +23,27 @@ import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, Text
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useFocusEffect, useRouter } from 'expo-router'
 import Constants from 'expo-constants'
-import { ChevronRight, MapPin } from 'lucide-react-native'
+import { ChevronRight } from 'lucide-react-native'
 import { space, TOUCH, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
 import { getDoctors, getStats, getBookAgain, getHospitals, type BookAgainDoctor } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
 import { getCity, getRecentSearches, pushRecentSearch, setCity } from '@/lib/storage'
-import { getStoredToken } from '@/lib/auth'
+import { getStoredToken, getStoredUser } from '@/lib/auth'
 import { matchSymptom } from '@/lib/website/symptom-search'
-import { SearchField } from '@/components/search-field'
 import { Chip, QuietAction } from '@/components/press'
 import { PulseDot } from '@/components/pulse-dot'
 import { OfflineBanner } from '@/components/offline-banner'
 import { DoctorRailCard } from '@/components/doctor-card'
 import { HospitalRailCard } from '@/components/hospital-card'
-import { DoctorRailSkeleton, TrustStripSkeleton } from '@/components/skeleton'
+import { DoctorRailSkeleton } from '@/components/skeleton'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { CityPickerSheet } from '@/components/city-picker'
 import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
+import { HomeHero } from '@/components/home/home-hero'
+import { TrustBillboard, TrustBillboardSkeleton } from '@/components/home/trust-billboard'
+import { ConsultationTiles } from '@/components/home/consultation-tiles'
+import { LabsStrip } from '@/components/home/labs-strip'
 
 /** Home quick-chips (S3 list — the doorway words, pure English). */
 const CHIPS = ['fever', 'knee pain', 'skin', 'child', 'acidity', 'headache'] as const
@@ -106,6 +115,8 @@ export default function HomeScreen() {
   const [recents, setRecents] = useState<string[]>([])
   const [city, setCityState] = useState<string | null>(null)
   const [citySheetOpen, setCitySheetOpen] = useState(false)
+  // Z1 greeting: real name when signed in, else "Namaste" (doc 17 Z1).
+  const [userName, setUserName] = useState<string | null>(null)
 
   // APK-B6 · Book-again rail (doc 06 S3 / doc 18): the logged-in
   // patient's last doctors, one tap away. Hide-if-empty law is absolute —
@@ -127,9 +138,10 @@ export default function HomeScreen() {
   }, [])
 
   const loadLocal = useCallback(async () => {
-    const [r, c] = await Promise.all([getRecentSearches(), getCity()])
+    const [r, ct, u] = await Promise.all([getRecentSearches(), getCity(), getStoredUser()])
     setRecents(r)
-    setCityState(c)
+    setCityState(ct)
+    setUserName(u?.name ?? null)
   }, [])
 
   useEffect(() => {
@@ -183,7 +195,7 @@ export default function HomeScreen() {
   return (
     <>
     <ScrollView
-      style={[styles.screen, { backgroundColor: c.canvas }]}
+      style={[styles.screen, { backgroundColor: c.canvasSoft }]}
       contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}
       showsVerticalScrollIndicator={false}
       refreshControl={
@@ -192,29 +204,24 @@ export default function HomeScreen() {
         )
       }
     >
-      {/* Search crown — content starts at y=0, safe-area padded (S3 law) */}
+      {/* Z1 · HERO — cream band: greeting + city chip (promoted from the
+          footer, location-first) + glass search crown + quick-chips. */}
       <View style={styles.safeTop} />
-      <SearchField ref={searchRef} value={query} onChangeText={setQuery} onFocus={openSuggestFromFocus} />
-
-      {/* Symptom quick-chips — zero-thinking path */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsRow}
-        style={styles.chipsScroller}
-      >
-        {CHIPS.map((c) => (
-          <Chip
-            key={c}
-            label={c}
-            onPress={() => {
-              // Zero-thinking path (doc 06 S3): chip tap walks STRAIGHT
-              // into the S4 listing — no suggest sheet in between.
-              applyQuery(c)
-            }}
-          />
-        ))}
-      </ScrollView>
+      <HomeHero
+        name={userName}
+        city={city}
+        onCityPress={() => setCitySheetOpen(true)}
+        searchRef={searchRef}
+        query={query}
+        onQueryChange={setQuery}
+        onSearchFocus={openSuggestFromFocus}
+        chips={CHIPS}
+        onChipPress={(term) => {
+          // Zero-thinking path (doc 06 S3): chip tap walks STRAIGHT
+          // into the S4 listing — no suggest sheet in between.
+          applyQuery(term)
+        }}
+      />
 
       {/* Offline/degraded banner — cached last-good stays underneath */}
       {(rail.error || stats.error) && (rail.data || stats.data) ? (
@@ -223,19 +230,21 @@ export default function HomeScreen() {
         </View>
       ) : null}
 
-      {/* Live trust strip — only real numbers (no labs count exists on the
-          stats contract — honesty law wins over the spec's example) */}
-      <View style={styles.trustRow}>
-        {stats.data ? (
-          <>
-            <PulseDot size={8} />
-            <Text style={[styles.trustText, { color: c.body }]}>
-              {stats.data.doctors} doctors · {stats.data.hospitals} hospitals · {stats.data.bookings} visits booked — live
-            </Text>
-          </>
-        ) : (
-          <TrustStripSkeleton />
-        )}
+      {/* Z2 · TRUST BILLBOARD — ink band, real numbers only. Error = hide
+          (the offline banner owns degraded comms; a half-empty billboard
+          reads as broken trust). */}
+      {stats.data ? (
+        <TrustBillboard stats={stats.data} />
+      ) : stats.loading ? (
+        <View style={styles.zoneGap}>
+          <TrustBillboardSkeleton />
+        </View>
+      ) : null}
+
+      {/* Z3 · CONSULTATION TILES — the two doorways (D6: iconographic,
+          no photography; labs = website handoff). */}
+      <View style={styles.zoneGap}>
+        <ConsultationTiles onFindDoctor={() => void router.push('/search')} />
       </View>
 
       {/* B6 · Book-again rail — logged-in only, hide-if-empty. The last
@@ -273,7 +282,7 @@ export default function HomeScreen() {
       {/* Doctor rail — LIVE cards */}
       <View style={styles.sectionHeader}>
         <Text style={[styles.sectionTitle, { color: c.ink }]}>Doctors</Text>
-        <View style={[styles.liveChip, { backgroundColor: c.tealLiveSoft }]}>
+        <View style={[styles.liveChip, { backgroundColor: c.glassFill, borderColor: c.glassEdge, borderWidth: 1 }]}>
           <PulseDot size={6} />
           <Text style={[styles.liveText, { color: c.tealText }]}>live</Text>
         </View>
@@ -306,7 +315,7 @@ export default function HomeScreen() {
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: c.ink }]}>Hospitals</Text>
             <View style={styles.hospitalsSpacer} />
-            <Chip label="See all" onPress={() => void router.push('/hospitals')} />
+            <Chip label="See all" surface={c.canvas} onPress={() => void router.push('/hospitals')} />
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
             {hospitalsRail.data.hospitals.map((h) => (
@@ -320,12 +329,15 @@ export default function HomeScreen() {
         </>
       ) : null}
 
-      {/* Quiet footer: city + version + legal (S3 law: ≤1 line each) */}
+      {/* Z7 · LABS STRIP — three REAL tests, dated prices, website
+          handoff (D3 ruling: booking lives on aturseva.com). */}
+      <View style={styles.zoneGap}>
+        <LabsStrip />
+      </View>
+
+      {/* Z8 · quiet footer — version + legal (city row promoted to the
+          hero; S3 law: ≤1 line each). */}
       <View style={styles.footer}>
-        <Pressable style={styles.cityRow} onPress={() => setCitySheetOpen(true)} hitSlop={8} accessibilityRole="button" accessibilityLabel="Change city">
-          <MapPin size={13} color={c.mute} strokeWidth={2} />
-          <Text style={[styles.cityText, { color: c.body }]}>{city ?? 'Select city'} · change</Text>
-        </Pressable>
         <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version}</Text>
         <QuietAction
           label="Privacy · Terms"
@@ -408,28 +420,13 @@ const styles = StyleSheet.create({
   safeTop: {
     height: 12,
   },
-  chipsScroller: {
-    marginTop: space.s12,
-  },
-  chipsRow: {
-    paddingHorizontal: space.s16,
-    gap: space.s8,
-  },
   bannerWrap: {
     marginTop: space.s12,
   },
-  trustRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.s8,
+  /** H3 zone rhythm — the gap between Z2/Z3/Z7 bands and their
+   *  neighbors (the sections own their own headers/margins). */
+  zoneGap: {
     marginTop: space.s20,
-    marginHorizontal: space.s16,
-    minHeight: TOUCH - 24,
-  },
-  trustText: {
-    ...typo.caption,
-    fontVariant: ['tabular-nums'],
-    flex: 1,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -472,15 +469,6 @@ const styles = StyleSheet.create({
     marginHorizontal: space.s16,
     gap: space.s8,
     alignItems: 'center',
-  },
-  cityRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    minHeight: TOUCH - 20,
-  },
-  cityText: {
-    ...typo.caption,
   },
   versionText: {
     ...typo.caption,

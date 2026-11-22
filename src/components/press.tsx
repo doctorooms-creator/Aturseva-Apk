@@ -83,6 +83,12 @@ interface ChipProps {
   /** Leading content (icon) inside the pill. */
   leading?: ReactNode
   /**
+   * H3: fill for the UNSELECTED state on non-white canvases (the home
+   * hero sits on cream — chips need the white card fill to read).
+   * Default = canvasSoft (white canvases).
+   */
+  surface?: string
+  /**
    * B14: SOFT selection tone for chips that toggle MODE/STATE (not the
    * patient's decision). Selected+soft = aquaSoft wash + tealText
    * (H1 re-measured: 5.39:1 light / 8.1:1 dark — tealLive is now
@@ -95,7 +101,15 @@ interface ChipProps {
   soft?: boolean
 }
 
-export function Chip({ label, onPress, selected = false, disabled = false, leading, soft = false }: ChipProps) {
+export function Chip({
+  label,
+  onPress,
+  selected = false,
+  disabled = false,
+  leading,
+  soft = false,
+  surface,
+}: ChipProps) {
   const c = useColors()
   return (
     <Pressable
@@ -107,7 +121,7 @@ export function Chip({ label, onPress, selected = false, disabled = false, leadi
       hitSlop={6}
       style={({ pressed }) => [
         styles.chip,
-        { backgroundColor: selected ? (soft ? c.aquaSoft : c.ink) : c.canvasSoft },
+        { backgroundColor: selected ? (soft ? c.aquaSoft : c.ink) : (surface ?? c.canvasSoft) },
         disabled && styles.disabled,
         pressed && styles.pressed,
       ]}
