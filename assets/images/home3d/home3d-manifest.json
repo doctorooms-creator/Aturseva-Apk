@@ -16,5 +16,41 @@
         "bytes": 12302
       }
     }
+  },
+  "token-stack": {
+    "aspect": 0.8929,
+    "source": "token-stack-transparent.png",
+    "variants": {
+      "2x": {
+        "file": "token-stack@2x.png",
+        "w": 240,
+        "h": 214,
+        "bytes": 21952
+      },
+      "3x": {
+        "file": "token-stack@3x.png",
+        "w": 360,
+        "h": 321,
+        "bytes": 40293
+      }
+    }
+  },
+  "tile-hospital": {
+    "aspect": 0.6596,
+    "source": "tile-hospital-transparent.png",
+    "variants": {
+      "2x": {
+        "file": "tile-hospital@2x.png",
+        "w": 128,
+        "h": 84,
+        "bytes": 9037
+      },
+      "3x": {
+        "file": "tile-hospital@3x.png",
+        "w": 192,
+        "h": 127,
+        "bytes": 14331
+      }
+    }
   }
 }

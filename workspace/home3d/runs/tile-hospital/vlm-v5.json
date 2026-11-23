@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "# Comparison\n\n**Silhouette — 0.75**\nProportions are reasonably close (wide 2-story building, centered dark entrance), but the mockup has a distinct stepped roofline with a raised central section and corner wing blocks; your roof is flat/simple, so the top silhouette reads flatter and less 3D. The mockup's building is taller relative to width.\n\n**Details — 0.6**\n- Roofline: mockup shows white rooftop boxes + stepped parapet; yours has a plain parapet edge with small notches — rooftop boxes are missing.\n- Windows: mockup has a symmetric 2-row grid (3 top, 2 bottom flanking door, plus side-wing windows); yours has a scattered 4+4 layout with no clear symmetry and no side wings.\n- Cross plaque: good match — dark rounded square, white cross, sits on roof center. Slightly larger/rounder than mockup; fine.\n- Door: good dark centered door, but mockup's is recessed with a frame/arch; yours is flat.\n- Bushes: mockup has clustered round bushes at corners (3–4 blobs, varied greens); yours has two flat hedge blobs — add rounder, layered bush geometry.\n\n**Colors — 0.85**\nVery close: white body, blue windows, near-black plaque/door, green bushes, soft gray-blue shadow. Blue could be slightly deeper/more saturated; bushes need lighter green variation.\n\n**Shadow — 0.9**\nSoft contact shadow under base present and soft. Mockup's is wider, hugging the building footprint; yours is a bit small and offset.\n\n**Overall — 0.7**\n\n## Brief fixes\n1. Add stepped roofline: raised central block + white rooftop boxes at corners.\n2. Rebuild window grid symmetric: 3 top, 2 bottom flanking door, add side windows on wing sections.\n3. Recess the door with a subtle frame/arch.\n4. Replace flat hedges with clustered round bushes (2–3 sizes, light/dark green mix).\n5. Widen the ground shadow to match building footprint.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795410809,
+  "id": "20261123131318eccb433f4d614fc5",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123131318eccb433f4d614fc5",
+  "usage": {
+    "completion_tokens": 444,
+    "completion_tokens_details": {
+      "reasoning_tokens": 443
+    },
+    "prompt_tokens": 426,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 870
+  }
+}
