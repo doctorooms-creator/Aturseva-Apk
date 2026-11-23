@@ -35,32 +35,32 @@ export type AssetName =
 /** Both density variants per asset — the static require map Metro walks. */
 const SOURCES: Record<AssetName, { x2: ImageRequireSource; x3: ImageRequireSource }> = {
   'hero-3d': {
-    x2: require('@/assets/images/home3d/hero-3d@2x.png'),
-    x3: require('@/assets/images/home3d/hero-3d@3x.png'),
+    x2: require('../../../assets/images/home3d/hero-3d-2x.png'),
+    x3: require('../../../assets/images/home3d/hero-3d-3x.png'),
   },
   'shield-3d': {
-    x2: require('@/assets/images/home3d/shield-3d@2x.png'),
-    x3: require('@/assets/images/home3d/shield-3d@3x.png'),
+    x2: require('../../../assets/images/home3d/shield-3d-2x.png'),
+    x3: require('../../../assets/images/home3d/shield-3d-3x.png'),
   },
   'tile-doctor': {
-    x2: require('@/assets/images/home3d/tile-doctor@2x.png'),
-    x3: require('@/assets/images/home3d/tile-doctor@3x.png'),
+    x2: require('../../../assets/images/home3d/tile-doctor-2x.png'),
+    x3: require('../../../assets/images/home3d/tile-doctor-3x.png'),
   },
   'tile-hospital': {
-    x2: require('@/assets/images/home3d/tile-hospital@2x.png'),
-    x3: require('@/assets/images/home3d/tile-hospital@3x.png'),
+    x2: require('../../../assets/images/home3d/tile-hospital-2x.png'),
+    x3: require('../../../assets/images/home3d/tile-hospital-3x.png'),
   },
   'tile-labtubes': {
-    x2: require('@/assets/images/home3d/tile-labtubes@2x.png'),
-    x3: require('@/assets/images/home3d/tile-labtubes@3x.png'),
+    x2: require('../../../assets/images/home3d/tile-labtubes-2x.png'),
+    x3: require('../../../assets/images/home3d/tile-labtubes-3x.png'),
   },
   'tile-video': {
-    x2: require('@/assets/images/home3d/tile-video@2x.png'),
-    x3: require('@/assets/images/home3d/tile-video@3x.png'),
+    x2: require('../../../assets/images/home3d/tile-video-2x.png'),
+    x3: require('../../../assets/images/home3d/tile-video-3x.png'),
   },
   'token-stack': {
-    x2: require('@/assets/images/home3d/token-stack@2x.png'),
-    x3: require('@/assets/images/home3d/token-stack@3x.png'),
+    x2: require('../../../assets/images/home3d/token-stack-2x.png'),
+    x3: require('../../../assets/images/home3d/token-stack-3x.png'),
   },
 }
 
