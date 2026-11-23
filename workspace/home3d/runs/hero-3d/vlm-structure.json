@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "# Hero Illustration Description\n\n## Overall Layout (left to right)\n1. **Text block** (far left, partially cropped): black bold heading ending in \"ler.\" with smaller gray subtext (\"...ments\" / \"...me.\")\n2. **Mini hospital building** — small, positioned center-left\n3. **Doctor character** — large, center-right, dominant element\n4. **Two green blob-trees** — one left of the hospital, one right of the doctor\n\n## Background\n- Very light cool gray (#F0F2F4 approx.), with a slightly darker rounded panel behind the illustration area\n- Top edge (cropped): two white circular icon buttons — one with a black notification bell, one with a black person icon\n- Bottom: white search bar with gray placeholder text \"hospitals, tests, symptoms...\" and a black microphone icon on the right\n\n## Doctor Character\n- **Position**: center-right, largest element, roughly 3× the hospital's height\n- **Pose**: standing, arms crossed confidently over chest, slight smile, facing viewer with head tilted slightly\n- **Hair**: dark brown/black, voluminous swoopy style with a quiff\n- **Skin**: warm tan/peach tone\n- **Expression**: friendly, small closed smile, thin eyebrows\n- **Clothing**: white lab coat (open) over a light blue shirt, blue necktie, dark stethoscope draped around neck with silver chest piece hanging on his left side (viewer's left)\n- Stylized 3D \"clay/render\" cartoon look\n\n## Mini Hospital Building\n- **Position**: center-left, behind/beside the doctor, about waist-height to him\n- **Colors**: white/light-gray walls, blue-framed rectangular windows (light blue panes with darker blue frames), a dark gray entrance door\n- **Cross**: black medical cross on the upper facade, centered\n- Simple flat-roof 3D blocky style\n\n## Green Blob-Trees\n- **Left tree**: a cluster of rounded green blobs (light green #7CB85C tops, darker green shading) sitting at the hospital's left base\n- **Right tree**: similar rounded blob cluster at the doctor's right side (viewer's right), slightly larger, light green with darker green accents\n- Both are soft, cloud-like cartoon bushes/trees\n\n## Relative Sizes\nDoctor (tallest) → trees (small) → hospital (medium, wider than tall). All sit on an implied ground line, doctor overlapping the hospital's right edge.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795412051,
+  "id": "20261123133400cf51c3b1f898472d",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123133400cf51c3b1f898472d",
+  "usage": {
+    "completion_tokens": 529,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 270,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 799
+  }
+}

@@ -106,5 +106,23 @@
         "bytes": 38517
       }
     }
+  },
+  "hero-3d": {
+    "aspect": 0.6116,
+    "source": "imgen-take3.png",
+    "variants": {
+      "2x": {
+        "file": "hero-3d@2x.png",
+        "w": 320,
+        "h": 196,
+        "bytes": 38476
+      },
+      "3x": {
+        "file": "hero-3d@3x.png",
+        "w": 480,
+        "h": 294,
+        "bytes": 73323
+      }
+    }
   }
 }

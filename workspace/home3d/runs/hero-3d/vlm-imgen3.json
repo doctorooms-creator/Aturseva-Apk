@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "## Comparison\n\n**Doctor**\n- Pose: crossed arms — matches ✅\n- Clothing: white coat, stethoscope — matches ✅ (render adds a tie/shirt, mockup shows blue scrubs collar — minor)\n- Hair: dark, short — matches ✅\n- Expression: friendly smile, open eyes — matches ✅\n\n**Mini hospital**\n- White building, black cross, blue windows, gray doors — matches ✅\n- Render hospital is slightly taller/more detailed windows; structure and placement (left of doctor) match\n\n**Green bushes**\n- Blob-style green bushes at base and sides — matches ✅ (render adds a full tree on the right — slight addition)\n- Left bushes cluster style differs a bit: mockup has two round blobs, render has many small spheres\n\n**Layout / background / style**\n- Doctor right-of-center, hospital left, bushes around base — matches ✅\n- Light gray/white plain background — matches ✅\n- 3D cartoon render style — matches ✅\n\n**Text check:** No text or UI artifacts in the render. ✅\n\n## Scores\n\n| Criterion | Score | Notes |\n|---|---|---|\n| Silhouette | 0.9 | Same composition; extra tree alters right edge |\n| Details | 0.9 | Coherent hospital, stethoscope, bushes; minor style drift |\n| Colors | 1.0 | Palette matches exactly |\n| **Overall** | **0.93** | Faithful recreation |\n\n## Brief fixes\n- Remove the standalone tree on the right edge\n- Make left-side bushes larger/two-blob like mockup\n- Shorten hospital slightly; keep windows simpler",
+        "reasoning_content": "Compare and score.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795412218,
+  "id": "20261123133647ade5006720b645f1",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123133647ade5006720b645f1",
+  "usage": {
+    "completion_tokens": 356,
+    "completion_tokens_details": {
+      "reasoning_tokens": 4
+    },
+    "prompt_tokens": 523,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 879
+  }
+}
