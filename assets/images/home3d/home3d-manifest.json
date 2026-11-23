@@ -88,5 +88,23 @@
         "bytes": 13425
       }
     }
+  },
+  "tile-doctor": {
+    "aspect": 1.3481,
+    "source": "imgen-take2.png",
+    "variants": {
+      "2x": {
+        "file": "tile-doctor@2x.png",
+        "w": 128,
+        "h": 173,
+        "bytes": 38035
+      },
+      "3x": {
+        "file": "tile-doctor@3x.png",
+        "w": 192,
+        "h": 259,
+        "bytes": 38517
+      }
+    }
   }
 }

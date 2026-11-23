@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "# 3D Rebuild Specification: Cartoon Doctor Character\n\n## Overall Style\n3D-rendered cartoon character (Pixar-like), bust/upper-body view, facing viewer, slightly angled. Soft studio lighting, smooth shading.\n\n## Head & Face\n- **Skin:** Light peach/tan tone (approx. #F5C9A6)\n- **Hair:** Dark brown/black (#2B2320), styled short with a swept side part, some volume on top, neatly groomed\n- **Eyes:** Large dark brown/black cartoon eyes with white highlights\n- **Eyebrows:** Thick, dark brown, slightly raised — friendly look\n- **Nose:** Small, rounded cartoon nose\n- **Expression:** Warm, confident smile; closed-mouth or slight open smile showing friendliness; cheeks slightly rounded\n- **Ears:** Visible on both sides, skin-toned\n\n## Clothing\n- **Coat:** White doctor's lab coat (#FFFFFF with light gray shading, #E8E8E8 shadows), open lapels, collar visible\n- **Shirt:** Light blue dress shirt (#9FC5E8 / #A8CBE8) visible in the chest opening\n- **Tie:** Blue tie (#3D6FB4 / medium blue), tied at the collar, hanging down the chest — slightly darker blue than the shirt\n- **Pocket:** Chest pocket on viewer's left side of coat with what appears to be a pen/clipboard item\n\n## Stethoscope\n- **Tubes:** Dark gray/charcoal (#4A4A4A) tubing draped around the neck, hanging down both sides of the chest\n- **Chest piece:** Silver/gray metallic diaphragm on the viewer's right side near the coat's lower edge\n- **Earpieces:** At the neck/shoulder area\n\n## Arms & Pose\n- **Right arm (viewer's left):** Bent at elbow, hand raised in a thumbs-up gesture at chest height\n- **Left arm (viewer's left of character):** Appears bent, hand possibly near chest/holding coat edge (partially obscured)\n- Hands are skin-toned, cartoon-proportioned with rounded fingers\n\n## Framing (head to waist)\n- Visible from top of hair to approximately waist/hip level\n- Crop ends just below the coat's lower button area\n\n## Background\n- Plain white/very light background (#FFFFFF), no props, no gradients — isolated character render",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795411820,
+  "id": "202611231330120a0399ed2c66414d",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611231330120a0399ed2c66414d",
+  "usage": {
+    "completion_tokens": 510,
+    "completion_tokens_details": {
+      "reasoning_tokens": 509
+    },
+    "prompt_tokens": 87,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 597
+  }
+}

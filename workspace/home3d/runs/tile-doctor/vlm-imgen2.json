@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "# Comparison: LEFT (mockup) vs RIGHT (AI render)\n\n## Pose\n- Both: doctor bust, arms crossed, facing forward. **Match.** Left has arms crossed at chest; right similar but hands tucked lower, one fist visible. Minor difference.\n- Framing: Left is tighter/bust slightly off; right is centered, larger head-to-body ratio (bigger head, chibi-like). Framing similar but proportions differ.\n\n## Clothing\n- White coat: both ✓. Left coat is softer/less defined; right has crisp lapels and collar.\n- Shirt: Left shows **blue shirt + dark tie**. Right shows light blue shirt + dark navy tie ✓, though the collar area is more prominent/lighter blue.\n- Left also seems to show a faint red/maroon tie hint at the bottom (unclear). Right clearly navy.\n\n## Hair\n- Left: dark brown/black, side-parted, fairly flat.\n- Right: dark brown, glossy, larger swooping style with more volume. Similar color, more stylized/bulkier than mockup.\n\n## Face\n- Left: gentle smile, simple oval face, small eyes.\n- Right: larger head, big eyes, rosy cheeks, big ears, wide smile — cuter/more cartoonish (\"kawaii\" style) than mockup. Overall still friendly, but proportions differ noticeably (oversized head).\n\n## Stethoscope\n- Left: black tubing around neck, chest piece low.\n- Right: black tube + **silver/metallic dual chest piece**, more prominent and detailed. Close match; right more polished.\n\n## Style\n- Left: soft flat-ish 3D cartoon, muted.\n- Right: high-gloss 3D clay/Pixar render — significantly shinier and more exaggerated than the mockup.\n\n## Scores\n\n| Criterion | Score | Notes |\n|---|---|---|\n| Silhouette | 0.8 | Same bust/arms-crossed pose; head too large, framing slightly wider |\n| Details | 0.8 | Coat, tie, stethoscope all present; oversized ears/cheeks, extra gloss |\n| Colors | 0.9 | White coat, blue shirt, navy tie, dark hair all correct; slight blue shift in collar |\n| Overall | 0.75 | Recognizable and faithful in content, but style drift (chibi proportions, glossy clay look) |\n\n**Overall ≈ 0.80**\n\n## Brief Fixes\n1. Reduce head size ~20–30% toward realistic bust proportions.\n2. Tone down gloss/specular highlights; match softer mockup shading.\n3. Shrink ears and cheek blush; make eyes smaller.\n4. Narrow the framing (tighter crop like mockup).\n5. Match hair volume to the flatter side-parted mockup style.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795411930,
+  "id": "202611231331572e403ddc303e4eba",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611231331572e403ddc303e4eba",
+  "usage": {
+    "completion_tokens": 585,
+    "completion_tokens_details": {
+      "reasoning_tokens": 584
+    },
+    "prompt_tokens": 287,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 872
+  }
+}

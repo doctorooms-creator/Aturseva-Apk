@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "# Comparison: Mockup (LEFT) vs AI Render (RIGHT)\n\n## Aspect-by-Aspect\n\n| Aspect | Analysis | Score |\n|---|---|---|\n| **Silhouette/Pose** | Both are bust shots with arms crossed/folded at chest, similar 3/4 head angle. AI pose matches well — crossed arms framing is close. | **0.85** |\n| **Clothing Colors** | White coat: ✓. Blue shirt + tie: ✓ (AI shows light blue shirt, brighter/glossier blue tie vs. mockup's muted tone). Coat lapels less prominent on AI. | **0.8** |\n| **Hair** | Mockup: dark/black hair. AI: brown hair with reddish tint — noticeably lighter and more styled/pompadour-like. | **0.55** |\n| **Face Expression** | Both smiling. AI smile is much wider/open with big glossy eyes and eyebrows — more exaggerated cartoon look vs. mockup's gentle closed smile and softer eyes. | **0.7** |\n| **Stethoscope** | Both present around neck with chest piece visible. AI's is more prominent/thicker with two chest pieces; mockup's is subtler. | **0.85** |\n| **Framing** | Mockup is tighter crop (head near top edge); AI has more headroom, slightly wider composition, subject a bit lower in frame. | **0.75** |\n| **Style** | Both 3D cartoon renders, but AI is far glossier/more Pixar-like with strong specular highlights; mockup is softer/matte. Background: mockup pure white, AI light gray. | **0.75** |\n\n## Overall Scores\n- **Silhouette:** 0.85\n- **Details:** 0.75\n- **Colors:** 0.8\n- **Overall:** **0.75**\n\n## Brief Fixes\n1. **Hair color** — change to dark brown/black; reduce the styled pompadour volume.\n2. **Face** — narrow the smile (closed or slightly open), smaller eyes, soften/raise gaze to match gentle expression.\n3. **Framing** — crop tighter vertically so the head sits higher in frame.\n4. **Style** — reduce glossy highlights, more matte shading; make background pure white.\n5. **Tie/shirt** — mute the tie saturation slightly toward the mockup's softer blue.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795411873,
+  "id": "20261123133102477c2fa645b6487f",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123133102477c2fa645b6487f",
+  "usage": {
+    "completion_tokens": 510,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 287,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 797
+  }
+}
