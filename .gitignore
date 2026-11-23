@@ -25,3 +25,4 @@ e2e-shots-b13/
 .deploy-tokens
 e2e-boot*.mjs
 e2e-boot-h1.mjs
+tunnel.log

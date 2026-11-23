@@ -17,7 +17,8 @@
  * - Glass trio (H2's shell): simulated-glass v1 (OTA — expo-blur rides
  *   the vc3 APK per doc 17 D4).
  * - Pill grammar (Uber signature): 999 radius on everything interactive;
- *   cards 16; sheets 24. One ink pill per viewport = the conversion story.
+ *   cards 24 (V3.1 radius refresh); sheets 24. One ink pill per viewport =
+ *   the conversion story.
  * - Dark mode P1: values dual-defined from day 1.
  */
 
@@ -70,6 +71,32 @@ export const colors = {
   warnSoft: '#FFFBEB',
   error: '#B91C1C',
   errorSoft: '#FEF2F2',
+
+  /** V3.1 HOME REBUILD (P2 foundations): the V3 accessory palette —
+   *  live badges, promo washes, chip/card neutrals, and second-tier
+   *  hairline/mute steps the denser home surface grammar needs.
+   *  (Lives here with the rest of the sets — theme.tsx's ColorSet
+   *  picks the keys up automatically.) */
+  /** Live/queue green — pulse dots, "live now" badges (graphics-led). */
+  liveGreen: '#22A94E',
+  liveGreenSoft: '#DCF5E3',
+  /** Star/rating yellow — review scores (fills/icons only, never text). */
+  starYellow: '#F5B301',
+  /** Promo banner washes — lavender (consult promo) + mint (labs promo). */
+  promoLavender: '#E7E6FA',
+  promoMint: '#E3F4EC',
+  /** Idle filter chips on the near-white canvas. */
+  chipIdle: '#F0F0F1',
+  /** Soft card fill — one step below canvasSoft on gray cards. */
+  cardSoft: '#F7F7F8',
+  /** Second-tier hairline — inner dividers inside r24 cards. */
+  hairline2: '#ECECEE',
+  /** Ambient blob fills behind 3D art. */
+  blob: '#EDEDEF',
+  /** Promo banner ink — near-black on the lavender wash. */
+  bannerInk: '#161616',
+  /** Second-tier mute — captions one step under mute. */
+  mute2: '#8A8A8E',
 }
 
 export type ColorToken = keyof typeof colors
@@ -102,6 +129,18 @@ export const darkColors: Record<ColorToken, string> = {
   warnSoft: '#2A1D05',
   error: '#F87171',
   errorSoft: '#2B0D0D',
+  // V3.1 accessory palette — dark counterparts (dual-defined day 1).
+  liveGreen: '#2BD989',
+  liveGreenSoft: '#12301D',
+  starYellow: '#F5B301',
+  promoLavender: '#232041',
+  promoMint: '#12201A',
+  chipIdle: '#1E1E22',
+  cardSoft: '#161618',
+  hairline2: '#232326',
+  blob: '#1A1B1E',
+  bannerInk: '#1E1E22',
+  mute2: '#8A8A8E',
 }
 
 // §3 — Type scale (system stack; weights do hierarchy; tabular numbers
@@ -118,7 +157,9 @@ export const type = {
 // §4 — Spacing (8-grid) · radius · elevation (2 levels only)
 export const space = { s4: 4, s8: 8, s12: 12, s16: 16, s20: 20, s24: 24, s32: 32, s40: 40, s48: 48 } as const
 
-export const radius = { pill: 999, card: 16, input: 12, sheetTop: 24 } as const
+// V3.1 radius refresh (approved design spec): cards breathe at 24; the
+// nav pill trades 999 for a softer 36; the active tab's icon pod is 28.
+export const radius = { pill: 999, card: 24, input: 12, sheetTop: 24, navPill: 36, activePod: 28 } as const
 
 export const elevation = {
   card: {

@@ -11,13 +11,31 @@
  * APK-B4: the tree is wrapped in ThemeProvider (dark set consumed from
  * here down — doc 03 §2 note). StatusBar + stack chrome resolve with
  * the theme so the system chrome never flashes wrong on theme flips.
+ *
+ * V3.1 (P2 foundations): a FONT GATE joins the splash law — every Geist
+ * + GeistMono face the V3 type ramp needs is loaded here (useFonts),
+ * and the native splash stays up until BOTH the boot flag resolves AND
+ * the faces are resident (the ramp never paints in the system fallback).
  */
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter, Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+import { useFonts } from 'expo-font'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import {
+  Geist_400Regular,
+  Geist_500Medium,
+  Geist_600SemiBold,
+  Geist_700Bold,
+  Geist_800ExtraBold,
+} from '@expo-google-fonts/geist'
+import {
+  GeistMono_400Regular,
+  GeistMono_600SemiBold,
+  GeistMono_700Bold,
+} from '@expo-google-fonts/geist-mono'
 import { getOnboardingDone } from '@/lib/storage'
 import { ThemeProvider, useTheme } from '@/lib/theme'
 
@@ -34,6 +52,18 @@ export default function RootLayout() {
 function Root() {
   const router = useRouter()
   const { resolved, c } = useTheme()
+  // V3 font gate: the map keys are the fontFamily strings the V3 type
+  // ramp consumes ("Geist_600SemiBold" etc. — the package's own naming).
+  const [fontsLoaded, fontError] = useFonts({
+    Geist_400Regular,
+    Geist_500Medium,
+    Geist_600SemiBold,
+    Geist_700Bold,
+    Geist_800ExtraBold,
+    GeistMono_400Regular,
+    GeistMono_600SemiBold,
+    GeistMono_700Bold,
+  })
   // null = still booting (native splash covers); then the flag value.
   const [booted, setBooted] = useState<boolean | null>(null)
   const redirected = useRef(false)
@@ -47,12 +77,6 @@ function Root() {
         // S1 auto-route: first run lands on onboarding (S2) — once only.
         redirected.current = true
         router.replace('/onboarding')
-        // Native splash hides just after the route paints — no flash.
-        setTimeout(() => {
-          SplashScreen.hideAsync().catch(() => {})
-        }, 250)
-      } else {
-        SplashScreen.hideAsync().catch(() => {})
       }
       // State ALWAYS resolves (both branches) — null only while booting.
       setBooted(done)
@@ -61,6 +85,21 @@ function Root() {
       mounted = false
     }
   }, [router])
+
+  // Splash comes down ONLY when BOTH gates clear: the boot flag resolved
+  // (route decision made — the S1 law) AND the font gate settled (loaded —
+  // or errored, in which case waiting is pointless: the ramp falls back to
+  // system faces rather than hang on the splash forever).
+  // The onboarding redirect keeps its 250ms paint-delay (no flash);
+  // hideAsync is idempotent, so whichever gate clears last owns the hide.
+  const fontsSettled = fontsLoaded || fontError !== null
+  useEffect(() => {
+    if (booted === null || !fontsSettled) return
+    const t = setTimeout(() => {
+      SplashScreen.hideAsync().catch(() => {})
+    }, redirected.current ? 250 : 0)
+    return () => clearTimeout(t)
+  }, [booted, fontsSettled])
 
   if (booted === null) return null
 

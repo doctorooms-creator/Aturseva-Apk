@@ -1,409 +1,255 @@
 /**
- * S3 · HOME — the flagship screen (doc 06 S3; H3 restructure: zones
- * Z1–Z8 per doc 17 PART 4).
+ * S3 · HOME — the V3.1 rebuilt flagship (doc 18 · P3+P4 zones over the B1
+ * foundations): header → hero + search crown → quick actions → token
+ * promo → booking zone (live appointment | track strip) → specialties →
+ * doctors (chip-filtered, next-slot mini cards) → hospitals → labs rail
+ * + mint promo → health tools → trust banner.
  *
- * Z1 hero (greeting + city chip + glass search crown + chips)
- * → Z2 ink trust billboard → Z3 consultation tiles → Z4 book-again rail
- * → Z5 doctors rail → Z6 hospitals rail → Z7 labs strip (static, dated,
- * website handoff) → Z8 quiet footer. ONE crown = search (no banner
- * fights it). Live data: /api/public/stats + /api/doctors + /api/hospitals
- * (prod monolith — doc 08 contract). Cross-cutting: skeletons mirror
- * layout; network fail = cached cards + amber strip + retry;
- * pull-to-refresh (native).
- *
- * APK-B2: chips and suggest rows walk into the S4 listing (/search?q=)
- * and rail cards open the S5 profile (/doctor/[id]). Pure English copy
- * (owner directive). APK-R49: canvas = MONOCHROME near-white #F7F8F8
- * (owner directive — the website's true body background; the cream was
- * a misread, retired); city stays in hero (doc 16 location-first law B2).
+ * Live data (doc 08 contract): doctors rail (100-row window, 60s SWR),
+ * hospitals rail (300s SWR), per-doctor next-slot lookups (ref-cached,
+ * failures degrade to the fee card — never a broken mini card). The
+ * booking zone resolves the stored user's active booking → live token
+ * (yours / serving / ahead); guest, empty, or ANY error collapses to the
+ * track strip (error = hide law). Pull-to-refresh (native only).
  */
 
-import { type ComponentRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Platform, RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useFocusEffect, useRouter } from 'expo-router'
-import Constants from 'expo-constants'
-import { ChevronRight } from 'lucide-react-native'
-import { space, TOUCH, type as typo } from '@/lib/tokens'
+import { useFocusEffect } from 'expo-router'
+import { space } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
-import { getDoctors, getStats, getBookAgain, getHospitals, type BookAgainDoctor } from '@/lib/api'
+import { getDoctors, getHospitals, getSlots, getBookingToken, lookupBookings } from '@/lib/api'
 import { useQuery } from '@/lib/use-query'
-import { getCity, getRecentSearches, pushRecentSearch, setCity } from '@/lib/storage'
-import { getStoredToken, getStoredUser } from '@/lib/auth'
-import { matchSymptom } from '@/lib/website/symptom-search'
-import { Chip, QuietAction } from '@/components/press'
-import { PulseDot } from '@/components/pulse-dot'
+import { getCity, setCity } from '@/lib/storage'
+import { getStoredUser } from '@/lib/auth'
 import { OfflineBanner } from '@/components/offline-banner'
-import { DoctorRailCard } from '@/components/doctor-card'
-import { HospitalRailCard } from '@/components/hospital-card'
-import { DoctorRailSkeleton } from '@/components/skeleton'
-import { BottomSheet, GrabHandle } from '@/components/sheets'
 import { CityPickerSheet } from '@/components/city-picker'
 import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
-import { HomeHero } from '@/components/home/home-hero'
-import { TrustBillboard, TrustBillboardSkeleton } from '@/components/home/trust-billboard'
-import { ConsultationTiles } from '@/components/home/consultation-tiles'
-import { LabsStrip } from '@/components/home/labs-strip'
+import { HomeHeader } from '@/components/home3d/home-header'
+import { HomeHero } from '@/components/home3d/home-hero'
+import { HomeSearch } from '@/components/home3d/home-search'
+import { QuickActions } from '@/components/home3d/quick-actions'
+import { TokenBanner } from '@/components/home3d/token-banner'
+import { AppointmentCard, AppointmentSkeleton, type AppointmentToken } from '@/components/home3d/appointment-card'
+import { TrackStrip } from '@/components/home3d/track-strip'
+import { SpecialtyRail, specialtyIcon } from '@/components/home3d/specialty-rail'
+import { FindDoctors, matchesChip, type NextSlot } from '@/components/home3d/find-doctors'
+import { HospitalRail } from '@/components/home3d/hospital-rail'
+import { LabPills } from '@/components/home3d/lab-pills'
+import { LabPromo } from '@/components/home3d/lab-promo'
+import { HealthTools } from '@/components/home3d/health-tools'
+import { TrustBanner } from '@/components/home3d/trust-banner'
 
-/** Home quick-chips (S3 list — the doorway words, pure English). */
-const CHIPS = ['fever', 'knee pain', 'skin', 'child', 'acidity', 'headache'] as const
-
-interface SymptomRow {
-  term: string
-  specialtyNames: string[]
+/** The active-appointment payload the zone renders once resolved. */
+interface LiveAppointment {
+  doctorName: string
+  sub: string
+  token: AppointmentToken
 }
 
-function rowFor(term: string): SymptomRow | null {
-  const match = matchSymptom(term)
-  if (!match) return null
-  return { term, specialtyNames: match.specialties.map((s) => s.displayName) }
-}
-
-function symptomRowsFor(query: string): SymptomRow[] {
-  const q = query.trim()
-  if (q.length > 0) {
-    // Typed query: ONE honest row — the query's own mapping (all matched
-    // specialties, visible-context law).
-    const row = rowFor(q)
-    return row ? [row] : []
-  }
-  // Empty query: the curated chip set — each chip its OWN mapping.
-  return CHIPS.map((c) => rowFor(c)).filter((r): r is SymptomRow => r !== null)
-}
+type BookingZone = 'loading' | 'appointment' | 'track'
 
 export default function HomeScreen() {
   const c = useColors()
-  // H2 shell: floating-pill clearance (B9 scroll-limit law — the last
-  // row must clear the pill at scroll end, on every inset).
   const insets = useSafeAreaInsets()
-  const router = useRouter()
 
-  // Live data (doc 08 #1/#8): stats 5-min SWR · doctors rail SWR.
-  const stats = useQuery('stats', () => getStats(), { staleTime: 300_000 })
-  const rail = useQuery('doctors-rail', () => getDoctors({ limit: 12 }), { staleTime: 60_000 })
-  const hospitalsRail = useQuery('hospitals-rail', () => getHospitals({ limit: 6 }), { staleTime: 300_000 })
+  // ————— Live data (doc 08 #1/#8) —————
+  const doctors = useQuery('doctors-rail-v3', () => getDoctors({ limit: 100 }), { staleTime: 60_000 })
+  const hospitals = useQuery('hospitals-rail', () => getHospitals({ limit: 6 }), { staleTime: 300_000 })
 
-  const [query, setQuery] = useState('')
-  const [suggestOpen, setSuggestOpen] = useState(false)
-  // RN-web Modal restores focus to the field that opened it AFTER its exit
-  // animation — that returned focus must NOT re-open the sheet (otherwise
-  // close = instant reopen loop). WEB-ONLY guard: the first focus event
-  // after a close is consumed; native has no focus-restore phenomenon.
-  const justClosedSuggest = useRef(false)
-  const searchRef = useRef<ComponentRef<typeof TextInput>>(null)
-
-  const closeSuggest = useCallback(() => {
-    setSuggestOpen(false)
-    searchRef.current?.blur()
-    if (Platform.OS === 'web') {
-      justClosedSuggest.current = true
-      // Fallback clear: if the restore-focus never arrives, a later real
-      // focus still opens (800ms covers the modal exit animation).
-      setTimeout(() => {
-        justClosedSuggest.current = false
-      }, 800)
-    }
-  }, [])
-
-  const openSuggestFromFocus = useCallback(() => {
-    if (justClosedSuggest.current) {
-      justClosedSuggest.current = false // consume the restore-focus
-      return
-    }
-    setSuggestOpen(true)
-  }, [])
-  const [recents, setRecents] = useState<string[]>([])
+  // ————— City (location-first; Profile edits re-read on focus) —————
   const [city, setCityState] = useState<string | null>(null)
   const [citySheetOpen, setCitySheetOpen] = useState(false)
-  // Z1 greeting: real name when signed in, else "Namaste" (doc 17 Z1).
-  const [userName, setUserName] = useState<string | null>(null)
-
-  // APK-B6 · Book-again rail (doc 06 S3 / doc 18): the logged-in
-  // patient's last doctors, one tap away. Hide-if-empty law is absolute —
-  // guest, error, or empty list renders NOTHING (zero chrome change for
-  // the guest). A Pending booking earns nothing (server honesty gate).
-  const [bookAgain, setBookAgain] = useState<BookAgainDoctor[] | null>(null)
-  const loadBookAgain = useCallback(async () => {
-    const token = await getStoredToken()
-    if (!token) {
-      setBookAgain(null)
-      return
-    }
-    try {
-      const doctors = await getBookAgain()
-      setBookAgain(doctors.length > 0 ? doctors : null)
-    } catch {
-      setBookAgain(null) // hide-if-empty on error too (rail is a gift, not a duty)
-    }
+  const loadCity = useCallback(async () => {
+    setCityState(await getCity())
   }, [])
-
-  const loadLocal = useCallback(async () => {
-    const [r, ct, u] = await Promise.all([getRecentSearches(), getCity(), getStoredUser()])
-    setRecents(r)
-    setCityState(ct)
-    setUserName(u?.name ?? null)
-  }, [])
-
   useEffect(() => {
     // Microtask barrier: local flags never flip synchronously inside the
     // mounting effect (cascading-render law).
     void (async () => {
       await null
-      await loadLocal()
+      await loadCity()
     })()
-  }, [loadLocal])
-
-  // Tab re-focus re-reads city + recents (city changed in Profile makes
-  // Home's footer instantly true — doc 04 live-state law). B6: the rail
-  // re-checks on focus too (a fresh login in Profile paints it without a
-  // cold start).
+  }, [loadCity])
   useFocusEffect(
     useCallback(() => {
-      void loadLocal()
-      void loadBookAgain()
-    }, [loadLocal, loadBookAgain]),
+      void loadCity()
+    }, [loadCity]),
   )
-
-  const applyQuery = useCallback(
-    (term: string) => {
-      const t = term.trim()
-      setQuery(t)
-      void pushRecentSearch(t)
-      void loadLocal()
-      closeSuggest()
-      // B2: the S4 listing walk — chip/row taps carry the query over.
-      void router.push({ pathname: '/search', params: { q: t } })
-    },
-    [loadLocal, closeSuggest, router],
-  )
-
-  const symptomRows = useMemo(() => symptomRowsFor(query), [query])
-
   const onPickCity = (picked: string | null) => {
     setCitySheetOpen(false)
     setCityState(picked)
     if (picked) void setCity(picked)
   }
 
-  const version = Constants.expoConfig?.version ?? '0.1.0'
+  // ————— Booking zone: stored user → active booking → live token —————
+  const [zone, setZone] = useState<BookingZone>('loading')
+  const [appointment, setAppointment] = useState<LiveAppointment | null>(null)
+  useEffect(() => {
+    void (async () => {
+      await null
+      try {
+        const user = await getStoredUser()
+        if (!user?.mobile) {
+          setZone('track')
+          return
+        }
+        const rows = await lookupBookings(user.mobile)
+        const today = new Date().toISOString().slice(0, 10)
+        const active = rows.find(
+          (r) => r.status !== 'Cancelled' && r.status !== 'Completed' && r.date >= today,
+        )
+        if (!active) {
+          setZone('track')
+          return
+        }
+        const token = await getBookingToken(active.id)
+        setAppointment({
+          doctorName: token.doctorName,
+          sub: `${token.specialization} · ${token.hospitalName}`,
+          token: {
+            yours: token.tokenNumber,
+            serving: String(Math.max(Number(token.tokenNumber) - token.queuePosition, 0)),
+            ahead: String(token.queuePosition).padStart(2, '0'),
+          },
+        })
+        setZone('appointment')
+      } catch {
+        setZone('track') // error = hide law — the strip is the floor
+      }
+    })()
+  }, [])
+
+  // ————— Doctors: chip filter (lifted — the slot effect follows it) —————
+  const [selected, setSelected] = useState('All')
+  const doctorList = doctors.data?.doctors ?? null
+  const filteredDoctors = useMemo(() => {
+    if (!doctorList) return []
+    return doctorList.filter((d) => matchesChip(d, selected))
+  }, [doctorList, selected])
+
+  // ————— Next-slot lookups: first 3 FILTERED doctors, ref-cached —————
+  const slotsRef = useRef<Map<string, NextSlot | null>>(new Map())
+  const [slots, setSlots] = useState<Record<string, NextSlot | null>>({})
+  const firstThreeIds = useMemo(() => filteredDoctors.slice(0, 3).map((d) => d.id), [filteredDoctors])
+  useEffect(() => {
+    if (firstThreeIds.length === 0) return
+    let alive = true
+    void (async () => {
+      await null
+      const today = new Date().toISOString().slice(0, 10)
+      const entries = await Promise.all(
+        firstThreeIds.map(async (id): Promise<[string, NextSlot | null]> => {
+          const cached = slotsRef.current.get(id)
+          if (cached !== undefined) return [id, cached]
+          try {
+            const inv = await getSlots(id, today)
+            const next: NextSlot | null =
+              inv.available && inv.nextFreeSlot ? { day: inv.dayName, time: inv.nextFreeSlot } : null
+            slotsRef.current.set(id, next)
+            return [id, next]
+          } catch {
+            slotsRef.current.set(id, null) // failure = no slot today (fee card)
+            return [id, null]
+          }
+        }),
+      )
+      if (!alive) return
+      setSlots((prev) => {
+        const merged: Record<string, NextSlot | null> = { ...prev }
+        for (const [id, next] of entries) merged[id] = next
+        return merged
+      })
+    })()
+    return () => {
+      alive = false
+    }
+  }, [firstThreeIds])
+
+  // ————— Specialty items: derived from the live list, top 5 by count —————
+  const specialtyItems = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const d of doctorList ?? []) {
+      const label = d.specialization.trim()
+      if (!label) continue
+      counts.set(label, (counts.get(label) ?? 0) + 1)
+    }
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([label]) => ({ label, icon: specialtyIcon(label) }))
+  }, [doctorList])
 
   const refreshAll = useCallback(() => {
-    stats.refresh()
-    rail.refresh()
-  }, [stats, rail])
+    doctors.refresh()
+    hospitals.refresh()
+  }, [doctors, hospitals])
 
   return (
     <>
-    <ScrollView
-      style={[styles.screen, { backgroundColor: c.canvasSoft }]}
-      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT }]}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        Platform.OS === 'web' ? undefined : (
-          <RefreshControl refreshing={rail.refreshing || stats.refreshing} onRefresh={refreshAll} tintColor={c.ink} />
-        )
-      }
-    >
-      {/* Z1 · HERO — greeting + city chip (promoted from the
-          footer, location-first) + glass search crown + quick-chips. */}
-      <View style={styles.safeTop} />
-      <HomeHero
-        name={userName}
-        city={city}
-        onCityPress={() => setCitySheetOpen(true)}
-        searchRef={searchRef}
-        query={query}
-        onQueryChange={setQuery}
-        onSearchFocus={openSuggestFromFocus}
-        chips={CHIPS}
-        onChipPress={(term) => {
-          // Zero-thinking path (doc 06 S3): chip tap walks STRAIGHT
-          // into the S4 listing — no suggest sheet in between.
-          applyQuery(term)
+      <ScrollView
+        style={[styles.screen, { backgroundColor: c.canvas }]}
+        contentContainerStyle={{
+          paddingTop: insets.top + 6,
+          paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT + 28,
         }}
-      />
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          Platform.OS === 'web' ? undefined : (
+            <RefreshControl refreshing={doctors.refreshing || hospitals.refreshing} onRefresh={refreshAll} tintColor={c.ink} />
+          )
+        }
+      >
+        <HomeHeader city={city ?? 'Select city'} onCityPress={() => setCitySheetOpen(true)} />
 
-      {/* Offline/degraded banner — cached last-good stays underneath */}
-      {(rail.error || stats.error) && (rail.data || stats.data) ? (
-        <View style={styles.bannerWrap}>
-          <OfflineBanner onRetry={refreshAll} />
-        </View>
-      ) : null}
-
-      {/* Z2 · TRUST BILLBOARD — ink band, real numbers only. Error = hide
-          (the offline banner owns degraded comms; a half-empty billboard
-          reads as broken trust). */}
-      {stats.data ? (
-        <TrustBillboard stats={stats.data} />
-      ) : stats.loading ? (
-        <View style={styles.zoneGap}>
-          <TrustBillboardSkeleton />
-        </View>
-      ) : null}
-
-      {/* Z3 · CONSULTATION TILES — the two doorways (D6: iconographic,
-          no photography; labs = website handoff). */}
-      <View style={styles.zoneGap}>
-        <ConsultationTiles onFindDoctor={() => void router.push('/search')} />
-      </View>
-
-      {/* B6 · Book-again rail — logged-in only, hide-if-empty. The last
-          doctors you actually visited, one tap to the booking sheet. */}
-      {bookAgain ? (
-        <>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: c.ink }]}>Book again</Text>
+        {/* Offline/degraded banner — cached last-good stays underneath */}
+        {(doctors.error || hospitals.error) && (doctors.data || hospitals.data) ? (
+          <View style={styles.bannerWrap}>
+            <OfflineBanner onRetry={refreshAll} />
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
-            {bookAgain.map((d) => (
-              <DoctorRailCard
-                key={d.id}
-                doctor={{
-                  id: d.id,
-                  name: d.name,
-                  specialization: d.specialization,
-                  city: d.city,
-                  state: d.state,
-                  fees: d.fees,
-                  experience: d.experience,
-                  isEmergency: false,
-                  rating: 0,
-                  ratingCount: 0,
-                  photo: d.photo,
-                  photoRepresentative: d.photoRepresentative,
-                }}
-                onPress={() => void router.push({ pathname: '/doctor/[id]', params: { id: d.id } })}
-              />
-            ))}
-          </ScrollView>
-        </>
-      ) : null}
+        ) : null}
 
-      {/* Doctor rail — LIVE cards */}
-      <View style={styles.sectionHeader}>
-        <Text style={[styles.sectionTitle, { color: c.ink }]}>Doctors</Text>
-        <View style={[styles.liveChip, { backgroundColor: c.glassFill, borderColor: c.glassEdge, borderWidth: 1 }]}>
-          <PulseDot size={6} />
-          <Text style={[styles.liveText, { color: c.tealText }]}>live</Text>
+        <View style={styles.heroBand}>
+          <HomeHero />
+          <HomeSearch />
         </View>
-      </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
-        {rail.loading && !rail.data ? (
-          <>
-            <DoctorRailSkeleton />
-            <DoctorRailSkeleton />
-            <DoctorRailSkeleton />
-          </>
-        ) : rail.data && rail.data.doctors.length === 0 ? (
-          <View style={styles.railEmpty}>
-            <Text style={[styles.railEmptyText, { color: c.body }]}>No live doctors right now — check back in a little while.</Text>
-          </View>
+
+        <QuickActions />
+        <TokenBanner />
+
+        {/* Booking zone: live appointment | track strip | shimmer while
+            the auth check resolves. Any error collapses to the strip. */}
+        {zone === 'loading' ? (
+          <AppointmentSkeleton />
+        ) : zone === 'appointment' && appointment ? (
+          <AppointmentCard
+            doctorName={appointment.doctorName}
+            sub={appointment.sub}
+            photo={null}
+            photoRepresentative
+            token={appointment.token}
+          />
         ) : (
-          rail.data?.doctors.map((d) => (
-            <DoctorRailCard
-              key={d.id}
-              doctor={d}
-              onPress={() => void router.push({ pathname: '/doctor/[id]', params: { id: d.id } })}
-            />
-          ))
+          <TrackStrip />
         )}
+
+        <SpecialtyRail items={specialtyItems} loading={doctors.loading && !doctors.data} />
+        <FindDoctors
+          doctors={doctorList ?? []}
+          loading={doctors.loading && !doctors.data}
+          slots={slots}
+          selected={selected}
+          onSelect={setSelected}
+        />
+        <HospitalRail hospitals={hospitals.data?.hospitals ?? []} loading={hospitals.loading && !hospitals.data} />
+        <LabPills />
+        <LabPromo />
+        <HealthTools />
+        <TrustBanner />
       </ScrollView>
 
-      {/* B7 · Hospitals rail — hide-if-empty ABSOLUTE (public data, guest ok) */}
-      {hospitalsRail.data && hospitalsRail.data.hospitals.length > 0 ? (
-        <>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: c.ink }]}>Hospitals</Text>
-            <View style={styles.hospitalsSpacer} />
-            <Chip label="See all" surface={c.canvas} onPress={() => void router.push('/hospitals')} />
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.railRow}>
-            {hospitalsRail.data.hospitals.map((h) => (
-              <HospitalRailCard
-                key={h.id}
-                hospital={h}
-                onPress={() => void router.push({ pathname: '/hospital/[id]', params: { id: h.id } })}
-              />
-            ))}
-          </ScrollView>
-        </>
-      ) : null}
-
-      {/* Z7 · LABS STRIP — three REAL tests, dated prices, website
-          handoff (D3 ruling: booking lives on aturseva.com). */}
-      <View style={styles.zoneGap}>
-        <LabsStrip />
-      </View>
-
-      {/* Z8 · quiet footer — version + legal (city row promoted to the
-          hero; S3 law: ≤1 line each). */}
-      <View style={styles.footer}>
-        <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version}</Text>
-        <QuietAction
-          label="Privacy · Terms"
-          onPress={() => {
-            void router.push('/profile')
-          }}
-        />
-      </View>
-      <View style={styles.safeBottom} />
-    </ScrollView>
-
-    {/* Suggest sheet (S3): typed-query "search anyway" row + recent 3 +
-        symptom rows. Fee meta per doctor (not per specialty) arrives on the
-        S4 listing; per-specialty fee would be fabrication (honesty law). */}
-    <BottomSheet visible={suggestOpen} onClose={closeSuggest} accessibilityLabel="Search suggestions">
-      <GrabHandle />
-      {query.trim().length > 0 ? (
-        <>
-          <Pressable style={({ pressed }) => [styles.suggestRow, pressed && { opacity: 0.7 }]} onPress={() => applyQuery(query)} accessibilityRole="button">
-            <View style={styles.suggestRowMain}>
-              <Text style={[styles.suggestRowText, { color: c.ink }]} numberOfLines={1}>
-                Search for “{query.trim()}”
-              </Text>
-              <Text style={[styles.suggestRowCaption, { color: c.body }]} numberOfLines={1}>
-                Doctors matching this word or name
-              </Text>
-            </View>
-            <ChevronRight size={16} color={c.mute} strokeWidth={2} />
-          </Pressable>
-          {symptomRows.length === 0 ? (
-            <Text style={[styles.suggestHonest, { color: c.body }]}>No symptom match — searching by doctor name still works.</Text>
-          ) : null}
-        </>
-      ) : null}
-      {query.trim().length === 0 && recents.length > 0 ? (
-        <Text style={[styles.suggestCaption, { color: c.mute }]}>Recent</Text>
-      ) : null}
-      {query.trim().length === 0
-        ? recents.map((r) => (
-            <Pressable key={`recent-${r}`} style={({ pressed }) => [styles.suggestRow, pressed && { opacity: 0.7 }]} onPress={() => applyQuery(r)} accessibilityRole="button">
-              <Text style={[styles.suggestRowText, { color: c.ink }]} numberOfLines={1}>
-                {r}
-              </Text>
-              <ChevronRight size={16} color={c.mute} strokeWidth={2} />
-            </Pressable>
-          ))
-        : null}
-      {query.trim().length === 0 ? <Text style={[styles.suggestCaption, { color: c.mute }]}>Search by problem</Text> : null}
-      {query.trim().length === 0
-        ? symptomRows.map((row) => (
-            <Pressable key={`sym-${row.term}`} style={({ pressed }) => [styles.suggestRow, pressed && { opacity: 0.7 }]} onPress={() => applyQuery(row.term)} accessibilityRole="button">
-              <View style={styles.suggestRowMain}>
-                <Text style={[styles.suggestRowText, { color: c.ink }]} numberOfLines={1}>
-                  {row.specialtyNames.join(' · ')}
-                </Text>
-                <Text style={[styles.suggestRowCaption, { color: c.body }]} numberOfLines={1}>
-                  Treats {row.term}
-                </Text>
-              </View>
-              <ChevronRight size={16} color={c.mute} strokeWidth={2} />
-            </Pressable>
-          ))
-        : null}
-    </BottomSheet>
-
-    <CityPickerSheet visible={citySheetOpen} current={city} onClose={() => setCitySheetOpen(false)} onPick={onPickCity} />
+      <CityPickerSheet visible={citySheetOpen} current={city} onClose={() => setCitySheetOpen(false)} onPick={onPickCity} />
     </>
   )
 }
@@ -412,97 +258,14 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  content: {
-    // Bottom clear is DYNAMIC (inset + NAV_PILL_FOOTPRINT) — the pill
-    // floats OVER content (H2 shell); static padding would tuck the
-    // quiet footer behind it.
-  },
-  safeTop: {
-    height: 12,
-  },
+  /** The banner carries its own 16px side margins — +8 aligns it to 24. */
   bannerWrap: {
-    marginTop: space.s12,
+    marginTop: 12,
+    marginHorizontal: 8,
   },
-  /** H3 zone rhythm — the gap between Z2/Z3/Z7 bands and their
-   *  neighbors (the sections own their own headers/margins). */
-  zoneGap: {
-    marginTop: space.s20,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.s8,
-    marginTop: space.s24,
-    marginBottom: space.s12,
-    marginHorizontal: space.s16,
-  },
-  sectionTitle: {
-    ...typo.title,
-  },
-  liveChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    borderRadius: 999,
-    paddingHorizontal: space.s8,
-    paddingVertical: 2,
-  },
-  liveText: {
-    ...typo.caption,
-    fontWeight: '600',
-  },
-  railRow: {
-    paddingHorizontal: space.s16,
-    gap: space.s12,
-  },
-  hospitalsSpacer: {
-    flex: 1,
-  },
-  railEmpty: {
-    paddingHorizontal: space.s16,
-  },
-  railEmptyText: {
-    ...typo.body,
-  },
-  footer: {
-    marginTop: space.s32,
-    marginHorizontal: space.s16,
-    gap: space.s8,
-    alignItems: 'center',
-  },
-  versionText: {
-    ...typo.caption,
-  },
-  safeBottom: {
-    height: space.s24,
-  },
-  suggestHonest: {
-    ...typo.body,
-    paddingHorizontal: space.s4,
-    marginBottom: space.s8,
-  },
-  suggestCaption: {
-    ...typo.caption,
-    marginTop: space.s12,
-    marginBottom: space.s4,
-    paddingHorizontal: space.s4,
-  },
-  suggestRow: {
-    minHeight: TOUCH + 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: space.s4,
-    gap: space.s8,
-  },
-  suggestRowMain: {
-    flex: 1,
-    gap: 2,
-  },
-  suggestRowText: {
-    ...typo.bodyStrong,
-    flex: 1,
-  },
-  suggestRowCaption: {
-    ...typo.caption,
+  heroBand: {
+    marginTop: 6,
+    marginHorizontal: space.s24,
+    gap: 12,
   },
 })
