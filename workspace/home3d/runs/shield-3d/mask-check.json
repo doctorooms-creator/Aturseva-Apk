@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. Shield: Yes — solid, clean, no defects.\n2. Cross: Yes — solid, clean, no defects.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795405068,
+  "id": "20261123113747d253d1f392434f9e",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123113747d253d1f392434f9e",
+  "usage": {
+    "completion_tokens": 28,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 782,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 810
+  }
+}

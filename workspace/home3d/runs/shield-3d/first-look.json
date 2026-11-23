@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "A 3D medical/health icon: four shield-plus-cross motifs arranged in a 2×2 grid on a light blue rounded shape with a spiky, angular silhouette. Colors are soft pastel blues, periwinkle, and lavender gradients with white outlines. Materials look like glossy plastic or glass with smooth gradients. Geometry issues: the outer silhouette has jagged, irregular spikes and notches at top, bottom, and sides that look like unintended mesh artifacts rather than deliberate design, and the four quadrants appear duplicated with slight misalignment/seams between them.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795404959,
+  "id": "202611231135551e5cfb7e914f47dd",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611231135551e5cfb7e914f47dd",
+  "usage": {
+    "completion_tokens": 117,
+    "completion_tokens_details": {
+      "reasoning_tokens": 116
+    },
+    "prompt_tokens": 407,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 524
+  }
+}

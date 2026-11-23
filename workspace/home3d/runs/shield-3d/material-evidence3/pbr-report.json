@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "verdict": "pass",
+  "confidence": 0.86,
+  "estimatedFidelity": 0.86,
+  "targetThreshold": 0.7,
+  "materialId": "shieldBlue",
+  "sourceImage": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/shield-body-band.png",
+  "outDir": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/material-evidence3",
+  "palette": [
+    "#5A96FC",
+    "#4D8CFD",
+    "#3B7FFD",
+    "#C3CEF4",
+    "#88A9F6"
+  ],
+  "maps": {
+    "albedo": {
+      "path": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/material-evidence3/shieldblue_albedo.png",
+      "url": "shieldblue_albedo.png",
+      "channel": "albedo",
+      "source": "reference-pixel-extraction"
+    },
+    "roughness": {
+      "path": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/material-evidence3/shieldblue_roughness.png",
+      "url": "shieldblue_roughness.png",
+      "channel": "roughness",
+      "source": "reference-pixel-extraction"
+    },
+    "height": {
+      "path": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/material-evidence3/shieldblue_height.png",
+      "url": "shieldblue_height.png",
+      "channel": "height",
+      "source": "reference-pixel-extraction"
+    },
+    "normal": {
+      "path": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/material-evidence3/shieldblue_normal.png",
+      "url": "shieldblue_normal.png",
+      "channel": "normal",
+      "source": "reference-pixel-extraction"
+    },
+    "ao": {
+      "path": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/material-evidence3/shieldblue_ao.png",
+      "url": "shieldblue_ao.png",
+      "channel": "ao",
+      "source": "reference-pixel-extraction"
+    }
+  },
+  "diagnostics": {
+    "sourceWidth": 408,
+    "sourceHeight": 160,
+    "mapSize": 1024,
+    "cropBBoxPixels": {
+      "x": 8,
+      "y": 0,
+      "width": 400,
+      "height": 160
+    },
+    "mask": {
+      "backgroundColor": "#F0F0FD",
+      "backgroundNoise": 7.0,
+      "transparentPixelFraction": 0.0,
+      "foregroundCoverage": 0.8092
+    },
+    "mapStats": {
+      "valueRange": 0.3324,
+      "heightP90Gradient": 0.02508,
+      "roughnessBase": 0.684,
+      "roughnessVariation": 0.05,
+      "normalStrength": 0.186,
+      "blurRadius": 21
+    },
+    "palette": [
+      "#5A96FC",
+      "#4D8CFD",
+      "#3B7FFD",
+      "#C3CEF4",
+      "#88A9F6"
+    ]
+  },
+  "warnings": [
+    "single-image inverse rendering cannot prove true physical PBR; confidence is capped"
+  ],
+  "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review"
+}

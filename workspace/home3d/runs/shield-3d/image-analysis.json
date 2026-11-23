@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"L1\": {\n    \"identification\": \"Health-protection icon: shield with medical cross\",\n    \"category\": \"icon/UI symbol, medical-security emblem\",\n    \"primaryDomain\": \"object\",\n    \"confidence\": 0.95\n  },\n  \"L2\": {\n    \"boundingPrimitives\": \"flattened extruded shield profile (curved-top square tapering to a bottom point), plus a smaller extruded cross (two perpendicular rectangular prisms)\",\n    \"symmetry\": \"bilateral (single vertical mirror axis in object space)\",\n    \"shapeLanguage\": \"rounded, friendly, soft-cornered; protective/medical semiotics\",\n    \"aspectRatio\": \"shield approx 1:1.2 (width:height); depth very thin, ~0.15 of width\"\n  },\n  \"L3\": {\n    \"hierarchy\": {\n      \"shieldBody\": {\n        \"subParts\": [\n          \"front face plate\",\n          \"side/edge walls (extrusion depth)\",\n          \"beveled rim / inner border ridge\"\n        ],\n        \"surfaceFeatures\": [\n          \"glossy gradient on front face\",\n          \"soft specular highlight band across upper region\",\n          \"inner lighter stroke along edge\"\n        ]\n      },\n      \"crossEmblem\": {\n        \"subParts\": [\n          \"vertical bar\",\n          \"horizontal bar (fused, single volumetric cross)\",\n          \"rounded edge fillets\"\n        ],\n        \"surfaceFeatures\": [\n          \"uniform glossy white finish\",\n          \"slight ambient-occlusion shading where cross meets shield face\"\n        ]\n      }\n    }\n  },\n  \"L4\": {\n    \"triplets\": [\n      \"<cross, butt-attached to (slight embed), shield front face center>\",\n      \"<cross, centered on, shield face (slightly above geometric center)>\",\n      \"<edge walls, butt-join, shield front and implied back plate>\",\n      \"<inner rim stroke, overlap/offset from, shield outer silhouette>\"\n    ]\n  },\n  \"L5\": {\n    \"shieldBody\": {\n      \"albedoHue\": \"blue (~220° hue)\",\n      \"metalness\": 0.0,\n      \"roughness\": 0.15,\n      \"translucency\": \"none (opaque)\"\n    },\n    \"crossEmblem\": {\n      \"albedoHue\": \"white / neutral\",\n      \"metalness\": 0.0,\n      \"roughness\": 0.2,\n      \"translucency\": \"none (opaque)\"\n    }\n  },\n  \"L6\": {\n    \"shieldFace\": {\n      \"hue\": \"blue 215-225°\",\n      \"value\": \"mid-to-dark, darker toward lateral/bottom edges\",\n      \"saturation\": \"high\",\n      \"finish\": \"gloss\",\n      \"gradient\": [\n        {\"stop\": \"light cerulean/blue\", \"position\": \"upper-center (light-source side)\"},\n        {\"stop\": \"mid blue\", \"position\": \"mid face\"},\n        {\"stop\": \"deep blue/indigo\", \"position\": \"lower point and lateral edges\"}\n      ]\n    },\n    \"rim\": {\n      \"hue\": \"light blue/white-ish stroke\",\n      \"value\": \"high\",\n      \"saturation\": \"low\",\n      \"finish\": \"satin\"\n    },\n    \"cross\": {\n      \"hue\": \"neutral white\",\n      \"value\": \"very high\",\n      \"saturation\": \"near zero\",\n      \"finish\": \"gloss\"\n    }\n  },\n  \"L7\": {\n    \"identityFeatures\": [\n      \"pointed-bottom shield silhouette with rounded upper shoulders\",\n      \"bold white plus/cross centered on face — medical/health protection signifier\",\n      \"strong blue vertical gradient with glossy specular band\",\n      \"light inner rim stroke defining the shield edge\"\n    ]\n  },\n  \"L8\": {\n    \"uncertain\": [\n      \"back face geometry and finish (single front view; back plate assumed symmetric extrusion)\",\n      \"cross depth/extrusion thickness and whether it is beveled or flat\",\n      \"true roughness/metalness values inferred from appearance, not verified under neutral lighting\",\n      \"whether shield is a solid volume or a shell/hollow behind face\",\n      \"presence of small edge fillets on shield silhouette corners\"\n    ]\n  }\n}\n```",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795404317,
+  "id": "20261123112452cbd22e1e71c1415d",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123112452cbd22e1e71c1415d",
+  "usage": {
+    "completion_tokens": 914,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 292,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1206
+  }
+}

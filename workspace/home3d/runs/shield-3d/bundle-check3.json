@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Verdict: Not clean.**\n\n- Shield itself: good — glossy blue gradient, white cross, crisp edges ✓\n- Background: **fails** — a light blue/white irregular blob/patch remains around and below the shield (especially bottom-left and bottom-right). Not transparent.\n- Fix needed: remove background remnant; keep shield as-is.",
+        "reasoning_content": "Small image, blue shield with white cross. Background appears light blue/white blob—remnant visible. Verdict: not fully clean.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406950,
+  "id": "20261123120908a80a57710345460b",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123120908a80a57710345460b",
+  "usage": {
+    "completion_tokens": 102,
+    "completion_tokens_details": {
+      "reasoning_tokens": 28
+    },
+    "prompt_tokens": 84,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 186
+  }
+}

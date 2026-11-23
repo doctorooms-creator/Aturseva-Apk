@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Yes — outline is smooth, no jagged edges or self-intersections. Shape reads correctly: arched dome top, straight parallel sides, long taper to a soft point at bottom.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406417,
+  "id": "20261123120014a2d6ef3a973548d7",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123120014a2d6ef3a973548d7",
+  "usage": {
+    "completion_tokens": 39,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 430,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 469
+  }
+}

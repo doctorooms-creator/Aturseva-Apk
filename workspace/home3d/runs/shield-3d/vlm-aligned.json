@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"overall\": 0.45,\n  \"silhouette\": 0.6,\n  \"cross\": 0.55,\n  \"gradient\": 0.3,\n  \"gaps\": [\n    \"Color saturation/finish: reference is vivid glossy blue (deep royal-blue mid/bottom, bright top); reconstruction is washed-out pale lavender-blue with a hard horizontal band seam and heavy top overexposure\",\n    \"Cross contrast/finish: reference cross is bright white with embossed bevel and soft drop shadow against the blue; reconstruction cross is near-background gray, flat, no shadow, barely legible\"\n  ]\n}\n```",
+        "reasoning_content": "Left: blue shield, saturated gradient (light top to deep blue), white cross with soft shadow, glossy. Right: very pale washed-out shield, cross too pale, less saturated, silhouette close but less pointed taper, horizontal band artifact.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406479,
+  "id": "2026112312011399c5035738fd4036",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112312011399c5035738fd4036",
+  "usage": {
+    "completion_tokens": 185,
+    "completion_tokens_details": {
+      "reasoning_tokens": 48
+    },
+    "prompt_tokens": 776,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 961
+  }
+}

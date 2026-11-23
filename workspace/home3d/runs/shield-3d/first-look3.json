@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Tersely: A roughly shield/heraldic-shaped object with angular, faceted silhouette; dark matte gray (charcoal), no gloss; surfaces show embossed cross-like outlines that repeat and mirror awkwardly. Geometry problems: two mirrored halves misaligned with a visible seam at top center, duplicated cross shapes (four instead of one), and jagged spike-like protrusions along the bottom edge.\n\nFidelity: 0.15 — it resembles a shield shape but is dark matte gray with duplicated, malformed cross outlines rather than a glossy blue-violet surface with a single clean white cross.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795405119,
+  "id": "20261123113834578ea8cfd0a04f32",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123113834578ea8cfd0a04f32",
+  "usage": {
+    "completion_tokens": 121,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 430,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 551
+  }
+}

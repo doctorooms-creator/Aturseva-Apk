@@ -1,0 +1,20 @@
+{
+  "shield-3d": {
+    "aspect": 1.1285,
+    "source": "shield-graded.png",
+    "variants": {
+      "2x": {
+        "file": "shield-3d@2x.png",
+        "w": 110,
+        "h": 124,
+        "bytes": 7721
+      },
+      "3x": {
+        "file": "shield-3d@3x.png",
+        "w": 165,
+        "h": 186,
+        "bytes": 12302
+      }
+    }
+  }
+}

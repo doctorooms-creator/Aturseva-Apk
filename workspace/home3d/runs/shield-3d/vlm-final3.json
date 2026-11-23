@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"overall\": 0.72,\n  \"silhouette\": 0.7,\n  \"cross\": 0.6,\n  \"gradient\": 0.78,\n  \"gaps\": [\n    \"Cross lacks the mockup's 3D bevel/extrusion and soft drop shadow — rendered as a flat white shape with rounded lobes\",\n    \"Shield outline is jagged/aliased (black fringing) and the bottom point/shoulders are less smooth than the mockup's soft curved taper\"\n  ]\n}\n```",
+        "reasoning_content": "Compare mockup vs reconstruction. Both shield with cross. Right has flat cross, left has beveled 3D cross. Silhouette similar though right shield edges jagged, top notch present in both. Gradients similar.\n\nScores: overall ~0.72, silhouette 0.7, cross 0.6, gradient 0.75. Gaps: cross lacks 3D bevel/shadow; edge aliasing/jagged outline.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795407599,
+  "id": "20261123121956e0aed3ba41e14cc2",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123121956e0aed3ba41e14cc2",
+  "usage": {
+    "completion_tokens": 210,
+    "completion_tokens_details": {
+      "reasoning_tokens": 91
+    },
+    "prompt_tokens": 768,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 978
+  }
+}

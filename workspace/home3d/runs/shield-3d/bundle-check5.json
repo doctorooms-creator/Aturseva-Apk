@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Verdict: FAIL** ❌\n\n- Background: ✅ Clean/transparent\n- Shield: ✅ Glossy blue, clean\n- Cross: ❌ **Black, not white**",
+        "reasoning_content": "Cross is black, not white. Background appears transparent. Verdict: fail on white cross.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406990,
+  "id": "202611231209486f20b995150249d8",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611231209486f20b995150249d8",
+  "usage": {
+    "completion_tokens": 61,
+    "completion_tokens_details": {
+      "reasoning_tokens": 19
+    },
+    "prompt_tokens": 90,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 151
+  }
+}

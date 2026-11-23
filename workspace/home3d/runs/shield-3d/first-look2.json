@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "A glossy pastel-blue render showing four white health crosses, but instead of four separate shield objects, they're baked into a single seamless tiled texture stretched over one blobby, roughly hexagonal mass — the shield outlines wrap around the whole silhouette like a wrapped gift, with dark crease lines and pinched, spiky folds at the corners and center seams. Colors are light blue, white, and lavender; materials read as soft glossy plastic/candy. Geometry problems: the tiling texture causes duplicated shields, warped proportions, corner spikes, and edge seams; the intended shield shape is lost entirely. Silhouette fidelity to a glossy shield-with-white-cross emblem: ~0.15 — crosses read clearly, but the shield silhouette is replaced by an arbitrary wrapped blob.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795405040,
+  "id": "20261123113713a22ef5233fb8489a",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123113713a22ef5233fb8489a",
+  "usage": {
+    "completion_tokens": 156,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 428,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 584
+  }
+}

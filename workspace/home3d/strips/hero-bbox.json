@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"assets\":[{\"name\":\"doctor-with-hospital\",\"x1\":340,\"y1\":0,\"x2\":680,\"y2\":209,\"desc\":\"3D clay-style doctor with stethoscope, hospital building and green bushes\"}]}",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795404234,
+  "id": "20261123112350e172c259c2494879",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123112350e172c259c2494879",
+  "usage": {
+    "completion_tokens": 52,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 349,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 401
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "A purple shield shape (light lavender gradient, brighter at top) with a white plus/cross symbol in the center. Soft gray drop shadow beneath, white background.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795405822,
+  "id": "20261123115021e3ca6031e0344af0",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123115021e3ca6031e0344af0",
+  "usage": {
+    "completion_tokens": 35,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 398,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 433
+  }
+}

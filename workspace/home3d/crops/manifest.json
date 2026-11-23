@@ -1,0 +1,93 @@
+{
+  "hero-3d": {
+    "crop": "workspace/home3d/crops/hero-3d.png",
+    "mockup_bbox": [
+      340,
+      140,
+      680,
+      349
+    ],
+    "size": [
+      452,
+      291
+    ]
+  },
+  "tile-doctor": {
+    "crop": "workspace/home3d/crops/tile-doctor.png",
+    "mockup_bbox": [
+      75,
+      445,
+      140,
+      525
+    ],
+    "size": [
+      91,
+      112
+    ]
+  },
+  "tile-hospital": {
+    "crop": "workspace/home3d/crops/tile-hospital.png",
+    "mockup_bbox": [
+      240,
+      445,
+      330,
+      525
+    ],
+    "size": [
+      126,
+      112
+    ]
+  },
+  "tile-labtubes": {
+    "crop": "workspace/home3d/crops/tile-labtubes.png",
+    "mockup_bbox": [
+      410,
+      440,
+      490,
+      525
+    ],
+    "size": [
+      112,
+      119
+    ]
+  },
+  "tile-video": {
+    "crop": "workspace/home3d/crops/tile-video.png",
+    "mockup_bbox": [
+      570,
+      445,
+      665,
+      520
+    ],
+    "size": [
+      133,
+      105
+    ]
+  },
+  "token-stack": {
+    "crop": "workspace/home3d/crops/token-stack.png",
+    "mockup_bbox": [
+      470,
+      625,
+      700,
+      730
+    ],
+    "size": [
+      300,
+      147
+    ]
+  },
+  "shield-3d": {
+    "crop": "workspace/home3d/crops/shield-3d.png",
+    "mockup_bbox": [
+      60,
+      1965,
+      115,
+      2025
+    ],
+    "size": [
+      77,
+      84
+    ]
+  }
+}

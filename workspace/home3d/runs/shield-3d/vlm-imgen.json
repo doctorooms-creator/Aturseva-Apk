@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"overall\": 0.75,\n  \"silhouette\": 0.8,\n  \"cross\": 0.85,\n  \"gradient\": 0.6,\n  \"gaps\": [\n    \"Reconstruction has a thick raised 3D border and rotated tilt; mockup shield is flat, borderless, and symmetric.\",\n    \"Color/gloss mismatch: mockup is a soft blue-violet gradient with translucent feel, reconstruction is saturated flat blue with strong opaque 3D shading.\"\n  ]\n}\n```",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406814,
+  "id": "2026112312065041230942ec2a47fc",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112312065041230942ec2a47fc",
+  "usage": {
+    "completion_tokens": 114,
+    "completion_tokens_details": {
+      "reasoning_tokens": 113
+    },
+    "prompt_tokens": 771,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 885
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "A shield (flat security/health icon) on a white background.\n\n**Shape:** Wider at top than bottom. Top edge: gently rounded, slightly domed, with small rounded upper corners. Sides: curve outward slightly, then taper inward. Bottom: tapers to a rounded point (soft V), tip slightly rounded, pointing down-center. A subtle vertical crease/line runs down the center, and a faint horizontal band crosses the middle.\n\n**Colors:** Blue gradient — lighter lavender-blue at top, deeper medium blue at the bottom, with the horizontal mid-band slightly lighter. Background white.\n\n**Cross:** Yes — a white Greek cross (plus sign), centered horizontally, slightly above center vertically, rounded corners on all four arms.\n\n**Shadow:** Yes — a soft, blurry elliptical gray shadow beneath the shield's bottom tip.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406017,
+  "id": "2026112311533105d32aef2f094659",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112311533105d32aef2f094659",
+  "usage": {
+    "completion_tokens": 172,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 411,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 583
+  }
+}

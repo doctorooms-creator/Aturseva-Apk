@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"overall\": 0.52,\n  \"silhouette\": 0.45,\n  \"cross\": 0.62,\n  \"gradient\": 0.55,\n  \"gaps\": [\n    \"Silhouette: reconstruction's shield is too wide/trapezoidal with rounded top corners and a shallow pointed bottom — the mockup has a classic shield with notched top edge, curved sides, and a strong V-shaped bottom point\",\n    \"Cross: mockup cross is larger, thicker, 3D-extruded with beveled highlight/shadow edges; reconstruction cross is smaller, flat, rounded, and lacks volume/highlight\"\n  ]\n}\n```",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406036,
+  "id": "20261123115351e21b22cf8aea41a5",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123115351e21b22cf8aea41a5",
+  "usage": {
+    "completion_tokens": 143,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 797,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 940
+  }
+}

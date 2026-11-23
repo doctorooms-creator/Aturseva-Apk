@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\"overall\":0.42,\"silhouette\":0.35,\"cross\":0.7,\"gradient\":0.4,\"gaps\":[\"Shield cropped/zoomed — missing pointed top apex, full tapered bottom tip, and centered framing\",\"Color too pale/washed lavender-blue; missing vivid royal-blue saturation, glossy highlights, and lavender banner with white border behind cross\"]}\n```",
+        "reasoning_content": "Render is cropped/zoomed, no pointed top, no banner, too pale.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795405974,
+  "id": "20261123115251b66f9cc14a514048",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123115251b66f9cc14a514048",
+  "usage": {
+    "completion_tokens": 98,
+    "completion_tokens_details": {
+      "reasoning_tokens": 17
+    },
+    "prompt_tokens": 1662,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1760
+  }
+}

@@ -1,0 +1,191 @@
+{
+ "sourceImage": "/home/z/Aturseva-Apk/workspace/home3d/crops/shield-3d.png",
+ "zonesDir": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory",
+ "detailInventory": {
+  "scanMethod": "grid-3x3",
+  "targetMinDetails": 6,
+  "details": [
+   {
+    "id": "zone-r0c0",
+    "kind": "background",
+    "description": "near-empty background zone",
+    "region": {
+     "x": 0.0,
+     "y": 0.0,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "macro",
+    "affects": "",
+    "mapsTo": {
+     "type": "",
+     "ref": ""
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r0c0.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r0c1",
+    "kind": "surface",
+    "description": "deep blue cap with light rim stroke along top curve",
+    "region": {
+     "x": 0.3333,
+     "y": 0.0,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "meso",
+    "affects": "shieldBody -> material.localOverrides",
+    "mapsTo": {
+     "type": "manual",
+     "ref": "shieldBody -> material.localOverrides"
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r0c1.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r0c2",
+    "kind": "background",
+    "description": "near-empty background zone",
+    "region": {
+     "x": 0.6667,
+     "y": 0.0,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "macro",
+    "affects": "",
+    "mapsTo": {
+     "type": "",
+     "ref": ""
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r0c2.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r1c0",
+    "kind": "geometry",
+    "description": "extrusion side wall visible as darker blue thickness at silhouette",
+    "region": {
+     "x": 0.0,
+     "y": 0.3333,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "meso",
+    "affects": "shieldBody -> localFeatures",
+    "mapsTo": {
+     "type": "manual",
+     "ref": "shieldBody -> localFeatures"
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r1c0.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r1c1",
+    "kind": "geometry",
+    "description": "ambient occlusion seam where cross meets shield face",
+    "region": {
+     "x": 0.3333,
+     "y": 0.3333,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "micro",
+    "affects": "crossEmblem -> material.localOverrides",
+    "mapsTo": {
+     "type": "manual",
+     "ref": "crossEmblem -> material.localOverrides"
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r1c1.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r1c2",
+    "kind": "surface",
+    "description": "blue gradient deeper blue right edge",
+    "region": {
+     "x": 0.6667,
+     "y": 0.3333,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "meso",
+    "affects": "shieldBody -> localFeatures",
+    "mapsTo": {
+     "type": "manual",
+     "ref": "shieldBody -> localFeatures"
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r1c2.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r2c0",
+    "kind": "background",
+    "description": "near-empty background zone",
+    "region": {
+     "x": 0.0,
+     "y": 0.6667,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "macro",
+    "affects": "",
+    "mapsTo": {
+     "type": "",
+     "ref": ""
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r2c0.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r2c1",
+    "kind": "geometry",
+    "description": "pointed bottom apex with soft shadow beneath",
+    "region": {
+     "x": 0.3333,
+     "y": 0.6667,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "meso",
+    "affects": "shieldBody -> localFeatures",
+    "mapsTo": {
+     "type": "manual",
+     "ref": "shieldBody -> localFeatures"
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r2c1.png",
+    "confidence": 0.9
+   },
+   {
+    "id": "zone-r2c2",
+    "kind": "background",
+    "description": "near-empty background zone",
+    "region": {
+     "x": 0.6667,
+     "y": 0.6667,
+     "width": 0.3333,
+     "height": 0.3333,
+     "units": "normalized"
+    },
+    "scale": "macro",
+    "affects": "",
+    "mapsTo": {
+     "type": "",
+     "ref": ""
+    },
+    "evidenceRef": "/home/z/Aturseva-Apk/workspace/home3d/runs/shield-3d/detail-inventory/zone-r2c2.png",
+    "confidence": 0.9
+   }
+  ]
+ },
+ "authoringInstruction": "Open each zone crop under zonesDir and replace every detail stub's kind, description, scale, affects, mapsTo, and confidence with what is actually observed. Add more detail entries per zone if a single zone contains multiple distinct marks; do not leave stubs unfilled or unlinked (mapsTo must reference a real component.localFeatures or material.localOverrides entry)."
+}

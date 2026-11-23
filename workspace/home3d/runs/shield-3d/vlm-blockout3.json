@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"overall\": 0.35,\n  \"silhouette\": 0.35,\n  \"cross\": 0.45,\n  \"gradient\": 0.3,\n  \"gaps\": [\n    \"Shield shape too wide/flat: missing pointed top and bottom tip, sides bulge outward instead of tapering.\",\n    \"Color too pale/washed out: needs vivid saturated blue with glossy dark-to-light gradient; cross too small, rounded, low-contrast.\"\n  ]\n}\n```",
+        "reasoning_content": "Shield on right is wide, flattened, lacks pointed top/pointed bottom, cross too small and rounded, gradient pale washed out.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406000,
+  "id": "202611231153166823e7f282e442c1",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611231153166823e7f282e442c1",
+  "usage": {
+    "completion_tokens": 135,
+    "completion_tokens_details": {
+      "reasoning_tokens": 27
+    },
+    "prompt_tokens": 1647,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1782
+  }
+}

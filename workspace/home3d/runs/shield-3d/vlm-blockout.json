@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\"overall\": 0.5, \"silhouette\": 0.55, \"cross\": 0.75, \"gradient\": 0.3, \"notes\": \"Cross is correctly placed and proportioned but slightly small. Silhouette is close (pointed-bottom shield) but the render crops at the top — flat cut rather than peaked shoulders, so top curvature lost. Biggest gap: color is lavender/purple instead of blue with violet shading; reference has vivid blue-to-violet gradient with white rim highlight and beveled edge, render is flat matte purple with horizontal seam band. Missing glossy finish, white border, and ground shadow is weak.\"}\n```",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795405931,
+  "id": "20261123115206f898b2652414415b",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123115206f898b2652414415b",
+  "usage": {
+    "completion_tokens": 140,
+    "completion_tokens_details": {
+      "reasoning_tokens": 139
+    },
+    "prompt_tokens": 1697,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1837
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"assets\":[{\"name\":\"token-cards\",\"x1\":470,\"y1\":40,\"x2\":700,\"y2\":145,\"desc\":\"Stack of 3D clay-style white cards showing 'Token #24'\"}]}",
+        "reasoning_content": "Token cards 3D illustration on right, roughly x 470-700, y 40-140.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795404246,
+  "id": "20261123112402c34fe243b5fe4f15",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123112402c34fe243b5fe4f15",
+  "usage": {
+    "completion_tokens": 74,
+    "completion_tokens_details": {
+      "reasoning_tokens": 23
+    },
+    "prompt_tokens": 301,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 375
+  }
+}

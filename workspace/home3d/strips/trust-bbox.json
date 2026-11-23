@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"assets\":[{\"name\":\"shield\",\"x1\":60,\"y1\":25,\"x2\":115,\"y2\":85,\"desc\":\"blue 3D shield with white medical cross\"}]}",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795404248,
+  "id": "20261123112406513f4e99e8fe4128",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261123112406513f4e99e8fe4128",
+  "usage": {
+    "completion_tokens": 42,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 275,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 317
+  }
+}

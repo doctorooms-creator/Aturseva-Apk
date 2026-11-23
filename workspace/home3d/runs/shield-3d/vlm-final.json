@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```json\n{\n  \"overall\": 0.42,\n  \"silhouette\": 0.55,\n  \"cross\": 0.4,\n  \"gradient\": 0.25,\n  \"gaps\": [\n    \"Color saturation/finish: reference is a vivid glossy blue with strong specular highlights and dark-to-light vertical gradient; reconstruction is flat, desaturated lavender/blue with a hard horizontal band and no gloss or shadows.\",\n    \"Cross geometry and placement: reference cross is smaller, centered, with beveled 3D depth and soft drop shadow; reconstruction cross is oversized, sits too low, is flat white with no depth/shadow.\"\n  ]\n}\n```",
+        "reasoning_content": "Left: vivid blue glossy shield with white cross, strong gradient dark blue top, lighter bottom, drop shadow. Right: washed out pale blue/lavender, cross too low/large, shield silhouette wider, flat colors, no gloss.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795406513,
+  "id": "202611231201487e3fcd1235db446d",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611231201487e3fcd1235db446d",
+  "usage": {
+    "completion_tokens": 188,
+    "completion_tokens_details": {
+      "reasoning_tokens": 48
+    },
+    "prompt_tokens": 776,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 964
+  }
+}
