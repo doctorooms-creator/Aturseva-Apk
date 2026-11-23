@@ -56,10 +56,17 @@ export default function HomeScreen() {
 
   // ————— Live data (doc 08 #1/#8) —————
   const doctors = useQuery('doctors-rail-v3', () => getDoctors({ limit: 100 }), { staleTime: 60_000 })
-  const hospitals = useQuery('hospitals-rail', () => getHospitals({ limit: 6 }), { staleTime: 300_000 })
 
   // ————— City (location-first; Profile edits re-read on focus) —————
   const [city, setCityState] = useState<string | null>(null)
+  // City-aware hospital rail; falls back to all cities when the city has none
+  const hospitals = useQuery(`hospitals-rail:${city ?? ''}`, async () => {
+    if (city) {
+      const byCity = await getHospitals({ city, limit: 6 })
+      if (byCity.hospitals.length > 0) return byCity
+    }
+    return getHospitals({ limit: 6 })
+  }, { staleTime: 300_000 })
   const [citySheetOpen, setCitySheetOpen] = useState(false)
   const loadCity = useCallback(async () => {
     setCityState(await getCity())

@@ -121,7 +121,10 @@ export function FindDoctors({ doctors, loading, slots, selected, onSelect }: Fin
                   {d.name}
                 </Text>
                 <Text style={[v3.docSub, { color: c.mute2 }]} numberOfLines={1}>
-                  {`${d.specialization} · ${d.experience} yrs exp`}
+                  {(() => {
+                    const n = String(d.experience ?? '').replace(/[^0-9].*$/, '').trim()
+                    return n ? `${d.specialization} · ${n} yrs exp` : `${d.specialization} · ${d.experience}`
+                  })()}
                 </Text>
                 {d.rating > 0 ? (
                   <View style={styles.rating}>
