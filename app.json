@@ -20,7 +20,6 @@
       },
       "predictiveBackGestureEnabled": false
     },
-    "baseUrl": "/app",
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
@@ -46,6 +45,7 @@
       "expo-sharing"
     ],
     "experiments": {
+      "baseUrl": "/app",
       "typedRoutes": true,
       "reactCompiler": true
     },
