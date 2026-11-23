@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "**Comparison**\n\n- **Silhouette:** Mockup laptop is angled/tilted with visible depth (3/4 perspective, screen leaning back, wedge base). Your render is flat front-on with a thin, straight base — reads as a 2D icon. Score: **0.5**\n- **Details:** Mockup has dark bezel around whole screen, distinct keyboard keys (dark keys on deck), rounded body, avatar as white bubble with subtle 3D shading. Your bezel is thin/uneven, keyboard keys are barely visible faint dots, avatar is a rounded square (iOS-style) not a circle bubble. Score: **0.5**\n- **Colors:** Blue screen matches well; body is white/silver in both, but your base looks grayish/washed compared to the crisp white; mockup has dark bezel contrast you lack. Score: **0.7**\n- **Overall:** Same subject and palette, but perspective, bezel, and keyboard detail diverge significantly. Score: **0.55**\n\n**Fixes:**\n1. Rotate laptop ~15–25° in perspective; tilt screen back so base shows depth (wedge/trapezoid deck).\n2. Thicken the dark bezel evenly around the screen; add slight screen rounding.\n3. Make avatar a white circle/ellipse bubble (person bust), not a rounded-square app icon.\n4. Add a visible keyboard: rows of dark gray keys on the white deck.\n5. Soften the shadow — diffuse ellipse under the base, less hard rectangular band.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795411673,
+  "id": "2026112313274842500a8d78034428",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112313274842500a8d78034428",
+  "usage": {
+    "completion_tokens": 321,
+    "completion_tokens_details": {
+      "reasoning_tokens": 320
+    },
+    "prompt_tokens": 410,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 731
+  }
+}

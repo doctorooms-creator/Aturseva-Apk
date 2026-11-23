@@ -70,5 +70,23 @@
         "bytes": 37417
       }
     }
+  },
+  "tile-video": {
+    "aspect": 0.691,
+    "source": "tile-video-transparent.png",
+    "variants": {
+      "2x": {
+        "file": "tile-video@2x.png",
+        "w": 128,
+        "h": 88,
+        "bytes": 7572
+      },
+      "3x": {
+        "file": "tile-video@3x.png",
+        "w": 192,
+        "h": 133,
+        "bytes": 13425
+      }
+    }
   }
 }
