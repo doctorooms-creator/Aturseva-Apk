@@ -52,5 +52,23 @@
         "bytes": 14331
       }
     }
+  },
+  "tile-labtubes": {
+    "aspect": 1.1969,
+    "source": "imgen-take1.png",
+    "variants": {
+      "2x": {
+        "file": "tile-labtubes@2x.png",
+        "w": 128,
+        "h": 153,
+        "bytes": 25479
+      },
+      "3x": {
+        "file": "tile-labtubes@3x.png",
+        "w": 192,
+        "h": 230,
+        "bytes": 37417
+      }
+    }
   }
 }
