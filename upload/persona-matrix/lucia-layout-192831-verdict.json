@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. PASS — Content flows continuously down to the lab tests banner with only a small normal gap above the bottom nav; no large dead band.\n2. PASS — All labels are fully visible; \"Video Consult\" and \"Book Lab Tests\" sit close to edges but are not ellipsized or clipped mid-word.\n3. FAIL — The \"Video Consult\" title touches/overlaps the right edge of its card, and \"Book Lab Tests from trusted labs\" runs tight against the banner edge with the illustration crowding the text.\n4. PASS — The bottom navigation pill is fully visible with all four items (Home, Bookings, Health Records, Account) inside the screen.\n5. PASS — Content stretches sensibly to fill the tablet-height column with balanced spacing between sections rather than clustering at the top.",
+        "reasoning_content": "Check issues: \"Video Consult\" label appears to touch/clip edge; \"Video Consult\" possibly truncated (\"Consult\" flush at card edge). Bottom nav pill visible fully. Content fills height with small gap above nav. Dead band? Small gap, fine.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548529,
+  "id": "20261125032843b4d5838bcae446ad",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261125032843b4d5838bcae446ad",
+  "usage": {
+    "completion_tokens": 218,
+    "completion_tokens_details": {
+      "reasoning_tokens": 52
+    },
+    "prompt_tokens": 3254,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 3472
+  }
+}

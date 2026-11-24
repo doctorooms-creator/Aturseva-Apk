@@ -34,7 +34,7 @@ import { getBookingToken, lookupBookings } from '@/lib/api'
 import { getCity, setCity } from '@/lib/storage'
 import { getStoredUser } from '@/lib/auth'
 import { CityPickerSheet } from '@/components/city-picker'
-import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
+import { navPillFootprint } from '@/components/nav-pill'
 import { Home4Header } from '@/components/home4/home4-header'
 import { Home4Hero } from '@/components/home4/home4-hero'
 import { Home4Search } from '@/components/home4/home4-search'
@@ -151,7 +151,7 @@ export default function HomeScreen() {
         contentContainerStyle={{
           flexGrow: 1,
           paddingTop: Math.max(insets.top + 6, 42 * s),
-          paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT + 28,
+          paddingBottom: insets.bottom + navPillFootprint(s),
           // Window-size-class law: the composition is a phone column —
           // centered and capped on anything wider.
           width: '100%',
@@ -185,7 +185,10 @@ export default function HomeScreen() {
         <Home4Specialties />
         <V4Stretch />
         <Home4LabPromo />
-        <V4Stretch weight={2} />
+        {/* Terminal band (weight 1 like the mids): the designed gap above
+            the pill lives in paddingBottom itself — bands only breathe
+            the aspect-gap slack, evenly, between all zones. */}
+        <V4Stretch />
       </ScrollView>
 
       <CityPickerSheet visible={citySheetOpen} current={city} onClose={() => setCitySheetOpen(false)} onPick={onPickCity} />

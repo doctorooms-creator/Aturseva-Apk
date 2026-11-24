@@ -67,8 +67,11 @@ export function Home4Specialties() {
             style={({ pressed }) => [
               styles.card,
               {
+                // minHeight (not height): 55 exact at 1.0 (pixel law);
+                // a larger user font wraps the label to a second line
+                // and grows the card — never "Pulmonolo…".
                 width: 60 * s,
-                height: 55 * s,
+                minHeight: 55 * s,
                 borderRadius: 14 * s,
                 borderWidth: Math.max(0.5, 0.6 * s),
               },
@@ -81,8 +84,8 @@ export function Home4Specialties() {
             </View>
             <Text
               style={[v4t('specLabel', s), { color: v4c.ink, marginBottom: 6.5 * s }]}
-              numberOfLines={1}
-              maxFontSizeMultiplier={1.1}
+              numberOfLines={2}
+              maxFontSizeMultiplier={1.3}
             >
               {card.label}
             </Text>

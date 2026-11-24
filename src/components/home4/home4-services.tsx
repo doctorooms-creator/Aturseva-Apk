@@ -99,7 +99,7 @@ export function Home4Services() {
           </Text>
           <Text
             style={[v4t('tileSub', s), { color: v4c.gray1, marginTop: 2 * s }]}
-            numberOfLines={1}
+            numberOfLines={2}
             maxFontSizeMultiplier={1.4}
           >
             {t.sub}

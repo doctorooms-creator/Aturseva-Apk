@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **FAIL** — No large empty dead band above the bottom nav; content runs right up to it. **PASS**.\n2. **FAIL** — Many labels truncated: \"Doctor s\", \"Hospita ls\" (clipped mid-word), \"Cardi…\", \"Diagnosti…\", \"Health R…\", plus header text \"Atur Seva\" overlapping \"Select\". **FAIL**.\n3. **FAIL** — Script \"Atur Seva\" title overlaps the \"Select\" location label at top; \"Health care....\" collides with \"book\" text near the search bar.\n4. **FAIL** — Bottom nav pill itself is visible and on-screen, but its labels (\"Health R…\") are truncated and the pill overlaps the promo banner's \"Home collection available\" text. **FAIL**.\n5. **FAIL** — Content does extend full height, but at 200% font it overflows: mid-word wrapping and clipping show the layout isn't reflowing sensibly. **FAIL**.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548496,
+  "id": "20261125032811b921f42014e246fb",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261125032811b921f42014e246fb",
+  "usage": {
+    "completion_tokens": 216,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1634,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1850
+  }
+}

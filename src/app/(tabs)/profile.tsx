@@ -31,7 +31,8 @@ import { clearSession, getStoredToken, getStoredUser, updateStoredUser } from '@
 import { getCity, setCity, type ThemeMode } from '@/lib/storage'
 import { Avatar } from '@/components/avatar'
 import { CityPickerSheet } from '@/components/city-picker'
-import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
+import { navPillFootprint } from '@/components/nav-pill'
+import { useV4 } from '@/components/home4/v4'
 import { AuthSheet } from '@/components/auth-sheet'
 import { EditProfileSheet } from '@/components/edit-profile-sheet'
 import { BottomSheet, GrabHandle } from '@/components/sheets'
@@ -44,6 +45,7 @@ function maskMobile(m: string | null): string {
 }
 
 export default function ProfileScreen() {
+  const s = useV4()
   const c = useColors()
   // H2 shell: floating-pill clearance (B9 scroll-limit law — the
   // successor of the old fixed footerPad 72).
@@ -286,7 +288,7 @@ export default function ProfileScreen() {
       </View>
 
       <Text style={[styles.versionText, { color: c.mute }]}>Aturseva v{version}</Text>
-      <View style={{ height: insets.bottom + NAV_PILL_FOOTPRINT }} />
+      <View style={{ height: insets.bottom + navPillFootprint(s) }} />
 
       <CityPickerSheet
         visible={citySheetOpen}

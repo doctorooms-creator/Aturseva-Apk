@@ -1,0 +1,79 @@
+{
+  "comment": "Persona matrix for Aturseva web-sim device testing. Adapted from pierridotite/mobile-agent-testers personas.json (MIT) for the RN-web simulation pipeline. Phase-2 fields (locale_render, rtl) are device-only — validated later on GitHub Actions runners.",
+  "personas": [
+    {
+      "id": "owner",
+      "role": "THE reference phone — the owner's actual device that exposed the bottom dead-band bug",
+      "profile": "Owner, tests every build personally on this exact phone.",
+      "goal": "Home fills the whole screen: no dead band above the nav pill, no cut labels.",
+      "platform": "android",
+      "viewport": [411, 914],
+      "aspect": "20:9",
+      "font_scale": 1.0,
+      "locale": "en-IN",
+      "priority": 1
+    },
+    {
+      "id": "ravi",
+      "role": "PRIMARY target user — Hindi belt shop owner on a small old phone",
+      "profile": "Shop owner, 44, reads Hindi, new to apps, careful with every button.",
+      "goal": "Understand what the app is for and finish one task without English.",
+      "platform": "android",
+      "viewport": [411, 731],
+      "aspect": "16:9",
+      "font_scale": 1.15,
+      "locale": "hi-IN",
+      "locale_render": "phase2",
+      "priority": 2
+    },
+    {
+      "id": "anna",
+      "role": "Large-text catcher — truncation bugs live here",
+      "profile": "Retired teacher, 68, low patience with jargon, uses large text.",
+      "goal": "Read every label fully; nothing cut, nothing ellipsized by force.",
+      "platform": "android",
+      "viewport": [360, 640],
+      "aspect": "16:9",
+      "font_scale": 1.3,
+      "locale": "en-GB",
+      "priority": 3
+    },
+    {
+      "id": "grace",
+      "role": "Extreme accessibility — 200% font",
+      "profile": "Retired nurse, 74, low vision, uses Android's largest font size (200%).",
+      "goal": "Read every screen and complete one task without zooming.",
+      "platform": "android",
+      "viewport": [412, 915],
+      "aspect": "20:9",
+      "font_scale": 2.0,
+      "locale": "en-US",
+      "priority": 4
+    },
+    {
+      "id": "malik",
+      "role": "Fast modern phone, dark mode",
+      "profile": "Student, 21, skips every text, taps fast, dark mode everywhere.",
+      "goal": "Reach the main feature as fast as possible; nothing unreadable in dark surroundings.",
+      "platform": "android",
+      "viewport": [412, 915],
+      "aspect": "20:9",
+      "font_scale": 1.0,
+      "dark": true,
+      "locale": "en-US",
+      "priority": 5
+    },
+    {
+      "id": "lucia",
+      "role": "Tablet / foldable — column cap check (V4_MAX_W 512dp)",
+      "profile": "Teacher, 47, uses the family tablet.",
+      "goal": "Judge whether the big screen is used well (centered phone column, not a balloon).",
+      "platform": "android",
+      "viewport": [768, 1024],
+      "aspect": "4:3",
+      "font_scale": 1.0,
+      "locale": "es-ES",
+      "priority": 6
+    }
+  ]
+}

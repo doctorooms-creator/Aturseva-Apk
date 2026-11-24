@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. PASS — Content flows continuously with no large empty band above the bottom navigation pill.\n2. PASS — All labels (Doctors, Hospitals, Lab Tests, Video Consult, specialties, nav items) render fully with no ellipsis or clipping.\n3. PASS — No overlapping text; all text sits cleanly within its card or section.\n4. PASS — Bottom navigation pill (Home, Bookings, Health Records, Account) is fully visible and inside the screen.\n5. PASS — Content stretches sensibly down the full height, ending at the nav pill with balanced spacing between sections.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548445,
+  "id": "202611250327221334edcbbc47475d",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250327221334edcbbc47475d",
+  "usage": {
+    "completion_tokens": 119,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1632,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1751
+  }
+}

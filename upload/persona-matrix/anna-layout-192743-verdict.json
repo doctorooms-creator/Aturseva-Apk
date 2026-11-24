@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. FAIL — There is a thin dead band above the bottom navigation with clipped content (\"Book Lab Tests / ...\" cut mid-line).\n2. FAIL — Multiple truncations: \"Search doctors... sympt…\", \"OPD & Depart…\", \"Consult from h…\", \"Book your token onlin…\".\n3. PASS — No text overlaps another element; text sits in its own space.\n4. PASS — The bottom navigation pill is fully visible and inside the screen bounds.\n5. FAIL — Content is clipped at the bottom rather than stretching/scrolling sensibly; the \"Book Lab Tests\" section is cut mid-text.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548478,
+  "id": "2026112503275524ab839620ad4a9a",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112503275524ab839620ad4a9a",
+  "usage": {
+    "completion_tokens": 130,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1047,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1177
+  }
+}

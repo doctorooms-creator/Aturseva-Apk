@@ -17,7 +17,10 @@ export function Home4Hero() {
       style={{
         flexDirection: 'row',
         alignItems: 'flex-start',
-        height: 133 * s,
+        // minHeight (not height): 133 exact at 1.0 (pixel law); a larger
+        // user font wraps the subtitle further and grows the band
+        // instead of clipping it against the search doorway.
+        minHeight: 133 * s,
         marginTop: -11 * s,
       }}
     >
@@ -27,14 +30,14 @@ export function Home4Hero() {
       <View style={{ flex: 1, marginTop: 26 * s, paddingLeft: 29 * s, paddingRight: 0, gap: 7 * s }}>
         <Text
           style={[v4t('heroTitle', s), { color: v4c.ink }]}
-          numberOfLines={2}
+          numberOfLines={3}
           maxFontSizeMultiplier={1.15}
         >
           {'Healthcare,\nmade simpler.'}
         </Text>
         <Text
           style={[v4t('heroSub', s), { color: v4c.gray1 }]}
-          numberOfLines={2}
+          numberOfLines={4}
           maxFontSizeMultiplier={1.3}
         >
           {'Find doctors, book appointments\nand track your turn in real time.'}

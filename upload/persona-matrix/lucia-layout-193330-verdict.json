@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **PASS** — No large dead band above the bottom nav; content flows continuously into the nav area with only normal spacing.\n2. **PASS** — All labels fit on one line (\"Video Consult\", \"Gynecology\", \"Health Records\") with no ellipsis or mid-word clipping.\n3. **PASS** — No text overlaps other elements; the token banner, icon cards, and nav are cleanly separated.\n4. **PASS** — The bottom navigation pill is fully visible and inside the screen in all three frames, with rounded edges intact.\n5. **PASS** — Content spans nearly the full height and terminates just above the nav; no balloon-like stretching or floating content.",
+        "reasoning_content": "Check gaps: content ends ~906, nav at ~940–990. No big dead band. Truncation: \"Video Consult\" fits. Overlap: none. Pill visible in all three. Fills height reasonably.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548827,
+  "id": "202611250333423061546999754335",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250333423061546999754335",
+  "usage": {
+    "completion_tokens": 191,
+    "completion_tokens_details": {
+      "reasoning_tokens": 49
+    },
+    "prompt_tokens": 3254,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 3445
+  }
+}

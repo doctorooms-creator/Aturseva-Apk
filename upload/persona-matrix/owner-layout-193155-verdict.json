@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. PASS — The gap between the \"Book Lab Tests\" banner and the nav pill is small (~30px), not a large dead band.\n2. PASS — All labels (\"Video Consult\", \"Bookings\", \"Health Records\", etc.) render fully with no ellipsis or clipping.\n3. PASS — No text overlaps other elements; banner text, token card, and nav icons are cleanly separated.\n4. PASS — The bottom navigation pill is fully visible with all four tabs inside the screen bounds.\n5. PASS — Content distributes sensibly down the full height, ending just above the nav with no excessive stretch or whitespace.",
+        "reasoning_content": "Layout: lab banner ends ~810, nav pill ~845–885. There's a gap band between banner and pill, but modest (~30px). Strict check for \"large empty band\" — appears small. Nav pill fully visible at bottom. Labels fine. PASS mostly.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548731,
+  "id": "202611250332079754b224265b4f70",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250332079754b224265b4f70",
+  "usage": {
+    "completion_tokens": 188,
+    "completion_tokens_details": {
+      "reasoning_tokens": 59
+    },
+    "prompt_tokens": 1632,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1820
+  }
+}

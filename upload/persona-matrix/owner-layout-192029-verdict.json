@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **FAIL** — There is a noticeable empty band (~60px of blank space) between the \"Book Lab Tests\" banner and the bottom navigation pill, leaving dead space that should be filled or absorbed.\n2. **PASS** — All labels (\"Video Consult\", \"Pulmonology\", \"Gynecology\", \"Health Records\", etc.) render fully with no ellipsis or clipping.\n3. **PASS** — No overlapping text; the illustration, badges, and banner elements all sit clear of each other.\n4. **PASS** — The nav pill (Home, Bookings, Health Records, Account) is fully inside the screen bounds with clearances on all sides.\n5. **FAIL** — Content does not stretch to fill height; the layout ends at the lab banner and simply leaves the leftover vertical gap, rather than distributing space (e.g., between sections) so content flows to the nav pill.",
+        "reasoning_content": "All three frames identical. There's a gap between lab tests banner (~y=780) and nav pill (~y=840) — a small dead band, modest. Nav pill fully visible. Labels not truncated. Content stretches? There's a noticeable empty gap above nav. Verdict: FAIL on point 1 (moderate empty band ~60px) and maybe point 5.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548048,
+  "id": "20261125032042b2cb794f7d7b4e06",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261125032042b2cb794f7d7b4e06",
+  "usage": {
+    "completion_tokens": 269,
+    "completion_tokens_details": {
+      "reasoning_tokens": 80
+    },
+    "prompt_tokens": 1632,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1901
+  }
+}

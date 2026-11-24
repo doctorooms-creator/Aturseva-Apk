@@ -25,11 +25,25 @@ export const NAV_PILL_HEIGHT = 58
 /** Gap between pill bottom edge and the screen's bottom safe edge
  *  (design px — measured y903 on the reference = 20 above the frame). */
 export const NAV_PILL_FLOAT_GAP = 20
+/** The design's gap between the last zone (lab promo, y825) and the
+ *  pill top (y845) on the reference — 20 design px. */
+export const NAV_PILL_TOP_GAP = 20
 /**
- * What a tab screen's scroll-end must clear: pill 58 + float gap 20 +
- * 16 breathing (design px, held unscaled as a conservative dp ceiling
- * for every phone ≤ ~490dp wide — extra clearance is always safe).
+ * What a tab screen's scroll-end must clear, in dp: the pill's scaled
+ * footprint (58 + 20, × s) PLUS the designed 20·s breathing gap above
+ * the pill. Because stretch bands always fill their container, the gap
+ * the user sees above the pill is exactly paddingBottom − pill
+ * footprint — so baking the designed gap INTO the padding (instead of
+ * hoping a band lands it) restores the reference rhythm on every
+ * phone, and the aspect-gap slack breathes into the mid-zone bands.
  * Screens add their own safe-area bottom inset on top.
+ */
+export const navPillFootprint = (s: number) =>
+  (NAV_PILL_HEIGHT + NAV_PILL_FLOAT_GAP + NAV_PILL_TOP_GAP) * s
+
+/**
+ * @deprecated Unscaled conservative ceiling — kept only for callers
+ * that want a fixed dp clearance. Prefer navPillFootprint(s).
  */
 export const NAV_PILL_FOOTPRINT = NAV_PILL_HEIGHT + NAV_PILL_FLOAT_GAP + 16
 

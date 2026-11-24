@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **PASS** — Content runs continuously down to the bottom navigation; no large empty band above it.\n2. **PASS** — All labels (\"Video Consult\", \"Bookings\", \"Health Records\", etc.) are fully rendered with no ellipsis or mid-word clipping.\n3. **PASS** — No text overlaps; text sits cleanly beside/above illustrations and icons throughout.\n4. **PASS** — The bottom navigation bar is fully inside the screen with safe margins; all four items visible.\n5. **PASS** — Content is distributed to fill the full screen height sensibly with balanced section spacing.",
+        "reasoning_content": "Layout looks clean; bottom nav is a rounded bar (not pill) fully visible. Content fills height, no dead band, no truncation. PASS all.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548810,
+  "id": "202611250333263a6716f36577436f",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250333263a6716f36577436f",
+  "usage": {
+    "completion_tokens": 157,
+    "completion_tokens_details": {
+      "reasoning_tokens": 32
+    },
+    "prompt_tokens": 1635,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1792
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. PASS — No large empty band above the bottom nav; content continues directly beneath it (\"from trusted labs\" section visible).\n2. FAIL — Multiple truncations: \"OPD & Departme…\", \"Consult from ho…\", \"Pulmonolo…\", \"Gynecolooy\"/\"Cardiolagy\" clipped mid-word.\n3. FAIL — Bottom nav overlaps the specialty row and the \"from trusted labs\" text sits beneath/behind the nav area; \"Confirmed slo…\" collides with the token card graphic.\n4. PASS — Bottom navigation pill is fully visible and inside the screen bounds.\n5. FAIL — Content overflows rather than stretching sensibly: the last section is cut off and partially hidden under the nav.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548463,
+  "id": "2026112503273951444cc6279f4607",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112503273951444cc6279f4607",
+  "usage": {
+    "completion_tokens": 153,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1364,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1517
+  }
+}

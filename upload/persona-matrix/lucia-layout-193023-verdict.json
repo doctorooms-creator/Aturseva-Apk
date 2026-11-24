@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. PASS — Content flows continuously down to the lab-tests banner just above the nav; only a small, normal gap remains, no large dead band.\n2. PASS — All labels (\"Video Consult\", \"Gynecology\", etc.) are fully visible; the \"…\" in the search field is an intentional placeholder, not a truncated label.\n3. PASS — No text overlaps other elements; hero text and illustration are cleanly separated.\n4. PASS — The bottom navigation pill sits fully inside the screen with comfortable margins on all sides.\n5. PASS — Content stretches the full height with consistent spacing and ends flush near the nav; no balloon-like floating column or stretched gaps.",
+        "reasoning_content": "Check: bottom nav near bottom, small gap; search placeholder ends with \"...\" but that's intentional placeholder, not truncation of label. No overlaps. Pill fully visible. Content fills height with modest spacing.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548639,
+  "id": "20261125033034441006be43b44230",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261125033034441006be43b44230",
+  "usage": {
+    "completion_tokens": 179,
+    "completion_tokens_details": {
+      "reasoning_tokens": 42
+    },
+    "prompt_tokens": 3254,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 3433
+  }
+}

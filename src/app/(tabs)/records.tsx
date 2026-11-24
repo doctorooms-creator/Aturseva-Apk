@@ -8,7 +8,7 @@
  * cards, hairline rings, white icon wells).
  *
  * Shell law: the pill floats OVER content — the scroll end pads with
- * insets.bottom + NAV_PILL_FOOTPRINT (B9 scroll-limit law).
+ * insets.bottom + navPillFootprint(s) (B9 scroll-limit law).
  */
 
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -17,7 +17,8 @@ import { useRouter } from 'expo-router'
 import { FileText, History, Receipt, type LucideIcon } from 'lucide-react-native'
 import { radius, space, type as typo } from '@/lib/tokens'
 import { useColors } from '@/lib/theme'
-import { NAV_PILL_FOOTPRINT } from '@/components/nav-pill'
+import { navPillFootprint } from '@/components/nav-pill'
+import { useV4 } from '@/components/home4/v4'
 
 interface RecordsDoor {
   title: string
@@ -38,6 +39,7 @@ const DOORS: RecordsDoor[] = [
 ]
 
 export default function RecordsScreen() {
+  const s = useV4()
   const c = useColors()
   const insets = useSafeAreaInsets()
   const router = useRouter()
@@ -51,7 +53,7 @@ export default function RecordsScreen() {
           // Safe-area top (24 floor keeps web from kissing the edge);
           // pill clearance at the bottom (B9 law).
           paddingTop: Math.max(insets.top, 24),
-          paddingBottom: insets.bottom + NAV_PILL_FOOTPRINT,
+          paddingBottom: insets.bottom + navPillFootprint(s),
         },
       ]}
       showsVerticalScrollIndicator={false}

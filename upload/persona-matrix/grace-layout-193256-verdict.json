@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **FAIL** — Large dead band above the bottom navigation; the specialty banner ends well above the nav bar, leaving an empty gap.\n\n2. **FAIL** — Multiple truncated labels: \"Doctors\", \"Hospitals\", \"Departm…\", \"Cardi…\", \"Pulm…\", \"Neuro…\", \"Gyne…\", \"Health R…\"; \"Doctors\" and \"Hospitals\" are clipped mid-word across lines.\n\n3. **FAIL** — Header text overlaps: \"Select lo…\" collides with the script \"Atur Seva\" title; \"Book Appointments…\" text also collides with the search field area.\n\n4. **FAIL** — Bottom navigation pill is cut off at the bottom edge of the screen (partially outside the viewport).\n\n5. **FAIL** — Content does not stretch to fill screen height; an oversized empty region sits between the last card and the navigation instead of distributing content.\n\n**Overall: FAIL** — not usable at 200% font size without zooming.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548793,
+  "id": "20261125033308bdb3fb2ab76d48f2",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "20261125033308bdb3fb2ab76d48f2",
+  "usage": {
+    "completion_tokens": 214,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1634,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1848
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **PASS** — No large empty band above bottom nav; a \"Book Lab Tests\" banner sits directly above it, filling the gap.\n\n2. **FAIL** — \"OPD & Departme…\" and \"Consult from ho…\" are truncated with ellipsis.\n\n3. **PASS** — No text overlaps another element.\n\n4. **PASS** — Bottom navigation pill is fully visible and inside the screen bounds.\n\n5. **PASS** — Content stretches sensibly to fill screen height with no dead space.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548601,
+  "id": "202611250329554b28e37457e54d86",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250329554b28e37457e54d86",
+  "usage": {
+    "completion_tokens": 106,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1364,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1470
+  }
+}

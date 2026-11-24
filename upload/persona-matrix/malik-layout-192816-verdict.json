@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. PASS — No large dead band above the bottom nav; the lab tests banner ends just above it.\n2. PASS — All labels render fully; no ellipsis or mid-word clipping.\n3. PASS — No text overlaps any element.\n4. PASS — The bottom navigation pill is fully visible within screen bounds.\n5. PASS — Content fills the screen height sensibly with consistent spacing down to the nav.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548511,
+  "id": "202611250328288df073c9bf4749ba",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250328288df073c9bf4749ba",
+  "usage": {
+    "completion_tokens": 85,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1635,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1720
+  }
+}

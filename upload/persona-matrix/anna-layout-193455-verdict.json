@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. **PASS** — No large empty band; the \"Book Lab Tests\" card sits directly above the bottom navigation.\n2. **FAIL** — Search placeholder ends in \"symp…\"; specialty labels \"Pulmonolo gy\" and \"Gynecolog y\" wrap mid-word (broken, not just wrapped).\n3. **PASS** — No text overlaps icons, cards, or the illustration.\n4. **PASS** — Bottom navigation pill is fully visible, rounded pill intact with all four labels and icons inside the screen.\n5. **PASS** — Content flows from header to promo card to specialty grid to lab banner, filling the screen height sensibly.\n\nOverall: fix the truncated search hint and the two broken specialty labels before shipping — for a 68-year-old with low jargon tolerance, mid-word breaks like \"Pulmonolo gy\" are the worst offenders.",
+        "reasoning_content": "Check issues: \"Pulmonology\" truncated to \"Pulmonolo gy\", \"Gynecology\" to \"Gynecolog y\" — FAIL point 2. Search hint \"symp...\" ellipsis — FAIL. Content fills to bottom nav, no dead band — PASS. Overlap? None apparent — PASS. Bottom nav pill fully visible — PASS. Content stretches sensibly — PASS.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548913,
+  "id": "202611250335077afc717b92a44560",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611250335077afc717b92a44560",
+  "usage": {
+    "completion_tokens": 264,
+    "completion_tokens_details": {
+      "reasoning_tokens": 82
+    },
+    "prompt_tokens": 1047,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1311
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "1. Dead band above bottom navigation: PASS — Content (Book Lab Tests banner) flows down close to the nav pill with only normal spacing, no large empty band.\n\n2. Truncated labels: PASS — All labels (\"Video Consult\", \"Bookings\", \"Health Records\", etc.) render fully with no ellipsis or clipping.\n\n3. Overlapping text: PASS — No text overlaps another element; headings, subtitles, and icons are cleanly separated.\n\n4. Bottom navigation pill: PASS — The pill is fully visible, with all four items inside the screen bounds and a small safe-area margin below.\n\n5. Content fills screen height: PASS — Content stretches sensibly with balanced spacing so the nav sits at the bottom without a dead zone.",
+        "reasoning_content": "Small band below nav pill to screen edge — nav pill sits above bottom edge with small gap; check dead band above nav: content ends with lab banner then nav — modest gap, acceptable? There's some spacing between banner and nav pill (~25px). Likely PASS overall.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1795548931,
+  "id": "2026112503352669c0240896404ab8",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "2026112503352669c0240896404ab8",
+  "usage": {
+    "completion_tokens": 206,
+    "completion_tokens_details": {
+      "reasoning_tokens": 55
+    },
+    "prompt_tokens": 1632,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1838
+  }
+}

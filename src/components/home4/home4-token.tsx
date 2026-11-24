@@ -16,7 +16,10 @@ export function Home4TokenBanner() {
   return (
     <View
       style={{
-        height: 82 * s,
+        // minHeight (not height): at 1.0 the content fits exactly in 82 —
+        // pixel law holds — but a user's larger text grows the card
+        // instead of clipping it (overflow: hidden stays for the art).
+        minHeight: 82 * s,
         borderRadius: 14 * s,
         marginHorizontal: 17 * s,
         marginTop: 18 * s,
@@ -24,14 +27,34 @@ export function Home4TokenBanner() {
         overflow: 'hidden',
       }}
     >
-      <View style={{ paddingLeft: 24 * s, paddingTop: 12 * s }}>
+      <View
+        style={{
+          paddingLeft: 24 * s,
+          paddingTop: 12 * s,
+          // Keep text clear of the token-stack art zone (145 wide, flush
+          // right = art-left at 247; minus the 24 left pad = exactly 223
+          // of text zone, the design's own measure): long text wraps
+          // instead of running under the artwork. At 1.0 the chips row
+          // (≈217) still fits one line — pixel law preserved.
+          paddingRight: 145 * s,
+        }}
+      >
         <Text
           style={[v4t('bannerTitle', s), { color: v4c.white }]}
           maxFontSizeMultiplier={1.15}
         >
           {'Skip the wait.\nBook your token online.'}
         </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 7 * s, gap: 6 * s }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            rowGap: 4 * s,
+            marginTop: 7 * s,
+            gap: 6 * s,
+          }}
+        >
           <FigIcon name="lightning" s={s} />
           <Text style={[v4t('chip', s), { color: v4c.white }]} maxFontSizeMultiplier={1.15}>
             Real-time queue
