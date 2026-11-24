@@ -36,6 +36,7 @@ import {
   GeistMono_600SemiBold,
   GeistMono_700Bold,
 } from '@expo-google-fonts/geist-mono'
+import { DancingScript_700Bold } from '@expo-google-fonts/dancing-script'
 import { getOnboardingDone } from '@/lib/storage'
 import { ThemeProvider, useTheme } from '@/lib/theme'
 
@@ -52,8 +53,10 @@ export default function RootLayout() {
 function Root() {
   const router = useRouter()
   const { resolved, c } = useTheme()
-  // V3 font gate: the map keys are the fontFamily strings the V3 type
-  // ramp consumes ("Geist_600SemiBold" etc. — the package's own naming).
+  // V3 font gate + V4: the map keys are the fontFamily strings the type
+  // ramps consume ("Geist_600SemiBold" etc. — the package's own naming).
+  // Dancing Script Bold joins for the home wordmark (doc 21: the ONLY
+  // script face; everything else stays Geist = the design's Roboto class).
   const [fontsLoaded, fontError] = useFonts({
     Geist_400Regular,
     Geist_500Medium,
@@ -63,6 +66,7 @@ function Root() {
     GeistMono_400Regular,
     GeistMono_600SemiBold,
     GeistMono_700Bold,
+    DancingScript_700Bold,
   })
   // null = still booting (native splash covers); then the flag value.
   const [booted, setBooted] = useState<boolean | null>(null)

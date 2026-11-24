@@ -14,6 +14,7 @@
     "start:tunnel": "expo start --tunnel ngrok"
   },
   "dependencies": {
+    "@expo-google-fonts/dancing-script": "^0.4.2",
     "@expo-google-fonts/geist": "^0.4.2",
     "@expo-google-fonts/geist-mono": "^0.4.3",
     "@react-native-async-storage/async-storage": "2.2.0",
