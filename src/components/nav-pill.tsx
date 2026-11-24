@@ -101,6 +101,7 @@ export function NavPill({ state, descriptors, emitter, navigateToTab, insets }: 
                   { color: focused ? v4c.ink : v4c.gray3 },
                 ]}
                 numberOfLines={1}
+                maxFontSizeMultiplier={1.15}
               >
                 {label}
               </Text>

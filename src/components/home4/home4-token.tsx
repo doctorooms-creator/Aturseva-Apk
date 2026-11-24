@@ -25,15 +25,22 @@ export function Home4TokenBanner() {
       }}
     >
       <View style={{ paddingLeft: 24 * s, paddingTop: 12 * s }}>
-        <Text style={[v4t('bannerTitle', s), { color: v4c.white }]}>
+        <Text
+          style={[v4t('bannerTitle', s), { color: v4c.white }]}
+          maxFontSizeMultiplier={1.15}
+        >
           {'Skip the wait.\nBook your token online.'}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 7 * s, gap: 6 * s }}>
           <FigIcon name="lightning" s={s} />
-          <Text style={[v4t('chip', s), { color: v4c.white }]}>Real-time queue</Text>
+          <Text style={[v4t('chip', s), { color: v4c.white }]} maxFontSizeMultiplier={1.15}>
+            Real-time queue
+          </Text>
           <View style={{ width: 18 * s }} />
           <FigIcon name="calendar" s={s} />
-          <Text style={[v4t('chip', s), { color: v4c.white }]}>Confirmed slot</Text>
+          <Text style={[v4t('chip', s), { color: v4c.white }]} maxFontSizeMultiplier={1.15}>
+            Confirmed slot
+          </Text>
         </View>
       </View>
       {/* The stack art — flush right, 1px proud of the top, on top. */}

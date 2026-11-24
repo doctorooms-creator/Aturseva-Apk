@@ -25,10 +25,21 @@ import type { TextStyle } from 'react-native'
 /** The design frame width (Figma). */
 export const V4_FRAME_W = 426
 
-/** Design-px → device-dp scale for the current window. */
+/**
+ * The scale ceiling (window-size-class law): phones ≤ 426dp reproduce the
+ * design 1:1 proportionally; wider devices (foldables open, small tablets)
+ * cap at 1.2 so the composition stays a phone screen — centered with side
+ * margins, never a balloon. Content max width = 426 × 1.2 = 511dp.
+ */
+export const V4_MAX_S = 1.2
+
+/** The content column ceiling that pairs with V4_MAX_S (dp). */
+export const V4_MAX_W = Math.round(V4_FRAME_W * V4_MAX_S) + 1 // 512
+
+/** Design-px → device-dp scale for the current window (capped). */
 export function useV4(): number {
   const { width } = useWindowDimensions()
-  return width / V4_FRAME_W
+  return Math.min(width / V4_FRAME_W, V4_MAX_S)
 }
 
 /** v4 shadow + hairline family (doc 21 "shadow law"): white cards, soft

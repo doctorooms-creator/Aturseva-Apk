@@ -82,7 +82,11 @@ export function Home4Header({ city, onCityPress }: Home4HeaderProps) {
       >
         <FigIcon name="pin" s={s} />
         <View style={{ maxWidth: 128 * s }}>
-          <Text style={[v4t('location', s), { color: v4c.ink }]} numberOfLines={2}>
+          <Text
+            style={[v4t('location', s), { color: v4c.ink }]}
+            numberOfLines={2}
+            maxFontSizeMultiplier={1.15}
+          >
             {label}
           </Text>
         </View>
@@ -92,7 +96,9 @@ export function Home4Header({ city, onCityPress }: Home4HeaderProps) {
       {/* Wordmark — exactly the frame center (absolute full-width layer,
           centered; robust to the script face's natural width). */}
       <View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.markLayer]}>
-        <Text style={[v4t('wordmark', s), { color: v4c.ink }]}>Atur Seva</Text>
+        <Text style={[v4t('wordmark', s), { color: v4c.ink }]} maxFontSizeMultiplier={1.15}>
+          Atur Seva
+        </Text>
       </View>
 
       {/* Bell — a 44dp touch wrapper centered on the ink's design center

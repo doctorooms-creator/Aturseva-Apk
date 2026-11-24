@@ -34,7 +34,11 @@ export function Home4Specialties() {
   return (
     <View style={{ marginTop: 14 * s }}>
       <View style={[styles.row, { marginHorizontal: 19 * s }]}>
-        <Text style={[v4t('specTitle', s), { color: v4c.ink }]} numberOfLines={1}>
+        <Text
+          style={[v4t('specTitle', s), { color: v4c.ink, flexShrink: 1, paddingRight: 8 * s }]}
+          numberOfLines={2}
+          maxFontSizeMultiplier={1.3}
+        >
           Explore by Specialty
         </Text>
         <Pressable
@@ -44,7 +48,9 @@ export function Home4Specialties() {
           hitSlop={{ top: 12, bottom: 12, left: 8, right: 4 }}
           style={({ pressed }) => [styles.viewAll, { gap: 3 * s }, pressed && styles.pressed]}
         >
-          <Text style={[v4t('specViewAll', s), { color: v4c.gray3 }]}>View all</Text>
+          <Text style={[v4t('specViewAll', s), { color: v4c.gray3 }]} maxFontSizeMultiplier={1.25}>
+            View all
+          </Text>
           <FigIcon name="view-arrow" w={8.5} h={6.8} s={s} />
         </Pressable>
       </View>
@@ -73,7 +79,11 @@ export function Home4Specialties() {
             <View style={styles.iconWell}>
               <FigIcon name={card.icon} s={s} />
             </View>
-            <Text style={[v4t('specLabel', s), { color: v4c.ink, marginBottom: 6.5 * s }]} numberOfLines={1}>
+            <Text
+              style={[v4t('specLabel', s), { color: v4c.ink, marginBottom: 6.5 * s }]}
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.1}
+            >
               {card.label}
             </Text>
           </Pressable>

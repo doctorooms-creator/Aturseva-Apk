@@ -35,7 +35,11 @@ export function Home4Search() {
       ]}
     >
       <FigIcon name="search" s={s} />
-      <Text style={[v4t('searchPlaceholder', s), styles.ph, { color: v4c.gray2 }]} numberOfLines={1}>
+      <Text
+        style={[v4t('searchPlaceholder', s), styles.ph, { color: v4c.gray2 }]}
+        numberOfLines={1}
+        maxFontSizeMultiplier={1.2}
+      >
         Search doctors, hospitals, tests, symptoms…
       </Text>
       <FigIcon name="mic" s={s} />

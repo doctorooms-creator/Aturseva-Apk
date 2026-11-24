@@ -25,10 +25,18 @@ export function Home4Hero() {
           art's left edge (x210) is the right bound — no extra padding (a
           10dp inset truncated "made simpler." at Geist's metrics). */}
       <View style={{ flex: 1, marginTop: 26 * s, paddingLeft: 29 * s, paddingRight: 0, gap: 7 * s }}>
-        <Text style={[v4t('heroTitle', s), { color: v4c.ink }]} numberOfLines={2}>
+        <Text
+          style={[v4t('heroTitle', s), { color: v4c.ink }]}
+          numberOfLines={2}
+          maxFontSizeMultiplier={1.15}
+        >
           {'Healthcare,\nmade simpler.'}
         </Text>
-        <Text style={[v4t('heroSub', s), { color: v4c.gray1 }]} numberOfLines={2}>
+        <Text
+          style={[v4t('heroSub', s), { color: v4c.gray1 }]}
+          numberOfLines={2}
+          maxFontSizeMultiplier={1.3}
+        >
           {'Find doctors, book appointments\nand track your turn in real time.'}
         </Text>
       </View>

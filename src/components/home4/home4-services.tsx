@@ -75,9 +75,13 @@ export function Home4Services() {
           style={({ pressed }) => [
             styles.tile,
             {
-              height: 98 * s,
+              // minHeight (not height): font-scale wraps grow the card —
+              // the designed 98 holds at scale 1.0 (pixel law), taller
+              // only when the user's text size demands it.
+              minHeight: 98 * s,
               borderRadius: 17 * s,
               paddingTop: 5 * s,
+              paddingBottom: 7 * s,
               gap: 0,
               borderWidth: Math.max(0.5, 0.5 * s),
             },
@@ -86,10 +90,18 @@ export function Home4Services() {
           ]}
         >
           <FigArt name={t.art} height={53 * s} />
-          <Text style={[v4t('tileTitle', s), { color: v4c.ink, marginTop: 4 * s }]} numberOfLines={1}>
+          <Text
+            style={[v4t('tileTitle', s), { color: v4c.ink, marginTop: 4 * s }]}
+            numberOfLines={2}
+            maxFontSizeMultiplier={1.4}
+          >
             {t.title}
           </Text>
-          <Text style={[v4t('tileSub', s), { color: v4c.gray1, marginTop: 2 * s }]} numberOfLines={1}>
+          <Text
+            style={[v4t('tileSub', s), { color: v4c.gray1, marginTop: 2 * s }]}
+            numberOfLines={1}
+            maxFontSizeMultiplier={1.4}
+          >
             {t.sub}
           </Text>
         </Pressable>

@@ -48,7 +48,11 @@ export function Home4Appointment({ doctorName, sub, token }: V4AppointmentProps)
     <View style={{ marginHorizontal: 19 * s, marginTop: 14 * s }}>
       {/* Section row — title left, View all + arrow right (44 touch). */}
       <View style={styles.row}>
-        <Text style={[v4t('sectionTitle', s), { color: v4c.ink }]} numberOfLines={1}>
+        <Text
+          style={[v4t('sectionTitle', s), { color: v4c.ink }]}
+          numberOfLines={1}
+          maxFontSizeMultiplier={1.3}
+        >
           Your appointment
         </Text>
         <Pressable
@@ -84,10 +88,18 @@ export function Home4Appointment({ doctorName, sub, token }: V4AppointmentProps)
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', height: 44 * s, paddingLeft: 14 * s, paddingRight: 20 * s }}>
           <V4Avatar name={doctorName} s={s} />
           <View style={{ flex: 1, minWidth: 0, marginLeft: 11 * s, marginTop: 4 * s }}>
-            <Text style={[v4t('apptName', s), { color: v4c.ink }]} numberOfLines={1}>
+            <Text
+              style={[v4t('apptName', s), { color: v4c.ink }]}
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.25}
+            >
               {doctorName}
             </Text>
-            <Text style={[v4t('apptSub', s), { color: v4c.gray1, marginTop: 1.5 * s }]} numberOfLines={1}>
+            <Text
+              style={[v4t('apptSub', s), { color: v4c.gray1, marginTop: 1.5 * s }]}
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.35}
+            >
               {sub}
             </Text>
           </View>
@@ -104,25 +116,39 @@ export function Home4Appointment({ doctorName, sub, token }: V4AppointmentProps)
             }}
           >
             <View style={{ width: 6 * s, height: 6 * s, borderRadius: 3 * s, backgroundColor: v4c.liveDot }} />
-            <Text style={[v4t('liveBadge', s), { color: v4c.liveText }]}>Live Queue</Text>
+            <Text style={[v4t('liveBadge', s), { color: v4c.liveText }]} maxFontSizeMultiplier={1.1}>
+              Live Queue
+            </Text>
           </View>
         </View>
 
         {/* Stats strip — three flex columns, 0.7px dividers. */}
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 * s }}>
           <View style={styles.stat}>
-            <Text style={[v4t('statNum', s), { color: v4c.ink }]}>#{token.yours}</Text>
-            <Text style={[v4t('statLabel', s), { color: v4c.gray1 }]}>Your Token</Text>
+            <Text style={[v4t('statNum', s), { color: v4c.ink }]} maxFontSizeMultiplier={1.2}>
+              #{token.yours}
+            </Text>
+            <Text style={[v4t('statLabel', s), { color: v4c.gray1 }]} maxFontSizeMultiplier={1.3}>
+              Your Token
+            </Text>
           </View>
           <View style={[styles.div, { width: Math.max(0.5, 0.7 * s), height: 29 * s }]} />
           <View style={styles.stat}>
-            <Text style={[v4t('statNum', s), { color: v4c.ink }]}>#{token.serving}</Text>
-            <Text style={[v4t('statLabel', s), { color: v4c.gray1 }]}>Now Serving</Text>
+            <Text style={[v4t('statNum', s), { color: v4c.ink }]} maxFontSizeMultiplier={1.2}>
+              #{token.serving}
+            </Text>
+            <Text style={[v4t('statLabel', s), { color: v4c.gray1 }]} maxFontSizeMultiplier={1.3}>
+              Now Serving
+            </Text>
           </View>
           <View style={[styles.div, { width: Math.max(0.5, 0.7 * s), height: 29 * s }]} />
           <View style={styles.stat}>
-            <Text style={[v4t('statNum', s), { color: v4c.ink }]}>{token.ahead}</Text>
-            <Text style={[v4t('statLabel', s), { color: v4c.gray1 }]}>Patients Ahead</Text>
+            <Text style={[v4t('statNum', s), { color: v4c.ink }]} maxFontSizeMultiplier={1.2}>
+              {token.ahead}
+            </Text>
+            <Text style={[v4t('statLabel', s), { color: v4c.gray1 }]} maxFontSizeMultiplier={1.3}>
+              Patients Ahead
+            </Text>
           </View>
         </View>
 
