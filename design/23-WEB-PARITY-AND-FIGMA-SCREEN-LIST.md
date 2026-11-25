@@ -97,6 +97,9 @@ Design system law to carry into every frame: V4 rules from design/21 — 426×92
 | 0.3 | Dark mode palette sheet | NEW | |
 
 ### BATCH 1 — Golden journey (exists in APK as code; bring to Figma-authoritative state)
+
+> **UPDATE 2026-11-25 (doc 24 §7):** the owner's 3 redesigned Figma frames (Find Care `25:2`, Find Doctor `25:3`, Doctors Profile `25:4`) slot in here as the Figma-authoritative art for **1.3a/1.3b/1.4**, re-tokenized through the doc-24 bridge (Geist + teal system; geometry/assets from Figma, color/type from tokens.ts).
+
 | # | Screen | Status | Data backing |
 |---|---|---|---|
 | 1.1 | Home V4 | ✅ DONE (design/21) | live booking zone |
@@ -164,12 +167,14 @@ Suggested Figma order: **0 → 1 → 2.1–2.4,2.6–2.8 → 4.1–4.4 → 3 (AI
 
 ## 5. OWNER DECISIONS REQUIRED (docs disagree — resolved here or screens get blocked)
 
-1. **Family booking ("Kiske liye?")** — banned in STITCH §8/audit §7, planned in PATIENT-APP-PROMPT Phase 3. Design in or out?
-2. **AI placement** — center tab (STITCH) vs FAB sheet on every screen vs current 4-tab layout (Home/Bookings/Records/Profile) + AI entry inside. Affects nav pill redesign.
-3. **Consents** — read-only (web reality for patient) vs sign/revoke endpoints that exist.
-4. **Login upgrade** — keep email+password AuthSheet, or add OTP (web has OTP forgot-password; mobile-first users expect OTP).
-5. **Video call stack** — ship Jitsi join now vs wait for authed video (security audit flags public SaaS).
-6. **Diet plan** — web diet API reported broken for patients (audit §8); fix upstream before designing screen 3.7?
+> **STATUS 2026-11-25 (doc 24): ALL SIX RESOLVED.** Owner delegated remaining calls to the architect ("act as system architect"). Full rationale in `design/24-REDESIGN-TOKEN-BRIDGE-AND-ARCHITECT-DECISIONS.md` §6. Summaries inline below.
+
+1. **Family booking ("Kiske liye?")** — banned in STITCH §8/audit §7, planned in PATIENT-APP-PROMPT Phase 3. Design in or out? → **RESOLVED (R1): OUT for v1** — web ban is the product law; reopen only on explicit owner request.
+2. **AI placement** — center tab (STITCH) vs FAB sheet on every screen vs current 4-tab layout (Home/Bookings/Records/Profile) + AI entry inside. Affects nav pill redesign. → **RESOLVED (R2): 4-tab stays; AI via Home hero entry v1; center-tab is a Phase-2 shell decision after AI ships.**
+3. **Consents** — read-only (web reality for patient) vs sign/revoke endpoints that exist. → **RESOLVED (R3): read-only list v1;** sign/revoke deferred pending legal review.
+4. **Login upgrade** — keep email+password AuthSheet, or add OTP (web has OTP forgot-password; mobile-first users expect OTP). → **RESOLVED (R4): keep email+password;** OTP blocked on web auth API exposing OTP login (never build client auth the backend doesn't support).
+5. **Video call stack** — ship Jitsi join now vs wait for authed video (security audit flags public SaaS). → **RESOLVED (R5): defer join;** appointment detail ships video status banner, join button feature-flagged until authed stack passes audit.
+6. **Diet plan** — web diet API reported broken for patients (audit §8); fix upstream before designing screen 3.7? → **RESOLVED (R6): 3.7 blocked** until upstream fix; ship 3.3–3.6 on working APIs.
 
 ## 6. WHAT WAS NOT DONE
 - No changes to `Doctorooms2` (read-only shallow clone at `/home/z/analysis/web-ref`; never pushed, never edited).
