@@ -15,10 +15,11 @@
  * intentionally absent (frame authority law).
  *
  * Every number is REAL (DoctorProfile contract — nothing fabricated):
- * stats columns map experience → totalPatients → ratingCount (fallbacks:
- * totalAppointments, hospitals — deduped, hide-if-zero). The booking
- * journey is untouched: the CTA opens the S6 SlotSheet and Confirm
- * pushes S7 with the same 8 params.
+ * the stats strip ALWAYS renders 3 columns — experience → totalPatients
+ * → ratingCount (fallbacks totalAppointments → hospitals, honestly
+ * labeled, one winner per slot; a real 0 renders, never hides). The
+ * booking journey is untouched: the CTA opens the S6 SlotSheet and
+ * Confirm pushes S7 with the same 8 params.
  *
  * Scaling: 390-frame px → rdScale() × useV4() s (the 426 law). Font:
  * Geist (owner's website-consistency decision). Skin: rd/rdDark
@@ -81,23 +82,35 @@ function initialsOf(name: string): string {
 }
 
 /**
- * Stats strip mapping — REAL DoctorProfile fields only, deduped,
- * hide-if-zero (a degenerate profile renders fewer columns, never a
- * fabricated number). Priority: experience → patients → reviews, then
- * appointments → hospitals as rare fallbacks.
+ * Stats strip mapping — REAL DoctorProfile fields only, and EXACTLY
+ * three columns (FIX-2 E2E catch: the old hide-if-zero law collapsed
+ * real profiles — QA doctors with 0 patients and 0 reviews — to a
+ * 2-column strip). The frame is Experience / Patients / Reviews:
+ * — Experience: the raw contract string ("8" renders "8 years").
+ * — Patients: the real totalPatients; when the HMS carries no patient
+ *   count yet, the next REAL count fills the slot, honestly labeled
+ *   (Visits = totalAppointments, Clinics = hospitals) — one winner per
+ *   slot, so no two columns ever repeat the same count.
+ * — Reviews: ratingCount; a real 0 is honest and stays a column.
  */
 function statColumns(d: DoctorProfile): { value: string; label: string }[] {
   const fmt = (n: number) => n.toLocaleString('en-IN')
-  const cols: { value: string; label: string }[] = []
   const expRaw = (d.experience ?? '').trim()
   const expNum = /^\d+/.exec(expRaw)
-  if (expNum) cols.push({ value: `${expNum[0]} years`, label: 'Experience' })
-  else if (expRaw) cols.push({ value: expRaw, label: 'Experience' })
-  if (d.totalPatients > 0) cols.push({ value: fmt(d.totalPatients), label: 'Patients' })
-  if (d.ratingCount > 0) cols.push({ value: fmt(d.ratingCount), label: 'Reviews' })
-  if (cols.length < 3 && d.totalAppointments > 0) cols.push({ value: fmt(d.totalAppointments), label: 'Visits' })
-  if (cols.length < 3 && d.hospitals.length > 0) cols.push({ value: String(d.hospitals.length), label: 'Clinics' })
-  return cols
+  const experience = expNum ? `${expNum[0]} years` : expRaw || '—'
+  const patients =
+    d.totalPatients > 0
+      ? { value: fmt(d.totalPatients), label: 'Patients' }
+      : d.totalAppointments > 0
+        ? { value: fmt(d.totalAppointments), label: 'Visits' }
+        : d.hospitals.length > 0
+          ? { value: fmt(d.hospitals.length), label: 'Clinics' }
+          : { value: fmt(d.totalPatients), label: 'Patients' }
+  return [
+    { value: experience, label: 'Experience' },
+    patients,
+    { value: fmt(d.ratingCount), label: 'Reviews' },
+  ]
 }
 
 /** The big summary star row: full = floor(rating), half when the
@@ -354,7 +367,9 @@ export default function DoctorProfileScreen() {
             accessibilityLabel="Go back"
             hitSlop={6}
           >
-            <RdBack size={z(18)} color={P.ink} />
+            {/* FIX-2: frame-verbatim ink arrow — the skin's P.ink flips to
+                #F5F5F5 in dark, unreadable on the white circle. */}
+            <RdBack size={z(18)} color={rd.ink} />
           </Pressable>
           <Text style={st.headerTitle}>Doctors Profile</Text>
         </View>
@@ -550,9 +565,12 @@ function mkStyles(z: (px: number) => number, P: RdPalette, body: string) {
       width: z(44),
       height: z(44),
       borderRadius: z(22),
-      backgroundColor: P.white,
+      // FIX-2 (E2E catch): frame-verbatim WHITE circle, 1px #E8E8E8
+      // hairline, soft shadow — in BOTH modes (the skin's P.white flips
+      // to #0C0C0C in dark, which read as a dark button).
+      backgroundColor: rd.white,
       borderWidth: 1,
-      borderColor: P.border,
+      borderColor: rd.border,
       alignItems: 'center',
       justifyContent: 'center',
       ...softShadow,

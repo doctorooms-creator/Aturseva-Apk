@@ -1,7 +1,8 @@
 /**
  * REDESIGN ICON SET — line-art vectors faithful to the owner's Figma frames
  * (doc 24 §9 exact-fidelity directive). ~1.8 stroke, round caps/joins,
- * 24×24 viewBox. Rendered via react-native-svg.
+ * 24×24 viewBox. Rendered via react-native-svg. The six specialty icons
+ * (FIX-2 detail pass) default to stroke 2 with richer interior detail.
  */
 import Svg, { Circle, ClipPath, Defs, G, Line, Path, Polyline, Rect } from 'react-native-svg'
 
@@ -40,7 +41,7 @@ export function RdCalendar({ size = defaults.size, color = defaults.color, strok
   )
 }
 
-export function RdTooth({ size = defaults.size, color = defaults.color, strokeWidth = defaults.strokeWidth }: RdIconProps) {
+export function RdTooth({ size = defaults.size, color = defaults.color, strokeWidth = 2 }: RdIconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
@@ -49,36 +50,48 @@ export function RdTooth({ size = defaults.size, color = defaults.color, strokeWi
         strokeWidth={strokeWidth}
         strokeLinejoin="round"
       />
-      <Circle cx="18.2" cy="5" r="3" fill={color} />
-      <G stroke="#FFFFFF" strokeWidth="1.4" strokeLinecap="round">
-        <Line x1="18.2" y1="3.6" x2="18.2" y2="6.4" />
-        <Line x1="16.8" y1="5" x2="19.6" y2="5" />
+      {/* FIX-2 detail pass — crown shine + bigger, clearer cross-badge. */}
+      <Path d="M8.7 7.7c.5-1 1.4-1.7 2.6-1.9" stroke={color} strokeWidth={strokeWidth * 0.7} strokeLinecap="round" />
+      <Circle cx="18.3" cy="4.9" r="3.15" fill={color} />
+      <G stroke="#FFFFFF" strokeWidth="1.7" strokeLinecap="round">
+        <Line x1="18.3" y1="3.4" x2="18.3" y2="6.4" />
+        <Line x1="16.8" y1="4.9" x2="19.8" y2="4.9" />
       </G>
     </Svg>
   )
 }
 
-export function RdHeart({ size = defaults.size, color = defaults.color, strokeWidth = defaults.strokeWidth, shade = '#9A9A9A' }: RdIconProps & { shade?: string }) {
+export function RdHeart({ size = defaults.size, color = defaults.color, strokeWidth = 2, shade = '#9A9A9A' }: RdIconProps & { shade?: string }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M12 20.5C7 16.5 4 13.4 4 9.8 4 7 6 5 8.5 5c1.4 0 2.7.7 3.5 1.8C12.8 5.7 14.1 5 15.5 5 18 5 20 7 20 9.8c0 3.6-3 6.7-8 10.7z" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
-      <Path d="M9 6.2c1-1.3 2.4-1.8 3.8-1.4" stroke={shade} strokeWidth={strokeWidth} strokeLinecap="round" fill={shade} fillOpacity="0.25" />
+      {/* FIX-2 detail pass — stronger aorta arch spanning the cleft + one
+          vessel line descending from it into the heart. */}
+      <Path d="M9 6.8c.9-1.7 1.9-2.6 3-2.6s2.1.9 3 2.6" stroke={color} strokeWidth={strokeWidth * 0.9} strokeLinecap="round" fill={shade} fillOpacity="0.25" />
+      <Path d="M12 4.9v3.3" stroke={shade} strokeWidth={strokeWidth * 0.8} strokeLinecap="round" />
     </Svg>
   )
 }
 
-export function RdLungs({ size = defaults.size, color = defaults.color, strokeWidth = defaults.strokeWidth, shade = '#9A9A9A' }: RdIconProps & { shade?: string }) {
+export function RdLungs({ size = defaults.size, color = defaults.color, strokeWidth = 2, shade = '#9A9A9A' }: RdIconProps & { shade?: string }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M12 3.5v5" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
       <Path d="M12 8.5L9 11M12 8.5l3 2.5" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
       <Path d="M9 11c-2.6.6-4.6 2.7-4.6 5.6 0 2 1.1 3.4 2.6 3.4 1.3 0 2-1.1 2-2.6V11z" fill={shade} fillOpacity="0.22" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
       <Path d="M15 11c2.6.6 4.6 2.7 4.6 5.6 0 2-1.1 3.4-2.6 3.4-1.3 0-2-1.1-2-2.6V11z" fill={shade} fillOpacity="0.22" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+      {/* FIX-2 detail pass — 3 bronchial branch lines inside each lobe. */}
+      <Path
+        d="M8.9 12.2l-1.8 1.2M8.4 14l-2.2 1M7.4 15.7l-1.6.7M15.1 12.2l1.8 1.2M15.6 14l2.2 1M16.6 15.7l1.6.7"
+        stroke={color}
+        strokeWidth={strokeWidth * 0.75}
+        strokeLinecap="round"
+      />
     </Svg>
   )
 }
 
-export function RdBrain({ size = defaults.size, color = defaults.color, strokeWidth = defaults.strokeWidth }: RdIconProps) {
+export function RdBrain({ size = defaults.size, color = defaults.color, strokeWidth = 2 }: RdIconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
@@ -89,25 +102,34 @@ export function RdBrain({ size = defaults.size, color = defaults.color, strokeWi
       />
       <Path d="M12 5.5v12.5" stroke={color} strokeWidth={strokeWidth * 0.85} strokeLinecap="round" />
       <Path d="M8 11.5c1 .3 1.7 1 2 2M16 10.5c-1 .3-1.8 1.1-2.1 2.2" stroke={color} strokeWidth={strokeWidth * 0.8} strokeLinecap="round" />
+      {/* FIX-2 detail pass — 3rd fold squiggle (lower hemisphere) + the
+          small cerebellum bump tucked bottom-right. */}
+      <Path d="M9.3 15.9c.9-.2 1.7.1 2.2.9" stroke={color} strokeWidth={strokeWidth * 0.8} strokeLinecap="round" />
+      <Path d="M17.2 20.8c1.5-.2 2.6-1.1 3.1-2.5" stroke={color} strokeWidth={strokeWidth * 0.85} strokeLinecap="round" />
     </Svg>
   )
 }
 
-export function RdEar({ size = defaults.size, color = defaults.color, strokeWidth = defaults.strokeWidth }: RdIconProps) {
+export function RdEar({ size = defaults.size, color = defaults.color, strokeWidth = 2 }: RdIconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M17 8.5c0-3-2.4-5-5-5s-5 2-5 4.5c0 2 .8 3 2 4.4.9 1.1 1.6 1.9 1.6 3.3 0 1.6 1.1 2.6 2.6 2.6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
-      <Path d="M13.5 10.2a2.6 2.6 0 0 0-2.4-1.9M15 12.8a5 5 0 0 0-4.2-3.6" stroke={color} strokeWidth={strokeWidth * 0.8} strokeLinecap="round" />
+      {/* FIX-2 detail pass — bolder sound arcs (full stroke) + the
+          inner-coil curve of the canal. */}
+      <Path d="M13.6 10.3a2.7 2.7 0 0 0-2.5-2M15.2 12.9a5.2 5.2 0 0 0-4.4-3.7" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+      <Path d="M13.4 14.4c-.8.7-2 .6-2.7-.2" stroke={color} strokeWidth={strokeWidth * 0.8} strokeLinecap="round" />
     </Svg>
   )
 }
 
-export function RdEye({ size = defaults.size, color = defaults.color, strokeWidth = defaults.strokeWidth, shade = '#9A9A9A' }: RdIconProps & { shade?: string }) {
+export function RdEye({ size = defaults.size, color = defaults.color, strokeWidth = 2, shade = '#9A9A9A' }: RdIconProps & { shade?: string }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M3 12c2.5-4 5.5-6 9-6s6.5 2 9 6c-2.5 4-5.5 6-9 6s-6.5-2-9-6z" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+      {/* FIX-2 detail pass — bolder iris ring, fuller pupil, glint dot. */}
       <Circle cx="12" cy="12" r="3.2" stroke={color} strokeWidth={strokeWidth} />
-      <Circle cx="12" cy="12" r="1.4" fill={color} />
+      <Circle cx="12" cy="12" r="1.55" fill={color} />
+      <Circle cx="12.7" cy="11.35" r="0.5" fill="#FFFFFF" />
       <Path d="M9.5 18.5l-.6 1.6M14.5 18.5l.6 1.6" stroke={shade} strokeWidth={strokeWidth * 0.85} strokeLinecap="round" />
     </Svg>
   )
@@ -122,7 +144,6 @@ export function RdStar({ size = defaults.size, color = '#E7BF40' }: RdIconProps)
 }
 
 export function RdStarHalf({ size = defaults.size, color = '#E7BF40', track = '#D9D9D9' }: RdIconProps & { track?: string }) {
-  const half = size / 2
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9z" fill={track} />

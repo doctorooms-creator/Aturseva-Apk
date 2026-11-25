@@ -251,168 +251,175 @@ function RdDoctorCard({
   const secondary = cardSecondary(doctor)
 
   return (
-    <Pressable
-      onPress={onOpen}
-      accessibilityRole="button"
-      accessibilityLabel={`${doctor.name}, ${doctor.specialization}`}
-      style={({ pressed }) => [
-        {
-          height: z(G.cardH),
-          borderRadius: z(G.cardR),
-          backgroundColor: cardBg,
-          paddingLeft: z(G.pad),
-          paddingRight: z(G.pad),
-          marginBottom: z(G.cardGap),
-          overflow: 'hidden',
-        },
-        pressed && styles.pressed,
-      ]}
+    // FIX-2 (E2E round-1 catch): RN Web renders Pressable as <button>, so
+    // the day-pill Pressables nested inside the card Pressable were
+    // invalid nested <button>s (red error toast on web). The card root is
+    // a plain View; ONE full-bleed Pressable opens the profile (photo +
+    // left column, identical absolute geometry — the card padding moved
+    // onto the column itself); the day band is a sibling layer with
+    // pointerEvents 'box-none' — band taps fall through to the opener
+    // while each pill keeps its own press.
+    <View
+      style={{
+        height: z(G.cardH),
+        borderRadius: z(G.cardR),
+        backgroundColor: cardBg,
+        marginBottom: z(G.cardGap),
+        overflow: 'hidden',
+      }}
     >
-      {/* Doctor photo — right-anchored 45%, flush to the card top, bottom
-          edge = day-strip top; top-right corner carries the card radius.
-          Source is the api.ts H1 pipeline output (absolute, curated-or-real). */}
-      {doctor.photo ? (
-        <Image
-          source={{ uri: doctor.photo }}
-          resizeMode="cover"
-          accessibilityLabel={doctor.photoRepresentative ? `${doctor.name} — representative photo` : `${doctor.name} photo`}
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: z(G.photoW),
-            height: z(G.photoH),
-            borderTopRightRadius: z(G.cardR),
-          }}
-        />
-      ) : (
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: z(G.photoW),
-            height: z(G.photoH),
-            borderTopRightRadius: z(G.cardR),
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+      <Pressable
+        onPress={onOpen}
+        accessibilityRole="button"
+        accessibilityLabel={`${doctor.name}, ${doctor.specialization}`}
+        style={({ pressed }) => [StyleSheet.absoluteFill, pressed && styles.pressed]}
+      >
+        {/* Doctor photo — right-anchored 45%, flush to the card top, bottom
+            edge = day-strip top; top-right corner carries the card radius.
+            Source is the api.ts H1 pipeline output (absolute, curated-or-real). */}
+        {doctor.photo ? (
+          <Image
+            source={{ uri: doctor.photo }}
+            resizeMode="cover"
+            accessibilityLabel={doctor.photoRepresentative ? `${doctor.name} — representative photo` : `${doctor.name} photo`}
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: z(G.photoW),
+              height: z(G.photoH),
+              borderTopRightRadius: z(G.cardR),
+            }}
+          />
+        ) : (
           <View
             style={{
-              width: z(72),
-              height: z(72),
-              borderRadius: z(36),
-              backgroundColor: c.iconTile,
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: z(G.photoW),
+              height: z(G.photoH),
+              borderTopRightRadius: z(G.cardR),
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Text style={{ fontFamily: 'Geist_600SemiBold', fontWeight: '600', fontSize: z(20), color: c.ink }}>
-              {initialsOf(doctor.name)}
-            </Text>
+            <View
+              style={{
+                width: z(72),
+                height: z(72),
+                borderRadius: z(36),
+                backgroundColor: c.iconTile,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={{ fontFamily: 'Geist_600SemiBold', fontWeight: '600', fontSize: z(20), color: c.ink }}>
+                {initialsOf(doctor.name)}
+              </Text>
+            </View>
           </View>
-        </View>
-      )}
+        )}
 
-      {/* Left column — badges (hide-if-empty law), name, specialization,
-          real secondary line. Text stops short of the photo zone. */}
-      <View style={{ paddingTop: z(G.padT), paddingRight: z(G.photoW - G.pad + 6) }}>
-        {hasRating || hasFee ? (
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: z(8), marginBottom: z(8) }}>
-            {hasRating ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: z(4),
-                  height: z(26),
-                  borderRadius: z(13),
-                  paddingHorizontal: z(10),
-                  backgroundColor: badgeBg,
-                }}
-              >
-                <RdStar size={z(13)} />
-                <Text
+        {/* Left column — badges (hide-if-empty law), name, specialization,
+            real secondary line. Text stops short of the photo zone. */}
+        <View style={{ paddingTop: z(G.padT), paddingLeft: z(G.pad), paddingRight: z(G.photoW + 6) }}>
+          {hasRating || hasFee ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: z(8), marginBottom: z(8) }}>
+              {hasRating ? (
+                <View
                   style={{
-                    fontFamily: 'Geist_600SemiBold',
-                    fontWeight: '600',
-                    fontSize: z(12.5),
-                    color: badgeText,
-                    fontVariant: ['tabular-nums'],
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: z(4),
+                    height: z(26),
+                    borderRadius: z(13),
+                    paddingHorizontal: z(10),
+                    backgroundColor: badgeBg,
                   }}
                 >
-                  {doctor.rating.toFixed(1)}
-                </Text>
-              </View>
-            ) : null}
-            {hasFee ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: z(4),
-                  height: z(26),
-                  borderRadius: z(13),
-                  paddingHorizontal: z(10),
-                  backgroundColor: badgeBg,
-                }}
-              >
-                <RdRupeeCircle size={z(14)} />
-                <Text
+                  <RdStar size={z(13)} />
+                  <Text
+                    style={{
+                      fontFamily: 'Geist_600SemiBold',
+                      fontWeight: '600',
+                      fontSize: z(12.5),
+                      color: badgeText,
+                      fontVariant: ['tabular-nums'],
+                    }}
+                  >
+                    {doctor.rating.toFixed(1)}
+                  </Text>
+                </View>
+              ) : null}
+              {hasFee ? (
+                <View
                   style={{
-                    fontFamily: 'Geist_600SemiBold',
-                    fontWeight: '600',
-                    fontSize: z(12.5),
-                    color: badgeText,
-                    fontVariant: ['tabular-nums'],
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: z(4),
+                    height: z(26),
+                    borderRadius: z(13),
+                    paddingHorizontal: z(10),
+                    backgroundColor: badgeBg,
                   }}
                 >
-                  ₹{doctor.fees.toLocaleString('en-IN')}
-                </Text>
-              </View>
-            ) : null}
-          </View>
-        ) : null}
+                  <RdRupeeCircle size={z(14)} />
+                  <Text
+                    style={{
+                      fontFamily: 'Geist_600SemiBold',
+                      fontWeight: '600',
+                      fontSize: z(12.5),
+                      color: badgeText,
+                      fontVariant: ['tabular-nums'],
+                    }}
+                  >
+                    ₹{doctor.fees.toLocaleString('en-IN')}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          ) : null}
 
-        <Text
-          numberOfLines={1}
-          maxFontSizeMultiplier={1.15}
-          style={{ fontFamily: 'Geist_700Bold', fontWeight: '700', fontSize: z(17), lineHeight: z(22), color: nameCol }}
-        >
-          {doctor.name}
-        </Text>
-        <Text
-          numberOfLines={1}
-          maxFontSizeMultiplier={1.15}
-          style={{
-            fontFamily: 'Geist_400Regular',
-            fontWeight: '400',
-            fontSize: z(13.5),
-            lineHeight: z(17),
-            color: specCol,
-            marginTop: z(2),
-          }}
-        >
-          {doctor.specialization || 'Doctor'}
-        </Text>
-        {secondary ? (
+          <Text
+            numberOfLines={1}
+            maxFontSizeMultiplier={1.15}
+            style={{ fontFamily: 'Geist_700Bold', fontWeight: '700', fontSize: z(17), lineHeight: z(22), color: nameCol }}
+          >
+            {doctor.name}
+          </Text>
           <Text
             numberOfLines={1}
             maxFontSizeMultiplier={1.15}
             style={{
               fontFamily: 'Geist_400Regular',
               fontWeight: '400',
-              fontSize: z(12),
-              lineHeight: z(15),
-              color: secCol,
-              marginTop: z(3),
+              fontSize: z(13.5),
+              lineHeight: z(17),
+              color: specCol,
+              marginTop: z(2),
             }}
           >
-            {secondary}
+            {doctor.specialization || 'Doctor'}
           </Text>
-        ) : null}
-      </View>
+          {secondary ? (
+            <Text
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.15}
+              style={{
+                fontFamily: 'Geist_400Regular',
+                fontWeight: '400',
+                fontSize: z(12),
+                lineHeight: z(15),
+                color: secCol,
+                marginTop: z(3),
+              }}
+            >
+              {secondary}
+            </Text>
+          ) : null}
+        </View>
+      </Pressable>
 
       {/* Day strip — full-width inner band, 6 real-date stadium pills
           (today first, selected by default), space-between pitch 52. */}
@@ -429,6 +436,7 @@ function RdDoctorCard({
           alignItems: 'center',
           justifyContent: 'space-between',
           paddingHorizontal: z(3),
+          pointerEvents: 'box-none',
         }}
       >
         {days.map((d, i) => {
@@ -473,7 +481,7 @@ function RdDoctorCard({
           )
         })}
       </View>
-    </Pressable>
+    </View>
   )
 }
 
