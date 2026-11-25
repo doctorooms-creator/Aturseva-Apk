@@ -156,3 +156,16 @@ Build order unchanged (0 → 1 → 2.1–2.4, 2.6–2.8 → 4.1–4.4 → 3 → 
 - No `Doctorooms2` changes (read-only clone).
 - No Figma file edits (plugin is read-only; render exports deferred to build time due to rate limits).
 - This doc + Doc 23 §5 status edit + commit/push only. Development still not started (owner's standing rule: analysis first).
+
+---
+
+## 9. ADDENDUM (2026-11-25, later): OWNER FIDELITY DIRECTIVE + INFRA RECOVERY
+
+**Owner directive (locked, supersedes §1-D2 re-scoping where in conflict):** *"exact same hi screen redesign chahiye"* — the 3 redesigned screens must render EXACTLY as the owner's Figma frames. Operational law:
+- Geometry/layout/pill rhythm: 1:1 from Figma frames 25:2 / 25:3 / 25:4 (V4 s=width/426 design-px law applied).
+- Colors: Figma-verbatim values ON these screens — ink #2C2928, card #F0F0F0, border #E8E8E8, gold stars #E7BF40 (overrides D2's normalization to starYellow #F5B301), sage fee #80AD69 (D2's "sage retired" OVERRIDDEN on these 3 screens — the owner designed it, it stays), hero gradient as designed.
+- Font: Geist (owner's explicit website-consistency decision — the ONLY sanctioned deviation from the Figma file, whose Roboto is Figma-default residue, not a design choice).
+- Sanctioned data-level fixes (invisible to design fidelity): photo STRETCH→cover, repeated-photo→initials fallback, AI-corrupted bio (node 25:38) rewrite, $→₹ (en-IN, tabular-nums), "287 Doctors found"→live API count, chevrons/message icon per Figma art.
+- §4 token bridge remains law for ALL OTHER screens; these 3 are Figma-authoritative visually, tokens-authoritative structurally (text roles still map to the Geist ramp).
+
+**Infra recovery (same day):** machine restart wiped Aturseva-Apk node_modules (tunnel 502, expo binary missing). Fixed: bun install (615 pkgs, exit 0); package.json `start:tunnel` --tunnel ngrok → --tunnel expo (ngrok provider refuses robot tokens; expo provider verified HTTP 200, same c-atursevateam-f5cka7-* prefix; suffix rotates per session — the preview page /api/tunnel self-heal spawn now carries the expo provider arg too). Figma nodes+render APIs 429 rate-limited this session; image-fills endpoint worked — 6/7 assets in design/redesign-assets/src (0ec0df2b = doctor photo 1080×2400 JPEG · 7e8a9806 1488×2268 · ae872258 1488×2266 · a41a9493 852×1846 · 98e78f2f 336×512 · ad317768 186×284 · 0799563c 403-failed). Asset identification + full geometry extraction queued behind the rate limit; build starts on unlock.

@@ -11,7 +11,7 @@
     "export:web": "expo export --platform web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "start:tunnel": "expo start --tunnel ngrok"
+    "start:tunnel": "expo start --tunnel expo"
   },
   "dependencies": {
     "@expo-google-fonts/dancing-script": "^0.4.2",
